@@ -1,0 +1,48 @@
+<!---
+   Copyright 2011 Blue River Interactive
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+--->
+<plugin>
+<name>Locale Translation Manager</name>
+<package>LocaleTransMgr</package>
+<directoryFormat>packageOnly</directoryFormat>
+<version>1.17</version>
+<provider>Blue River</provider>
+<providerURL>http://www.getmura.com/index.cfm/app-store/apps/locale-translation-manager/</providerURL>
+<category>Application</category>
+<settings>
+	<setting>
+		<name>showFlags</name>
+		<label>Show Flags</label>
+		<hint>Show flags in list navigation tool.</hint>
+		<type>selectbox</type>
+		<required>true</required>
+		<validation></validation>
+		<regex></regex>
+		<message></message>
+		<defaultvalue>False</defaultvalue>
+		<optionlist>True^False</optionlist>
+		<optionlabellist></optionlabellist>
+	</setting>
+</settings>
+<eventHandlers>
+	<eventHandler event="onContentEdit" scriptfile="onContentEdit.cfm"/>
+	<eventHandler event="onContentSave" component="cfcs.eventHandler"/>
+	<eventHandler event="onContentDelete" component="cfcs.eventHandler"/>
+</eventHandlers>
+<displayobjects location="global">
+	<displayobject name="Navigation Tool (List)" displayobjectfile="displayObjects/list.cfm"/>
+	<displayobject name="Navigation Tool (SelectBox)" displayobjectfile="displayObjects/select.cfm"/>
+</displayobjects>
+</plugin>

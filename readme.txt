@@ -1,0 +1,1 @@
+This plugin manages translatios between multiple Mura site and locales.
