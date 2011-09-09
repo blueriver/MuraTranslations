@@ -1,4 +1,4 @@
-<!---
+<!--
    Copyright 2011 Blue River Interactive
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,14 +12,14 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
---->
+-->
 <plugin>
 <name>Locale Translation Manager</name>
 <package>LocaleTransMgr</package>
 <directoryFormat>packageOnly</directoryFormat>
-<version>1.17</version>
+<version>1.18</version>
 <provider>Blue River</provider>
-<providerURL>http://www.getmura.com/index.cfm/app-store/apps/locale-translation-manager/</providerURL>
+<providerURL>http://www.getmura.com/marketplace/apps/locale-translation-manager/</providerURL>
 <category>Application</category>
 <settings>
 	<setting>

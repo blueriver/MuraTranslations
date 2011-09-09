@@ -29,26 +29,38 @@ function removeTranslationAssignments(){
 		var pars = 'contentID=#request.contentBean.getContentID()#&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
-		var myAjax = new Ajax.Request(url, {method: 'get', parameters: pars, onSuccess:loadLocaleTable});
+		
+		jQuery.get(url + "?" + pars, 
+			function() {
+			loadTable();
+			}
+		);
+		
 		
 		}
 	return false;
-	}	
+}	
 	
 function loadLocaleTable(activeTab){
 	var url = '#application.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/assignmentTable.cfm';
 	var pars = 'contentID=#request.contentBean.getContentID()#&contentHistID=#request.contentBean.getContentHistID()#&type=#attributes.type#&parentID=#attributes.parentID#&siteid=#attributes.siteID#&doMap=#yesNoFormat(event.valueExists("doMap"))#&cacheid=' + Math.random();
 	var tab = activeTab;	
-	$("localeTableContainer").innerHTML='<br/><img src="images/progress_bar.gif">';
-	//location.href=url + "?" + pars;
-	var myAjax = new Ajax.Request(url, {method: 'get', parameters: pars, 
-		onSuccess:function(transport){
-					$("localeTableContainer").innerHTML=transport.responseText;
-					stripe('stripe');
-					showTab(tab);
-					}
-		});
 	
+	jQuery("##localeTableContainer").html('<br/><img src="images/progress_bar.gif">');
+	
+	//location.href=url + "?" + pars;
+	jQuery(".initActiveTab").each(
+		function(index) {			
+			jQuery(this).tabs("select",tab);
+		}
+	);
+	
+	jQuery.get(url + "?" + pars, 
+		function(data) {
+			jQuery("##localeTableContainer").html(data);
+			stripe("stripe");		
+		}
+	);	
 }
 
 function saveBeforeTranslation(forwardURL){
@@ -64,7 +76,13 @@ function saveBeforeTranslation(forwardURL){
 </span>
 <cfoutput>
 <script language="JavaScript">
-<cfif isBoolean(pSession.getValue('showTab')) and pSession.getValue('showTab')>loadLocaleTable(#evaluate(listlen(event.getValue('tablist'))-1)#);<cfelse>loadLocaleTable(0);</cfif>
+jQuery(document).ready(
+	function(){
+		<cfif isBoolean(pSession.getValue('showTab')) and pSession.getValue('showTab')>
+		loadLocaleTable(#evaluate(listlen(event.getValue('tablist'))-1)#);
+		<cfelse>loadLocaleTable(0);
+		</cfif>
+});
 </script>
 </cfoutput>
 <cfset pSession.setValue('showTab',false)>
