@@ -105,6 +105,9 @@
 					<cfset contentBean.getAllValues() />
 
 					<cfset contentBean.setTitle( xmlContent.xmlRoot["title"].xmlCData ) />
+					<cfset contentBean.setMenuTitle("") />
+					<cfset contentBean.setURLTitle("") />
+					<cfset contentBean.setHTMLTitle("") />
 					
 					<cfif structKeyExists(xmlContent.xmlRoot,"summary")>
 						<cfset contentBean.setSummary( xmlContent.xmlRoot["summary"].xmlText ) />
