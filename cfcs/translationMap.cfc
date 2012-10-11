@@ -151,36 +151,42 @@
 </cffunction>
 
 <cffunction name="save"  access="public" output="false" returntype="any">
-<cfset var rs=""/>
+	<cfset var rs=""/>
+	<cfset var saveKey="mapping" & hash(getLocalSiteID() & getLocalID() & getRemoteSiteID() & getRemoteID())>
+	
+	<cfif not structKeyExists(request,saveKey)>
+		<cfset request[saveKey]=true>
 
-	
-	<cfif getQuery().recordcount>
+		<cfif getQuery().recordcount>
+			
+			<cfquery datasource="#variables.globalConfig.getDatasource()#" username="#variables.globalConfig.getDBUsername()#" password="#variables.globalConfig.getDBPassword()#">
+				update #variables.table# set
+					LocalSiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocalSiteID()#">,
+					LocalID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocalID()#">,
+					RemoteSiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRemoteSiteID()#">,
+					RemoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRemoteID()#">
+				where MapID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getMapID()#">
+			</cfquery>
+			
+			<cfreturn variables.isDirty>
+			
+		<cfelse>
 		
-		<cfquery datasource="#variables.globalConfig.getDatasource()#" username="#variables.globalConfig.getDBUsername()#" password="#variables.globalConfig.getDBPassword()#">
-		update #variables.table# set
-			LocalSiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocalSiteID()#">,
-			LocalID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocalID()#">,
-			RemoteSiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRemoteSiteID()#">,
-			RemoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRemoteID()#">
-		where MapID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getMapID()#">
-		</cfquery>
-		
-		<cfreturn variables.isDirty>
-		
+			<cfquery datasource="#variables.globalConfig.getDatasource()#" username="#variables.globalConfig.getDBUsername()#" password="#variables.globalConfig.getDBPassword()#">
+				insert into #variables.table# (MapID,LocalSiteID,LocalID,RemoteSiteID,RemoteID) values (
+					<cfqueryparam cfsqltype="cf_sql_varchar" value="#getMapID()#">,
+					<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocalSiteID()#">,
+					<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocalID()#">,
+					<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRemoteSiteID()#">,
+					<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRemoteID()#">
+				)
+			</cfquery>
+			
+			<cfreturn true>
+			
+		</cfif>
 	<cfelse>
-	
-		<cfquery datasource="#variables.globalConfig.getDatasource()#" username="#variables.globalConfig.getDBUsername()#" password="#variables.globalConfig.getDBPassword()#">
-			insert into #variables.table# (MapID,LocalSiteID,LocalID,RemoteSiteID,RemoteID) values (
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getMapID()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocalSiteID()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocalID()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRemoteSiteID()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRemoteID()#">
-			)
-		</cfquery>
-		
-		<cfreturn true>
-		
+		<cfreturn false>
 	</cfif>
 	
 </cffunction>

@@ -13,6 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 --->
+
 <cfinclude template="plugin/config.cfm" />
 <cfset message=""/>
 <cfif structKeyExists(form,"doaction") and form.doaction eq "update">
@@ -29,12 +30,19 @@
 <cfset rsSites=translationManager.getAssignedSites()/>
 <cfsavecontent variable="body">
 <cfoutput>
+<script>
+	$(document).ready(function(){
+		$('.tabs').tabs().show();	
+		}
+	);
+</script>
 <h2>#pluginConfig.getName()#</h2>
 <div class="tabs initActiveTab" style="display:none">
 	<ul>
 	
 	<li><a href="##tabSettings" onclick="return false;"><span>Settings</span></a></li>
 	<li><a href="##tabTemplate" onclick="return false;"><span>Template Code</span></a></li>
+	<li><a href="##tabTranslate" onclick="return false;"><span>External Translations</span></a></li>
 	<li><a href="##tabAbout" onclick="return false;"><span>About This Plugin</span></a></li>
 	
 	</ul>
@@ -80,6 +88,24 @@
 	</tr>
 	</cfloop>
 	</table>
+</div>
+<div id="tabTranslate">
+	<form action="translations/index.cfm" method="post" onsubmit="return validateForm(this);">
+	<h3>Import / Export Actions</h3>
+	<table class="stripe">
+	<tr>
+	<td><input type="radio" name="export_action" value="export" checked="checked"></td>
+	<td>Export</td>
+	</tr>
+	<tr>
+	<td><input type="radio" name="export_action" value="import"></td>
+	<td>Import</td>
+	</tr>
+	</table>
+	<input type="submit" value="Next"/>
+	<input type="hidden" value="#rsSites.recordcount#" name="siteCount"/>
+	<input type="hidden" name="doaction" value="update"/>
+	</form>
 </div>
 <div id="tabAbout">
 	<p>The Locale Translation Manager allows you to specify related alternate language versions of content for any specific page within the Mura content editing process. This is a great tool for sites that need to provide single pages of translated content or links between entire sites of translated content.</p>
