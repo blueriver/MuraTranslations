@@ -85,8 +85,7 @@
 		</cfif>
 	</cffunction>
 
-
-	<cffunction name="importTranslation">
+	<cffunction name="importTranslation" returntype="any">
 		<cfargument name="$">
 		<cfargument name="template">
 		<cfargument name="importDirectory">
@@ -97,8 +96,9 @@
 		<cfset var exportTemplate = rereplaceNoCase(arguments.template,"[^a-z]","","all") />
 		<cfset var exportObject = createObject("component","#pluginConfig.getDirectory()#.translations.templates.#exportTemplate#.export") />
 		<cfset var rsFiles = "" />
+		<cfset var responseMessage = "" />
 
-		<cfset exportObject.import($,importDirectory,importFile) />
+		<cfset responseMessage = exportObject.import($,importDirectory,importFile) />
 		
 		<!--- cleanup --->
 		<cfset rsFiles = directoryList("#expandPath("/#pluginConfig.getDirectory()#/temp")#",false,"query")>
@@ -110,6 +110,8 @@
 			</cfcatch>
 			</cftry>
 		</cfloop>
+		
+		<cfreturn responseMessage />
 	</cffunction>
 	
 </cfcomponent>

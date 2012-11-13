@@ -1,6 +1,9 @@
 ﻿<cfinclude template="../plugin/config.cfm" />
 <cfset exportTranslation=createObject("component","plugins.#pluginConfig.getDirectory()#.cfcs.exportTranslation")>
 
+<cfset $.getBean('contentUtility').duplicateExternalFeed('FBCF9D6C-E32D-F86A-4DD1BFB3AF696D81','SiteC','SiteA')>
+<cfabort>
+
 <cfif structKeyExists(form,"doaction")>
 	<cfif form.doaction eq "export">
 		
@@ -23,9 +26,13 @@
 
 		<cffile action="upload" filefield="import_file" destination="#importDirectory#" >
 
-		<cfset exportKey = exportTranslation.importTranslation($,form.template,file.serverDirectory,file.serverFile) />
+		<cfset responseMessage = exportTranslation.importTranslation($,form.template,file.serverDirectory,file.serverFile) />
 
-		<cfset form.export_action="complete" />
+		<cfif responseMessage neq "true">
+			<cfset form.export_action="importfailed" />
+		<cfelse>
+			<cfset form.export_action="importcomplete" />
+		</cfif>
 	</cfif>
 </cfif>
 
@@ -47,7 +54,10 @@
 		<cfcase value="download">
 			<cfinclude template="./download.cfm" >
 		</cfcase> 
-		<cfcase value="complete">
+		<cfcase value="importfailed">
+			<cfinclude template="./failed.cfm" >
+		</cfcase> 
+		<cfcase value="importcomplete">
 			<cfinclude template="./complete.cfm" >
 		</cfcase> 
 		<cfcase value="import">

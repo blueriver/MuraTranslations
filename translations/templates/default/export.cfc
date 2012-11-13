@@ -54,7 +54,7 @@
 		<cfreturn exportKey />
 	</cffunction>
 	
-	<cffunction name="import" returntype="void">
+	<cffunction name="import" returntype="any">
 		<cfargument name="$">
 		<cfargument name="importDirectory">
 		<cfargument name="importFile">
@@ -85,10 +85,16 @@
 			<cfset xmlContent = xmlParse(contentXML) />
 
 			<cfif rsFiles.name neq "categories.xml">
+
 				<cftry>
 	
 					<cfif not len(siteID)>
 						<cfset siteID = xmlContent.xmlRoot.xmlAttributes.siteID />
+					</cfif>
+
+					<!--- woops, you are importing from the original! --->
+					<cfif siteID eq $.event('siteID')>
+						<cfreturn "The current SiteID (#siteID#) cannot import its own source as a translation. You must create a new site within this Mura CMS instance and import the translation there." />
 					</cfif>
 					
 					<cfset contentID = xmlContent.xmlRoot.xmlAttributes.ID />
@@ -118,23 +124,32 @@
 					<cfloop from="1" to="#$.getBean('settingsManager').getSite($.event('siteID')).getcolumncount()#" index="x">
 						<cfset contentBean.getdisplayRegion(x) />
 					</cfloop>
-						<!---<cfdump var="#contentBean.getAllValues()#">--->
+
+					<cftry>
 					<cfset contentBean.save() />
-<!---					
+					<cfcatch>
+						<cfdump var="#$.event().getAllValues()#">
+						<cfdump var="#xmlContent#">
+						<cfdump var="#arguments#">
+						<cfdump var="#contentBean.getAllValues()#"><cfabort>
+					</cfcatch>
+					</cftry>					
+					
 					<cfset translation=translationManager.getTranslation()>
 					<cfset translation.setLocalSiteID($.event('siteID'))>
 					<cfset translation.setLocalID(contentBean.getContentID())>
 					<cfset translation.setRemoteSiteID(sourceSiteID)>
 					<cfset translation.setRemoteID(contentID)>
-					<cfset translation.save()>
-						
---->	
+					<cfset translation.save()>				
+	
 					<cfcatch>
 						<cfoutput>#rsFiles.name#:<cfdump var="#cfcatch#"><hr></cfoutput>
 					</cfcatch>
 				</cftry>
 			</cfif>		
 		</cfloop>
+	
+		<cfset $.getBean('contentUtility').duplicateExternalSortOrder( "00000000000000000000000000000000001",$.event('siteID'),siteID,true ) />
 
 		<cfif fileExists(importdirectory & "/categories.xml")>
 			<cfset contentXML = fileRead(importDirectory & "/categories.xml") />
@@ -154,7 +169,7 @@
 				</cfif>
 			</cfloop>
 		</cfif>
-		<cfreturn />
+		<cfreturn true />
 	</cffunction>
 
 
