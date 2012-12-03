@@ -74,6 +74,13 @@
 		
 		<cfset var translationManager = createObject('component','LocaleTransMgr.cfcs.translationManager').init($.globalConfig(),$.getPlugin('LocaleTransMgr')) />
 		
+		<cfset var feedIDList = "" />
+		<cfset var contentIDList = "" />
+		<cfset var sProcessed = StructNew() />
+		<cfset var sResponse = StructNew() />
+		
+		<cfset var x = "" />
+		
 		<cfset zipTool.Extract(zipFilePath="#importDirectory#/#importFile#",extractPath="#importDirectory#",overwriteFiles=true)>
 
 		<!--- duplicate and create mappings --->
@@ -99,7 +106,16 @@
 					
 					<cfset contentID = xmlContent.xmlRoot.xmlAttributes.ID />
 					<cfset sourceSiteID = xmlContent.xmlRoot.xmlAttributes.siteID />
-					<cfset $.getBean('contentUtility').duplicateExternalContent(contentID,$.event('siteID'),sourceSiteID,false,siteSynced) />
+					<cfset sResponse = $.getBean('contentUtility').duplicateExternalContent(contentID,$.event('siteID'),sourceSiteID,false,siteSynced) />
+
+					<cfif sResponse.success>
+						<cfif len(sResponse.feedIDList)>
+							<cfset feedIDList = listAppend(feedIDList,sResponse.feedIDList) />
+						</cfif>
+						<cfif len(sResponse.contentIDList)>
+							<cfset contentIDList = listAppend(contentIDList,sResponse.contentIDList) />
+						</cfif>
+					</cfif>
 
 					<cfif contentID neq "00000000000000000000000000000000001">
 						<cfset siteSynced = true />
@@ -148,6 +164,26 @@
 				</cftry>
 			</cfif>		
 		</cfloop>
+		
+		<!--- duplicate feeds --->
+		<cfif len(feedIDList)>
+			<cfloop list="#feedIDList#" index="x">
+				<cfif not structKeyExists(sProcessed,x)>
+					<cfset $.getBean('contentUtility').duplicateExternalFeed(x,$.event('siteID'),sourceSiteID)>
+					<cfset sProcessed[x] = true />
+				</cfif>
+			</cfloop>
+		</cfif>
+
+		<!--- update related content --->
+		<cfif len(contentIDList)>
+			<cfloop list="#contentIDList#" index="x">
+				<cfif not structKeyExists(sProcessed,x)>
+					<cfset $.getBean('contentUtility').updateRelatedContent(x,$.event('siteID'),sourceSiteID)>
+					<cfset sProcessed[x] = true />
+				</cfif>
+			</cfloop>
+		</cfif>
 	
 		<cfset $.getBean('contentUtility').duplicateExternalSortOrder( "00000000000000000000000000000000001",$.event('siteID'),siteID,true ) />
 

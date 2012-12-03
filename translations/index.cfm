@@ -1,9 +1,6 @@
 ﻿<cfinclude template="../plugin/config.cfm" />
 <cfset exportTranslation=createObject("component","plugins.#pluginConfig.getDirectory()#.cfcs.exportTranslation")>
 
-<cfset $.getBean('contentUtility').duplicateExternalFeed('FBCF9D6C-E32D-F86A-4DD1BFB3AF696D81','SiteC','SiteA')>
-<cfabort>
-
 <cfif structKeyExists(form,"doaction")>
 	<cfif form.doaction eq "export">
 		
@@ -46,7 +43,7 @@
 
 <cfsavecontent variable="body">
 <cfoutput>
-	<h2>#pluginConfig.getName()#</h2>
+	<h1>#pluginConfig.getName()#</h1>
 	<cfswitch expression="#panel.page#">
 		<cfcase value="export">
 			<cfinclude template="./export.cfm" >

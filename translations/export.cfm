@@ -8,25 +8,40 @@
 </cfif>
 
 <cfoutput>
-	<form action="./index.cfm" method="post" onsubmit="return validateForm(this);">
+	<h2>Export Site</h2>
+	<form class="fieldset-wrap" action="./index.cfm" method="post" onsubmit="return validateForm(this);">
 	<input type="hidden" name="export_action" value="export">
-	<h3>Export Site</h3>
-	<table class="stripe">
-	<tr>
-	<td>From Date</td>
-	<td><input type="text" name="export_date" value="#showDate#"></td>
-		<td colspan=2>(leave blank for all content)</td>
-	</tr>
-	<td>Template</td>
-	<td><select name="template">
-			<cfloop query="rsTemplates">
-				<option>#rsTemplates.name#</option>
-			</cfloop>		
-		</select>
-	</td>
-	</tr>
-	</table>
-	<input type="submit" value="Create"/>
-	<input type="hidden" name="doaction" value="export"/>
+	<div class="fieldset">
+		<div class="control-group">
+			<div class="span6">
+				<label class="control-label">
+					From Date
+				</label>
+				<div class="controls">
+				   <input class="text" type="text" name="export_date" value="#showDate#">
+				   (leave blank for all content)
+				</div>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="span6">
+				<label class="control-label">
+					Template
+				</label>
+				<div class="controls">
+				  <select name="template">
+					<cfloop query="rsTemplates">
+						<option>#rsTemplates.name#</option>
+					</cfloop>		
+				</select>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-actions">
+		<a href="../" class="btn">Cancel</a>
+		<input type="submit" value="Create" class="btn"/>
+		<input type="hidden" name="doaction" value="export"/>
+	</div>
 	</form>
 </cfoutput>
