@@ -41,20 +41,19 @@ StructAppend(request, form, "no");
 <cfif arrayLen(crumbdata) gt 30>
 <h2>#pluginConfig.getName()#</h2>
 <h3>Search For Translation</h3>
-<ul class="navTask">
-<li class="pluginHome"><a href="##" onclick="history.go(-1);">Return</a></li>
-</ul>
+<div class="btn-group" id="nav-module-specific">
+<a class="btn" href="##" onclick="history.go(-1);">Return</a></li>
+</div>
 
 <p class="error">We're sorry, an error has occurred.</p>
 
 <cfelse>
 <h2>#pluginConfig.getName()#</h2>
 <h3>Search For Translation</h3>
-<ul class="navTask">
-<li class="pluginHome"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000">Return</a></li>
-</ul>
-
-<div class="notice">
+<div class="btn-group" id="nav-module-specific">
+<a class="btn" href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000">Return</a>
+</div>
+<div class="alert">
 <p>You are assigning a #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.remoteSiteID).load().getName()))# translation peer for the #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.localSiteID).load().getName()))# version of:</p>
 
 #application.contentRenderer.dspZoom(crumbData)#
@@ -76,7 +75,7 @@ StructAppend(request, form, "no");
 <cfif len(request.keywords)>
 	<cfset rsList=application.contentManager.getPrivateSearch(request.remoteSiteId,request.keywords)/>
 	<form  name="selectFrm" action="add.cfm" method="post">
-	 <table>
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
 	    <cfif rslist.recordcount>
 	     <cfloop query="rslist" endrow="100">
 			<cfif rslist.type neq 'File' and rslist.type neq 'Link'>
@@ -84,26 +83,30 @@ StructAppend(request, form, "no");
 	        <cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 			<cfif verdict neq 'none' and rslist.type neq 'Link' and rslist.type neq 'File'>
 			<cfset counter=counter+1/>
+			<tbody>
 			<tr <cfif not(counter mod 2)>class="alt"</cfif>>  
-	          <td class="varWidth">#application.contentRenderer.dspZoom(crumbData)#</td>
+	          <td class="var-width">#application.contentRenderer.dspZoom(crumbData)#</td>
 			  <td class="administration"><input type="radio" name="remoteID" value="#rslist.contentID#"<cfif rslist.currentRow eq 1> checked</cfif>/></td>
 			</tr>
+			</tbody>
 		 	</cfif></cfif>
 	       </cfloop>
 		 	</cfif>
 		 	<cfif not counter>
+			 <tbody>
 			<tr class="alt">
 			  <td class="noResults" colspan="2">Your search returned no results.</td>
 			</tr>
+			</tbody>
 			</cfif>
 	  </table>
 	</td></tr></table>
 	<cfif rslist.recordcount>
-	<input type="submit" name="doAction" value="Assign Translation"/>
+	<input class="btn" type="submit" name="doAction" value="Assign Translation"/>
 	&nbsp; &nbsp; Or &nbsp;&nbsp;
-	<input type="submit" name="doAction" value="Create New Translation Under This Section"/>
+	<input class="btn" type="submit" name="doAction" value="Create New Translation Under This Section"/>
 	&nbsp;&nbsp;
-	<input type="submit" name="doAction" value="Create New Translation and Copy All Children"/>
+	<input class="btn" type="submit" name="doAction" value="Create New Translation and Copy All Children"/>
 	</cfif>
 	<input type="hidden" value="#HTMLEditFormat(request.localSiteID)#" name="localSiteID" />
 	<input type="hidden" value="#HTMLEditFormat(request.localID)#" name="localID" />
