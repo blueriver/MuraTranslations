@@ -124,40 +124,34 @@
 						<cfset contentBean = $.getBean('content').loadBy(contentID="00000000000000000000000000000000001",siteID=$.event('siteID')) />
 					</cfif>
 
-					<cfset contentBean.getAllValues() />
-
-					<cfset contentBean.setTitle( xmlContent.xmlRoot["title"].xmlCData ) />
-					<cfset contentBean.setMenuTitle("") />
-					<cfset contentBean.setURLTitle("") />
-					<cfset contentBean.setHTMLTitle("") />
-					
-					<cfif structKeyExists(xmlContent.xmlRoot,"summary")>
-						<cfset contentBean.setSummary( xmlContent.xmlRoot["summary"].xmlText ) />
-					</cfif>
-					<cfif structKeyExists(xmlContent.xmlRoot,"body")>
-						<cfset contentBean.setBody( xmlContent.xmlRoot["body"].xmlText ) />
-					</cfif>
-					<cfloop from="1" to="#$.getBean('settingsManager').getSite($.event('siteID')).getcolumncount()#" index="x">
-						<cfset contentBean.getdisplayRegion(x) />
-					</cfloop>
-
-					<cftry>
-					<cfset contentBean.save() />
-					<cfcatch>
-						<cfdump var="#$.event().getAllValues()#">
-						<cfdump var="#xmlContent#">
-						<cfdump var="#arguments#">
-						<cfdump var="#contentBean.getAllValues()#"><cfabort>
-					</cfcatch>
-					</cftry>					
-					
-					<cfset translation=translationManager.getTranslation()>
-					<cfset translation.setLocalSiteID($.event('siteID'))>
-					<cfset translation.setLocalID(contentBean.getContentID())>
-					<cfset translation.setRemoteSiteID(sourceSiteID)>
-					<cfset translation.setRemoteID(contentID)>
-					<cfset translation.save()>				
+					<cfif not contentBean.getIsNew()>
+						<cfset contentBean.getAllValues() />
 	
+						<cfset contentBean.setTitle( xmlContent.xmlRoot["title"].xmlCData ) />
+						<cfset contentBean.setMenuTitle("") />
+						<cfset contentBean.setURLTitle("") />
+						<cfset contentBean.setHTMLTitle("") />
+						
+						<cfif structKeyExists(xmlContent.xmlRoot,"summary")>
+							<cfset contentBean.setSummary( xmlContent.xmlRoot["summary"].xmlText ) />
+						</cfif>
+						<cfif structKeyExists(xmlContent.xmlRoot,"body")>
+							<cfset contentBean.setBody( xmlContent.xmlRoot["body"].xmlText ) />
+						</cfif>
+						<cfloop from="1" to="#$.getBean('settingsManager').getSite($.event('siteID')).getcolumncount()#" index="x">
+							<cfset contentBean.getdisplayRegion(x) />
+						</cfloop>
+	
+						<cfset contentBean.save() />
+						
+						<cfset translation=translationManager.getTranslation()>
+						<cfset translation.setLocalSiteID($.event('siteID'))>
+						<cfset translation.setLocalID(contentBean.getContentID())>
+						<cfset translation.setRemoteSiteID(sourceSiteID)>
+						<cfset translation.setRemoteID(contentID)>
+						<cfset translation.save()>				
+					</cfif>
+						
 					<cfcatch>
 						<cfoutput>#rsFiles.name#:<cfdump var="#cfcatch#"><hr></cfoutput>
 					</cfcatch>
