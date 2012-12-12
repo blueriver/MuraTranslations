@@ -32,7 +32,7 @@
 <cfoutput>
 <h1>#pluginConfig.getName()#</h1>
 <div class="tabbable">
-	<ul class="nav nav-tabs initActiveTab">
+	<ul class="mura nav nav-tabs initActiveTab">
 	<li><a href="##tabSettings" onclick="return false;"><span>Settings</span></a></li>
 	<li><a href="##tabTemplate" onclick="return false;"><span>Template Code</span></a></li>
 	<li><a href="##tabTranslate" onclick="return false;"><span>External Translations</span></a></li>
