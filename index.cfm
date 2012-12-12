@@ -30,13 +30,6 @@
 <cfset rsSites=translationManager.getAssignedSites()/>
 <cfsavecontent variable="body">
 <cfoutput>
-<script>
-	$(document).ready(function(){
-		setTabs(".tabbable",0);
-//		$('.tabbable').show();	
-		}
-	);
-</script>
 <h1>#pluginConfig.getName()#</h1>
 <div class="tabbable">
 	<ul class="nav nav-tabs initActiveTab">

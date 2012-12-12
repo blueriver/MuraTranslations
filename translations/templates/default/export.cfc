@@ -179,7 +179,7 @@
 			</cfloop>
 		</cfif>
 	
-		<cfset $.getBean('contentUtility').duplicateExternalSortOrder( "00000000000000000000000000000000001",$.event('siteID'),siteID,true ) />
+		<cfset $.getBean('contentUtility').duplicateExternalSortOrder( $.event('siteID'),siteID ) />
 
 		<cfif fileExists(importdirectory & "/categories.xml")>
 			<cfset contentXML = fileRead(importDirectory & "/categories.xml") />
