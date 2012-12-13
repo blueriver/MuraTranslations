@@ -49,7 +49,7 @@
 		<cffile action="write" file="#workingDir#/categories.xml" output="#exportContent#" >
 		</cfif>
 		
-		<cfset zipTool.AddFiles(zipFilePath="#workingDir#/translations.zip",directory=workingDir,recurse="true")>
+		<cfset zipTool.AddFiles(zipFilePath="#workingDir#/translations.zip",directory=workingDir,recurse="true",filter="*.xml")>
 		
 		<cfreturn exportKey />
 	</cffunction>
