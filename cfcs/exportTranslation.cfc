@@ -1,13 +1,13 @@
 ﻿<cfcomponent>
 
 	<cffunction name="createExport" returntype="string">
-		<cfargument name="$">
-		<cfargument name="sinceDate">
-		<cfargument name="template" default="default">
+		<cfargument name="$" type="any" required="true" />
+		<cfargument name="sinceDate" type="date" required="false" />
+		<cfargument name="template" required="false" type="string" default="default">
+		<cfargument name="pluginConfig" required="true" type="any">
 		
 		<cfset var exportObject = "" />
-		<cfset var pluginConfig = $.getPlugin('LocaleTransMgr')/>
-		<cfset var exportDirectory = expandPath("/#pluginConfig.getDirectory()#/exports") />
+		<cfset var exportDirectory = expandPath("/#arguments.pluginConfig.getDirectory()#/exports") />
 
 		<cfset var contentFeed = "" />
 		<cfset var contentIterator = "" />
@@ -21,7 +21,7 @@
 		<cfset var rsUpdateExport = "" />
 
 		<cfset var exportTemplate = rereplaceNoCase(arguments.template,"[^a-z]","","all") />
-		<cfset var exportObject = createObject("component","#pluginConfig.getDirectory()#.translations.templates.#exportTemplate#.export") />
+		<cfset var exportObject = createObject("component","#arguments.pluginConfig.getDirectory()#.translations.templates.#exportTemplate#.export") />
 
 		<cfif not directoryExists(exportDirectory)>
 			<cfset directoryCreate(exportDirectory)>
@@ -55,10 +55,10 @@
 			</cfif>
 		</cfquery>
 
-		<cfset exportKey = exportObject.export($,exportDirectory,contentIterator,componentIterator,rsContentCategories) />
+		<cfset exportKey = exportObject.export($,exportDirectory,contentIterator,componentIterator,rsContentCategories,arguments.pluginConfig) />
 
 		<cfquery name="rsUpdateExport" datasource="#$.globalConfig().getDatasource()#" username="#$.globalConfig().getDBUsername()#" password="#$.globalConfig().getDBPassword()#">
-			insert into p#pluginConfig.getPluginID()#_translationexports
+			insert into p#arguments.pluginConfig.getPluginID()#_translationexports
 			(siteID,exportdate,exportKey)
 			VALUES
 			('#$.event().getValue('siteID')#',#CreateODBCDateTime(now())#,'#exportKey#')
@@ -68,13 +68,13 @@
 	</cffunction>
 
 	<cffunction name="getLatestExportDate" returntype="string">
-		<cfargument name="$">
+		<cfargument name="$" type="any" required="true" />
+		<cfargument name="pluginConfig" required="true" type="any">
 
 		<cfset var rsExport = "" />
-		<cfset var pluginConfig = $.getPlugin('LocaleTransMgr')/>
 
 		<cfquery name="rsExport" datasource="#$.globalConfig().getDatasource()#" username="#$.globalConfig().getDBUsername()#" password="#$.globalConfig().getDBPassword()#">
-			select max(exportdate) AS maxdate from p#pluginConfig.getPluginID()#_translationexports
+			select max(exportdate) AS maxdate from p#arguments.pluginConfig.getPluginID()#_translationexports
 			where siteID = '#$.event().getValue('siteID')#'
 		</cfquery>
 
@@ -86,22 +86,22 @@
 	</cffunction>
 
 	<cffunction name="importTranslation" returntype="any">
-		<cfargument name="$">
-		<cfargument name="template">
-		<cfargument name="importDirectory">
-		<cfargument name="importFile">
+		<cfargument name="$" type="any" required="true" />
+		<cfargument name="template" required="false" type="string" default="default">
+		<cfargument name="importDirectory" required="true" type="string">
+		<cfargument name="importFile" required="true" type="string">
+		<cfargument name="pluginConfig" required="true" type="any">
 
 		<cfset var keyFactory = "" />
-		<cfset var pluginConfig = $.getPlugin('LocaleTransMgr')/>
 		<cfset var exportTemplate = rereplaceNoCase(arguments.template,"[^a-z]","","all") />
-		<cfset var exportObject = createObject("component","#pluginConfig.getDirectory()#.translations.templates.#exportTemplate#.export") />
+		<cfset var exportObject = createObject("component","#arguments.pluginConfig.getDirectory()#.translations.templates.#exportTemplate#.export") />
 		<cfset var rsFiles = "" />
 		<cfset var responseMessage = "" />
 
-		<cfset responseMessage = exportObject.import($,importDirectory,importFile) />
+		<cfset responseMessage = exportObject.import($,importDirectory,importFile,arguments.pluginConfig) />
 		
 		<!--- cleanup --->
-		<cfset rsFiles = directoryList("#expandPath("/#pluginConfig.getDirectory()#/temp")#",false,"query")>
+		<cfset rsFiles = directoryList("#expandPath("/#arguments.pluginConfig.getDirectory()#/temp")#",false,"query")>
 
 		<cfloop query="rsFiles">
 			<cftry>

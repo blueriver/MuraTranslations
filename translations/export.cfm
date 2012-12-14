@@ -1,5 +1,5 @@
 ﻿<cfdirectory action="list" directory="#expandPath("/#pluginConfig.getDirectory()#")#/translations/templates" name="rsTemplates" type="dir">
-<cfset latestExportDate = exportTranslation.getLatestExportDate($) />
+<cfset latestExportDate = exportTranslation.getLatestExportDate($,pluginConfig) />
 
 <cfif isDate(latestExportDate)>
 	<cfset showDate = dateFormat(latestExportDate,"mm/dd/yyyy" ) />

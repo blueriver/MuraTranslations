@@ -24,6 +24,15 @@
 
 </cffunction>
 
+<cffunction name="onSiteDelete" output="true" returntype="any">
+<cfargument name="event">
+
+	<cfset var translationManager=createObject("component","translationManager").init(application.configBean,pluginConfig)>
+	<cfset translationManager.deleteSiteMappings(arguments.event.getValue('siteID'))>
+
+</cffunction>
+
+
 <cffunction name="onContentSave" output="true" returntype="any">
 <cfargument name="event">
 

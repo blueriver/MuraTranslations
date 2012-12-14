@@ -1,11 +1,12 @@
 ﻿<cfcomponent>
 
 	<cffunction name="export" returntype="string">
-		<cfargument name="$">
-		<cfargument name="exportDirectory">
-		<cfargument name="contentIterator">
-		<cfargument name="componentIterator">
-		<cfargument name="rsContentCategories">
+		<cfargument name="$" type="any" required="true">
+		<cfargument name="exportDirectory" type="string" required="true">
+		<cfargument name="contentIterator" type="any" required="true">
+		<cfargument name="componentIterator" type="any" required="true">
+		<cfargument name="rsContentCategories" type="any" required="true">
+		<cfargument name="pluginConfig" type="any" required="true">
 				
 		<cfset var exportContent = "" />
 		<cfset var item = "" />
@@ -55,9 +56,10 @@
 	</cffunction>
 	
 	<cffunction name="import" returntype="any">
-		<cfargument name="$">
-		<cfargument name="importDirectory">
-		<cfargument name="importFile">
+		<cfargument name="$" type="any" required="true">
+		<cfargument name="importDirectory" type="string" required="true">
+		<cfargument name="importFile" type="any" required="true">
+		<cfargument name="pluginConfig" type="any" required="true">
 
 		<cfset var keyFactory = "" />
 		<cfset var zipTool	= createObject("component","mura.Zip") />
@@ -72,7 +74,7 @@
 		<cfset var siteSynced = false />
 		<cfset var translation = "" />
 		
-		<cfset var translationManager = createObject('component','LocaleTransMgr.cfcs.translationManager').init($.globalConfig(),$.getPlugin('LocaleTransMgr')) />
+		<cfset var translationManager = createObject('component','#arguments.pluginConfig.getDirectory()#.cfcs.translationManager').init($.globalConfig(),arguments.pluginConfig) />
 		
 		<cfset var feedIDList = "" />
 		<cfset var contentIDList = "" />

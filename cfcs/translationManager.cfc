@@ -71,6 +71,20 @@
 	
 </cffunction>
 
+<cffunction name="deleteSiteMappings" returntype="void" output="false">
+<cfargument name="siteID" required="true">
+	
+	<cfif arguments.contentID neq '00000000000000000000000000000000001'>
+	<cfquery datasource="#variables.globalConfig.getDatasource()#" username="#variables.globalConfig.getDBUsername()#" password="#variables.globalConfig.getDBPassword()#">
+	 delete from #variables.translationmaps#
+	 where localsiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+	 or remotesiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">	
+	</cfquery>
+	</cfif>
+	
+</cffunction>
+
+
 <cffunction name="hasTranslation" returntype="any" output="false">
 <cfargument name="contentid" required="true" default="">
 <cfargument name="siteID" required="true" default="">

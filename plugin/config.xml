@@ -14,8 +14,8 @@
    limitations under the License.
 -->
 <plugin>
-<name>Locale Translation Manager</name>
-<package>LocaleTransMgr</package>
+<name>Mura Translations</name>
+<package>MuraTranslations</package>
 <directoryFormat>packageOnly</directoryFormat>
 <version>1.18</version>
 <provider>Blue River</provider>

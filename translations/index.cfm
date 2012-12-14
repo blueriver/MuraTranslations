@@ -8,7 +8,7 @@
 			<cfset form.export_date = createDate(1900,1,1) />
 		</cfif>
 		
-		<cfset exportKey = exportTranslation.createExport($,form.export_date,form.template) />
+		<cfset exportKey = exportTranslation.createExport($,form.export_date,form.template,pluginConfig) />
 		
 		<cfif len(exportKey)>
 			<cfset form.export_action="download" />
@@ -23,7 +23,7 @@
 
 		<cffile action="upload" filefield="import_file" destination="#importDirectory#" >
 
-		<cfset responseMessage = exportTranslation.importTranslation($,form.template,file.serverDirectory,file.serverFile) />
+		<cfset responseMessage = exportTranslation.importTranslation($,form.template,file.serverDirectory,file.serverFile,pluginConfig) />
 
 		<cfif responseMessage neq "true">
 			<cfset form.export_action="importfailed" />
