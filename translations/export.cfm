@@ -8,7 +8,7 @@
 </cfif>
 
 <cfoutput>
-	<h2>Export Site</h2>
+	<h2>Export Site(Beta)</h2>
 	<form class="fieldset-wrap" action="./index.cfm" method="post" onsubmit="return validateForm(this);">
 	<input type="hidden" name="export_action" value="export">
 	<div class="fieldset">
@@ -18,7 +18,7 @@
 					From Date
 				</label>
 				<div class="controls">
-				   <input class="text" type="text" name="export_date" value="#showDate#">
+				   <input class="datepicker" type="text" name="export_date" value="#showDate#">
 				   (leave blank for all content)
 				</div>
 			</div>

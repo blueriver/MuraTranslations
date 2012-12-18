@@ -114,6 +114,7 @@
 		</table>
 	</div>
 	<div id="tabTranslate" class="tab-pane">
+		<h4>External Translations (Beta)</h4>
 		<form class="fieldset-wrap" action="translations/index.cfm" method="post" onsubmit="return validateForm(this);">
 		<div class="fieldset">
 			<div class="control-group">
@@ -156,17 +157,11 @@
 		The purchase of this plug-in allows you to use it on any number of sites within a single production Mura CMS instance 
 		(note that the purchase of this plug-in allows you to use it on unlimited developer or staging instances of Mura CMS).
 		If you wish to use this plug-in on multiple production instances of Mura CMS, please <a href="http://www.getmura.com/index.cfm/contact-us/">contact us</a> us for discounted pricing.</p>
-		<h3>Installation Video</h3>
-		<div class="video"><object width="445" height="364">
-		<param name="movie" value="http://www.youtube.com/v/sFsWvTGtKf4&amp;hl=en&amp;fs=1&amp;border=1" />
-		<param name="allowFullScreen" value="true" />
-		<param name="allowscriptaccess" value="always" /><embed src="http://www.youtube.com/v/sFsWvTGtKf4&amp;hl=en&amp;fs=1&amp;border=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="445" height="364"></embed></object></div>
+		<h3>Overview Video</h3>
+		<div class="video">
+			<iframe width="640" height="360" src="http://www.youtube.com/embed/GnMUuFw2SK0" frameborder="0" allowfullscreen></iframe>
+		</div>
 		<br />
-		<h3>Usage Video</h3>
-		<div class="video"><object width="445" height="364">
-		<param name="movie" value="http://www.youtube.com/v/mNAYOgT-ST8&amp;hl=en&amp;fs=1&amp;border=1" />
-		<param name="allowFullScreen" value="true" />
-		<param name="allowscriptaccess" value="always" /><embed src="http://www.youtube.com/v/mNAYOgT-ST8&amp;hl=en&amp;fs=1&amp;border=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="445" height="364"></embed></object></div>
 		</div>
 	</div>
 	</div>
