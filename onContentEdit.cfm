@@ -64,7 +64,7 @@ function loadLocaleTable(activeTab){
 }
 
 function saveBeforeTranslation(forwardURL){
-	requestedURL=forwardURL;
+	siteManager.requestedURL=forwardURL;
 	return conditionalExit();
 }
 </script>
