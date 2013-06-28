@@ -46,8 +46,6 @@ function loadLocaleTable(activeTab){
 	var pars = 'contentID=#request.contentBean.getContentID()#&contentHistID=#request.contentBean.getContentHistID()#&type=#attributes.type#&parentID=#attributes.parentID#&siteid=#attributes.siteID#&doMap=#yesNoFormat(event.valueExists("doMap"))#&cacheid=' + Math.random();
 	var tab = activeTab;	
 	
-	jQuery("##localeTableContainer").html('<br/><img src="images/progress_bar.gif">');
-	
 	//location.href=url + "?" + pars;
 	jQuery(".initActiveTab").each(
 		function(index) {			
