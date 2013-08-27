@@ -17,9 +17,9 @@
 <name>Mura Translations</name>
 <package>MuraTranslations</package>
 <directoryFormat>packageOnly</directoryFormat>
-<version>1.18</version>
+<version>2.1</version>
 <provider>Blue River</provider>
-<providerURL>http://www.getmura.com/marketplace/apps/locale-translation-manager/</providerURL>
+<providerURL>https://github.com/blueriver/MuraTranslations</providerURL>
 <category>Application</category>
 <settings>
 	<setting>
