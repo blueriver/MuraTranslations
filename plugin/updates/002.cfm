@@ -28,7 +28,7 @@ where 0=1
 			   (
 					"EXPORTKEY" VARCHAR2(35),
 				   	"SITEID" VARCHAR2(25), 
-					"EXPORTDATE" DATETIME
+					"EXPORTDATE" DATE
 			   )
 		</cfquery>
 	</cfcase>
@@ -38,7 +38,7 @@ where 0=1
 			CREATE TABLE `p#variables.config.getPluginID()#_translationexports` (
 	  		`exportkey` varchar(35),
 	 	 	`siteID` varchar(25),
-	  		`exportdate` datetime, 
+	  		`exportdate` DATE, 
 	  		PRIMARY KEY  (`exportkey`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8
 		</cfquery>
@@ -49,7 +49,7 @@ where 0=1
 		CREATE TABLE [dbo].[p#variables.config.getPluginID()#_translationexports] (
 			[exportkey] [nvarchar] (35),
 			[siteID] [nvarchar] (25),
-			[exportdate] [datetime]
+			[exportdate] [DATE]
 		) ON [PRIMARY] 
 		</cfquery>
 	</cfcase>
