@@ -47,6 +47,23 @@
             </cfloop>
 			
 			<cfset applyUpdates()/>
+
+        <cfelseif application.configBean.getDBType() eq "postgresql">
+            <cfsavecontent variable="sql">
+                <cfinclude template="../dbScripts/postgresqlInstall.cfm">
+            </cfsavecontent>
+
+            <cfset aSql = ListToArray(sql, ';')>
+
+            <cfloop index="x" from="1" to="#arrayLen(aSql)#">
+                <cfif len(trim(aSql[x]))>
+				<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+                    #keepSingleQuotes(aSql[x])#
+                </cfquery>
+				</cfif>
+            </cfloop>
+
+			<cfset applyUpdates()/>
             
         <cfelseif application.configBean.getDBType() eq "mssql">
         	<cfsavecontent variable="sql">
@@ -76,7 +93,7 @@
 		         
 		         <cfset applyUpdates()/>
         <cfelse>
-        		<h1>Only MySQL, Microsoft SQL Server and Oracle are supported.</h1>
+        		<h1>Only MySQL, Microsoft SQL Server, PostgreSQL and Oracle are supported.</h1>
         	<cfabort>
         </cfif>
 	</cffunction>
@@ -102,6 +119,19 @@
                     #keepSingleQuotes(aSql[x])#
                 </cfquery>		
             </cfloop>
+
+		<cfelseif application.configBean.getDBType() eq "postgresql">
+            <cfsavecontent variable="sql">
+                <cfinclude template="../dbScripts/postgresqlDelete.cfm">
+            </cfsavecontent>
+
+            <cfset aSql = ListToArray(sql, ';')>
+
+            <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
+                <cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+                    #keepSingleQuotes(aSql[x])#
+                </cfquery>
+            </cfloop>
        
         <cfelseif application.configBean.getDBType() eq "mssql">
         	<cfsavecontent variable="sql">
@@ -125,7 +155,7 @@
 	             </cfquery>
 	         </cfloop>
         <cfelse>
-        	<h1>Only MySQL, Microsoft SQL Server and Oracle are supported.</h1>
+        	<h1>Only MySQL, Microsoft SQL Server, PostgreSQL and Oracle are supported.</h1>
         	<cfabort>
         </cfif>
 	</cffunction>
