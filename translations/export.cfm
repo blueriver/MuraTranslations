@@ -1,5 +1,11 @@
 ﻿<cfdirectory action="list" directory="#expandPath("/#pluginConfig.getDirectory()#")#/translations/templates" name="rsTemplates" type="dir">
 <cfset latestExportDate = exportTranslation.getLatestExportDate($,pluginConfig) />
+<!--- haspendingapprovals --->
+<cfsilent>
+	<cfset rc.hasChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('hasChangesets') />
+	<cfset rc.enforceChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('enforceChangesets') />
+	<cfset rc.rsChangeSets = $.getBean("changesetManager").getQuery( siteID=$.event('siteID'),published=0 ) />
+</cfsilent>
 
 <cfif isDate(latestExportDate)>
 	<cfset showDate = dateFormat(latestExportDate,"mm/dd/yyyy" ) />
@@ -33,6 +39,29 @@
 					<cfloop query="rsTemplates">
 						<option>#rsTemplates.name#</option>
 					</cfloop>		
+				</select>
+				</div>
+			</div>
+		</div>
+		<div class="control-group sc-group" id="changeset_existing_section">
+			<div class="span6">
+				<label class="control-label">
+					Export
+				</label>
+				<div class="controls">
+				 <select name="changeset_existing">
+					<option value="">Published Content</option>
+					<optgroup label="Change Sets">
+					<cfloop query="rc.rsChangeSets">
+
+<!--- 
+not changesetBean.hasPendingApprovals() and (not isDate(changesetBean.getCloseDate()) or (isDate(changesetBean.getCloseDate()) and changesetBean.getCloseDate() lt now())	
+ --->
+	
+							
+						<option value="#changesetID#">#name#</option>
+					</cfloop>
+					</optgroup>
 				</select>
 				</div>
 			</div>
