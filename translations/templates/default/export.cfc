@@ -30,14 +30,16 @@
 			<cfset changeSetIterator = $.getBean('changesetManager').getAssignmentsIterator( form.changeset_existing ) />
  		</cfif>
 		
+		<!---<cfdump var="#changeSetIterator.getQuery()#"><cfabort>--->
+		
 		<!--- change set --->
 		<cfif not changeSetBean.getIsNew()>
 			<cfloop condition="#changeSetIterator.hasNext()#">
 				<cfset item = changeSetIterator.next() />
-											
 				<cfset contentData = item.getAllValues() />
 				<cfset extendData = item.getExtendedData().getAllValues().data />
 				<cfset filename = rereplace(contentData.filename,"\/",".","all") />
+				<cfset filename = rereplace(filename,"^\.","","all") />
 				<cfif not len(filename)>
 					<cfset filename = lcase(rereplace(contentData.title,"[^a-zA-Z0-9]","-","all")) & "_" & contentIterator.currentIndex() />
 				</cfif>
@@ -110,28 +112,44 @@
 		<cfset var changeSets = StructNew() />
 		<cfset var remoteChangeSetBean = "" />
 		<cfset var changeSetBean = "" />
-		<cfset var defaultChangeSetBean = "" />
-		<cfset var defaultChangeSetSaved = 0 />
+		<cfset var publishChangeSetBean = "" />
+		<cfset var useChangeSets = 0 />
 		<cfset var hasChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('hasChangesets') />
 		<cfset var enforceChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('enforceChangesets') />
 				
 		<cfset var x = "" />
 				
+		<cfparam name="form.staging_type" default="">
+		
 		<cfset zipTool.Extract(zipFilePath="#importDirectory#/#importFile#",extractPath="#importDirectory#",overwriteFiles=true)>
 
 		<!--- duplicate and create mappings --->
 		<cfset rsFiles = directoryList("#importDirectory#",true,"query","*.xml")>
-		
-		<cfif enforceChangesets>
-			<cfset defaultChangeSetBean = $.getBean('changeSetManager').read( siteID = $.event('siteID'),name='translations_' & $.event('siteID') ) />
-			
-			<cfif defaultChangeSetBean.getValue('isNew')>
-				<cfset defaultChangeSetBean.setValue('name','translations_' & $.event('siteID')) />
-			<cfelseif defaultChangeSetBean.getValue('published')>
-				<cfset defaultChangeSetBean.setValue('published',0) />
-			</cfif>
-		</cfif>
+				
+		<cfif form['staging_type'] eq "existing">
+			<cfset publishChangeSetBean = $.getBean('changeSetManager').read( changesetID = form.changeset_existing ) />
+			<cfset var useChangeSets = 1 />
+		<cfelseif form['staging_type'] eq "export">
+			<cfset publishChangeSetBean = $.getBean('changeSetManager').read( remoteID = form.changeset_new ) />
 
+			<cfif publishChangeSetBean.getIsNew()>
+				<cfset publishChangeSetBean = $.getBean('changeSetManager').read( changesetID = form.changeset_new ) />
+				<cfset publishChangeSetBean.setValue( 'remoteID',publishChangeSetBean.getchangesetID() ) />
+				<cfset publishChangeSetBean.setValue( 'changesetID',createUUID() ) />
+				<cfset publishChangeSetBean.setValue( 'isNew',1 ) />
+				<cfset publishChangeSetBean.setValue('published',0) />
+				<cfset publishChangeSetBean.setValue('siteID',$.event('siteID')) />
+				<cfset publishChangeSetBean.save() />
+			</cfif>
+			
+			<cfset var useChangeSets = 1 />
+		<cfelseif form['staging_type'] eq "new">
+			<cfset publishChangeSetBean = $.getBean('changeSetManager').read( siteID = $.event('siteID') ) />
+			<cfset publishChangeSetBean.setValue('name',form.changeset_default) />
+			<cfset publishChangeSetBean.save() />
+			<cfset var useChangeSets = 1 />
+		</cfif>
+		
 		<cfloop query="rsFiles">
 			<cfset contentXML = fileRead(rsFiles.directory & "/" & rsFiles.name) />
 
@@ -173,27 +191,6 @@
 					<cfif not contentBean.getIsNew()>
 						<cfset contentBean.getAllValues() />
 
-						<!--- source site is using changesets --->
-						<cfif hasChangesets and len(contentBean.getChangeSetID())>
-							<cfif structKeyExists( changeSets,contentBean.getChangeSetID())>
-								<cfset changeSetBean = changeSets[ contentBean.getChangeSetID() ] />
-							<cfelse>
-								<cfset remoteChangeSetBean = $.getBean('changeSetManager').read( siteID = $.event('siteID'),changesetID=contentBean.getChangeSetID() ) />
-								<cfset changeSetBean = $.getBean('changeSetManager').read( siteID = $.event('siteID'),remoteID=remoteChangeSetBean.getChangeSetID() ) />
-								
-								<cfif changeSetBean.getValue('isNew')>
-									<cfset changeSetBean.setValue('name',remoteChangeSetBean.getName()) />
-									<cfset changeSetBean.setValue('remoteID',remoteChangeSetBean.getChangeSetID()) />
-									<cfset changeSetBean.setValue('published',0) />
-									<cfset changeSetBean.save() />
-								<cfelseif changeSetBean.getValue('published')>
-									<cfset changeSetBean.setValue('published',0) />
-									<cfset changeSetBean.save() />
-								</cfif>
-							</cfif>
-							<cfset contentBean.setChangeSetID( changeSetBean.getChangeSetID() ) />
-						</cfif>
-	
 						<cfset contentBean.setTitle( xmlContent.xmlRoot["title"].xmlCData ) />
 						<cfset contentBean.setMenuTitle("") />
 						<cfset contentBean.setURLTitle("") />
@@ -208,7 +205,15 @@
 						<cfloop from="1" to="#$.getBean('settingsManager').getSite($.event('siteID')).getcolumncount()#" index="x">
 							<cfset contentBean.getdisplayRegion(x) />
 						</cfloop>
-	
+
+						<cfif useChangeSets>
+							<cfset contentBean.setChangesetID( publishChangeSetBean.getChangesetID() ) />
+						<cfelseif form['staging_type'] eq "publish">
+							<cfset contentBean.setIsActive(1) />
+						<cfelse>
+							<cfset contentBean.setIsActive(0) />
+						</cfif>
+
 						<cfset contentBean.save() />
 						
 						<cfset translation=translationManager.getTranslation()>
