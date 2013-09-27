@@ -17,33 +17,60 @@
 		<cfset var contentData = "" />
 		<cfset var extendData = "" />
 		<cfset var filename = "" />
+		<cfset var changeSetBean = $.getBean('changeSetManager').read( siteID = $.event('siteID') ) />
+		<cfset var changeSetIterator = "" />
 		<cfset var zipTool	= createObject("component","mura.Zip") />
 
 		<cfset directoryCreate(workingDir) />
 
-		<cfloop condition="#contentIterator.hasNext()#">
-			<cfset item = contentIterator.next() />
-			<cfset contentData = item.getAllValues() />
-			<cfset extendData = item.getExtendedData().getAllValues().data />
-			<cfset filename = rereplace(contentData.filename,"\/",".","all") />
-			<cfif not len(filename)>
-				<cfset filename = lcase(rereplace(contentData.title,"[^a-zA-Z0-9]","-","all")) & "_" & contentIterator.currentIndex() />
-			</cfif>
-			<cfsavecontent variable="exportContent"><cfinclude template="./page.cfm"></cfsavecontent>
-			<cffile action="write" file="#workingDir#/#filename#.xml" output="#exportContent#" >
-		</cfloop>
+		<cfset var hasChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('hasChangesets') />
+
+		<cfif StructKeyExists(form,"changeset_existing") and len( form.changeset_existing )>
+			<cfset changeSetBean = $.getBean('changeSetManager').read( changesetID = form.changeset_existing ) />
+			<cfset changeSetIterator = $.getBean('changesetManager').getAssignmentsIterator( form.changeset_existing ) />
+ 		</cfif>
 		
-		<cfloop condition="#componentIterator.hasNext()#">
-			<cfset item = componentIterator.next() />
-			<cfset contentData = item.getAllValues() />
-			<cfset extendData = item.getExtendedData().getAllValues().data />
+		<!--- change set --->
+		<cfif not changeSetBean.getIsNew()>
+			<cfloop condition="#changeSetIterator.hasNext()#">
+				<cfset item = changeSetIterator.next() />
+											
+				<cfset contentData = item.getAllValues() />
+				<cfset extendData = item.getExtendedData().getAllValues().data />
+				<cfset filename = rereplace(contentData.filename,"\/",".","all") />
+				<cfif not len(filename)>
+					<cfset filename = lcase(rereplace(contentData.title,"[^a-zA-Z0-9]","-","all")) & "_" & contentIterator.currentIndex() />
+				</cfif>
+				<cfsavecontent variable="exportContent"><cfinclude template="./page.cfm"></cfsavecontent>
+				<cffile action="write" file="#workingDir#/#filename#.xml" output="#exportContent#" >
+			</cfloop>
+		<!--- published content --->
+		<cfelse>
+			<cfloop condition="#contentIterator.hasNext()#">
+				<cfset item = contentIterator.next() />
 
-			<cfset filename = lcase(rereplace(contentData.htmltitle,"[^a-zA-Z0-9]{1,}","-","all")) />
-			<cfset filename = rereplace(filename,"^[^a-zA-Z]","") & "_" & contentIterator.currentIndex() />
-
-			<cfsavecontent variable="exportContent"><cfinclude template="./component.cfm"></cfsavecontent>
-			<cffile action="write" file="#workingDir#/#filename#.xml" output="#exportContent#" >
-		</cfloop>
+				<cfset contentData = item.getAllValues() />
+				<cfset extendData = item.getExtendedData().getAllValues().data />
+				<cfset filename = rereplace(contentData.filename,"\/",".","all") />
+				<cfif not len(filename)>
+					<cfset filename = lcase(rereplace(contentData.title,"[^a-zA-Z0-9]","-","all")) & "_" & contentIterator.currentIndex() />
+				</cfif>
+				<cfsavecontent variable="exportContent"><cfinclude template="./page.cfm"></cfsavecontent>
+				<cffile action="write" file="#workingDir#/#filename#.xml" output="#exportContent#" >
+			</cfloop>
+			
+			<cfloop condition="#componentIterator.hasNext()#">
+				<cfset item = componentIterator.next() />
+				<cfset contentData = item.getAllValues() />
+				<cfset extendData = item.getExtendedData().getAllValues().data />
+	
+				<cfset filename = lcase(rereplace(contentData.htmltitle,"[^a-zA-Z0-9]{1,}","-","all")) />
+				<cfset filename = rereplace(filename,"^[^a-zA-Z]","") & "_" & contentIterator.currentIndex() />
+	
+				<cfsavecontent variable="exportContent"><cfinclude template="./component.cfm"></cfsavecontent>
+				<cffile action="write" file="#workingDir#/#filename#.xml" output="#exportContent#" >
+			</cfloop>		
+		</cfif>
 
 		<cfif rsContentCategories.recordCount>
 		<cfsavecontent variable="exportContent"><cfinclude template="./categories.cfm"></cfsavecontent>

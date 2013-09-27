@@ -2,9 +2,9 @@
 <cfset latestExportDate = exportTranslation.getLatestExportDate($,pluginConfig) />
 <!--- haspendingapprovals --->
 <cfsilent>
-	<cfset rc.hasChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('hasChangesets') />
-	<cfset rc.enforceChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('enforceChangesets') />
-	<cfset rc.rsChangeSets = $.getBean("changesetManager").getQuery( siteID=$.event('siteID'),published=0 ) />
+	<cfset hasChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('hasChangesets') />
+	<cfset enforceChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('enforceChangesets') />
+	<cfset rsChangeSets = $.getBean("changesetManager").getQuery( siteID=$.event('siteID'),published=0 ) />
 </cfsilent>
 
 <cfif isDate(latestExportDate)>
@@ -52,14 +52,21 @@
 				 <select name="changeset_existing">
 					<option value="">Published Content</option>
 					<optgroup label="Change Sets">
-					<cfloop query="rc.rsChangeSets">
-
-<!--- 
-not changesetBean.hasPendingApprovals() and (not isDate(changesetBean.getCloseDate()) or (isDate(changesetBean.getCloseDate()) and changesetBean.getCloseDate() lt now())	
- --->
-	
-							
-						<option value="#changesetID#">#name#</option>
+					<cfloop query="rsChangeSets">
+						<cfset loopCS = $.getBean('changeSetManager').read( changesetID = changesetID ) />
+						
+						<cfif not StructKeyExists(loopCS,"hasPendingApprovals")
+							or
+							(
+							not loopCS.hasPendingApprovals()
+							and (
+								not
+									isDate(loopCS.getCloseDate())
+								or ( isDate(loopCS.getCloseDate()) and loopCS.getCloseDate() lt now()	)
+								)
+							)>	
+							<option value="#changesetID#">#name#</option>
+						</cfif>
 					</cfloop>
 					</optgroup>
 				</select>
