@@ -59,6 +59,17 @@ where 0=1
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8
 		</cfquery>
 	</cfcase>
+
+	<cfcase value="postgresql">
+		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+			CREATE TABLE p#variables.config.getPluginID()#_translationkeys (
+	 	 	siteID varchar(25) NOT NULL,
+	  		name varchar(100) NOT NULL,
+	  		selectorlabel varchar(100) NOT NULL,
+	  		CONSTRAINT PK_p#variables.config.getPluginID()#_translationkeys PRIMARY KEY (siteID)
+			)
+		</cfquery>
+	</cfcase>
 	
 	<cfcase value="mssql">
 		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
