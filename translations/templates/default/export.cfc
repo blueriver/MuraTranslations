@@ -36,13 +36,20 @@
 		<cfif not changeSetBean.getIsNew()>
 			<cfloop condition="#changeSetIterator.hasNext()#">
 				<cfset item = changeSetIterator.next() />
-				<cfset contentData = item.getAllValues() />
+
+				<cfset contentData = item.getContentBean().getAllValues() />
+
 				<cfset extendData = item.getExtendedData().getAllValues().data />
-				<cfset filename = rereplace(contentData.filename,"\/",".","all") />
+				<cfset filename = rereplace(item.getValue('filename'),"\/",".","all") />
 				<cfset filename = rereplace(filename,"^\.","","all") />
 				<cfif not len(filename)>
-					<cfset filename = lcase(rereplace(contentData.title,"[^a-zA-Z0-9]","-","all")) & "_" & contentIterator.currentIndex() />
+					<cfset filename = lcase(rereplace(item.getValue('title'),"[^a-zA-Z0-9]","-","all")) & "_" & contentIterator.currentIndex() />
 				</cfif>
+				
+				<cfif len(filename) gte 140>
+					<cfset filename = left(filename,40) & "..." & right(createUUID(),16)  & "..." & right(filename,40) />
+				</cfif>
+				
 				<cfsavecontent variable="exportContent"><cfinclude template="./page.cfm"></cfsavecontent>
 				<cffile action="write" file="#workingDir#/#filename#.xml" output="#exportContent#" >
 			</cfloop>
@@ -50,24 +57,33 @@
 		<cfelse>
 			<cfloop condition="#contentIterator.hasNext()#">
 				<cfset item = contentIterator.next() />
-
-				<cfset contentData = item.getAllValues() />
+				
+				<cfset contentData = item.getContentBean().getAllValues() />
+				
 				<cfset extendData = item.getExtendedData().getAllValues().data />
-				<cfset filename = rereplace(contentData.filename,"\/",".","all") />
+				<cfset filename = rereplace(item.getValue('filename'),"\/",".","all") />
 				<cfif not len(filename)>
-					<cfset filename = lcase(rereplace(contentData.title,"[^a-zA-Z0-9]","-","all")) & "_" & contentIterator.currentIndex() />
+					<cfset filename = lcase(rereplace(item.getValue('title'),"[^a-zA-Z0-9]","-","all")) & "_" & contentIterator.currentIndex() />
 				</cfif>
+
+				<cfif len(filename) gte 140>
+					<cfset filename = left(filename,40) & "..." & right(createUUID(),16)  & "..." & right(filename,40) />
+				</cfif>
+				
 				<cfsavecontent variable="exportContent"><cfinclude template="./page.cfm"></cfsavecontent>
 				<cffile action="write" file="#workingDir#/#filename#.xml" output="#exportContent#" >
 			</cfloop>
 			
 			<cfloop condition="#componentIterator.hasNext()#">
 				<cfset item = componentIterator.next() />
-				<cfset contentData = item.getAllValues() />
 				<cfset extendData = item.getExtendedData().getAllValues().data />
 	
-				<cfset filename = lcase(rereplace(contentData.htmltitle,"[^a-zA-Z0-9]{1,}","-","all")) />
+				<cfset filename = lcase(rereplace(item.getValue('htmltitle'),"[^a-zA-Z0-9]{1,}","-","all")) />
 				<cfset filename = rereplace(filename,"^[^a-zA-Z]","") & "_" & contentIterator.currentIndex() />
+
+				<cfif len(filename) gte 140>
+					<cfset filename = left(filename,40) & "..." & right(createUUID(),16)  & "..." & right(filename,40) />
+				</cfif>
 	
 				<cfsavecontent variable="exportContent"><cfinclude template="./component.cfm"></cfsavecontent>
 				<cffile action="write" file="#workingDir#/#filename#.xml" output="#exportContent#" >
@@ -79,7 +95,16 @@
 		<cffile action="write" file="#workingDir#/categories.xml" output="#exportContent#" >
 		</cfif>
 		
-		<cfset zipTool.AddFiles(zipFilePath="#workingDir#/translations.zip",directory=workingDir,recurse="true",filter="*.xml")>
+		<cfset directoryCreate(workingDir & "-export") />
+		
+		<cfset zipTool.AddFiles(zipFilePath="#workingDir#-export/translations.zip",directory=workingDir,recurse="true",filter="*.xml")>
+		
+		<cftry>
+			<cfset directoryDelete(workingDir,true) />
+		<cfcatch>
+			<cfdump var="#cfcatch#">
+		</cfcatch>
+		</cftry>
 		
 		<cfreturn exportKey />
 	</cffunction>
@@ -118,7 +143,15 @@
 		<cfset var enforceChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('enforceChangesets') />
 				
 		<cfset var x = "" />
-				
+		
+		<cfif not structKeyExists(request,"xcount")>
+			<cfset request.xcount = StructNew() />
+			<cfset request.xcount['ts'] = getTickCount() />
+			<cfset request.xcount['xmlloop'] = StructNew() />
+		</cfif>
+
+		<cfset request.xcount['vars'] = getTickCount() - request.xcount['ts'] />
+					
 		<cfparam name="form.staging_type" default="">
 		
 		<cfset zipTool.Extract(zipFilePath="#importDirectory#/#importFile#",extractPath="#importDirectory#",overwriteFiles=true)>
@@ -150,6 +183,8 @@
 			<cfset var useChangeSets = 1 />
 		</cfif>
 		
+		<cfset request.xcount['read'] = getTickCount() - request.xcount['ts'] />
+	
 		<cfloop query="rsFiles">
 			<cfset contentXML = fileRead(rsFiles.directory & "/" & rsFiles.name) />
 
@@ -224,6 +259,8 @@
 						<cfset translation.save()>				
 					</cfif>
 						
+					<cfset request.xcount['xmlloop'][rsFiles.name] = getTickCount() - request.xcount['ts'] />
+
 					<cfcatch>
 						<cfoutput>#rsFiles.name#:<cfdump var="#cfcatch#"><hr></cfoutput>
 					</cfcatch>
@@ -231,6 +268,8 @@
 			</cfif>		
 		</cfloop>
 		
+		<cfset request.xcount['xml'] = getTickCount() - request.xcount['ts'] />
+
 		<!--- duplicate feeds --->
 		<cfif len(feedIDList)>
 			<cfloop list="#feedIDList#" index="x">
@@ -241,6 +280,9 @@
 			</cfloop>
 		</cfif>
 
+		<cfset request.xcount['feed'] = getTickCount() - request.xcount['ts'] />
+
+
 		<!--- update related content --->
 		<cfif len(contentIDList)>
 			<cfloop list="#contentIDList#" index="x">
@@ -250,8 +292,12 @@
 				</cfif>
 			</cfloop>
 		</cfif>
+
+		<cfset request.xcount['related'] = getTickCount() - request.xcount['ts'] />
 	
 		<cfset $.getBean('contentUtility').duplicateExternalSortOrder( $.event('siteID'),siteID	 ) />
+
+		<cfset request.xcount['dupextsortorder'] = getTickCount() - request.xcount['ts'] />
 
 		<cfif fileExists(importdirectory & "/categories.xml")>
 			<cfset contentXML = fileRead(importDirectory & "/categories.xml") />
@@ -271,6 +317,9 @@
 				</cfif>
 			</cfloop>
 		</cfif>
+
+		<cfset request.xcount['cat'] = getTickCount() - request.xcount['ts'] />
+
 		<cfreturn true />
 	</cffunction>
 

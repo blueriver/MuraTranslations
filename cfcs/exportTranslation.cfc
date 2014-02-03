@@ -98,6 +98,14 @@
 		<cfset var rsFiles = "" />
 		<cfset var responseMessage = "" />
 
+		<cfif not structKeyExists(request,"xcount")>
+			<cfset request.xcount = StructNew() />
+			<cfset request.xcount['ts'] = getTickCount() />
+			<cfset request.xcount['xmlloop'] = StructNew() />
+		</cfif>
+
+		<cfset request.xcount['pre'] = getTickCount() - request.xcount['ts'] />
+
 		<cfset responseMessage = exportObject.import($,importDirectory,importFile,arguments.pluginConfig) />
 		
 		<!--- cleanup --->
@@ -110,6 +118,10 @@
 			</cfcatch>
 			</cftry>
 		</cfloop>
+
+		<cfset request.xcount['clean'] = getTickCount() - request.xcount['ts'] />
+		
+		<cfdump var="#request.xcount#"><cfabort>
 		
 		<cfreturn responseMessage />
 	</cffunction>

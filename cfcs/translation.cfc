@@ -70,8 +70,8 @@
 <cfargument name="remoteID">
 <cfargument name="remoteSiteID">
 
-
 <cfset var rsPeers=getPeers(arguments.remoteID,arguments.remoteSiteID)>
+
 
 	<cfloop query="rsPeers">
 		<cfif getMapping(rsPeers.remoteID, rsPeers.remoteSiteID, arguments.localID, arguments.localSiteID).save()>
@@ -82,6 +82,8 @@
 		<cfset getMapping(arguments.localID, arguments.localSiteID, rsPeers.remoteID, rsPeers.remoteSiteID).save()>
 		
 	</cfloop>
+	
+	
 </cffunction>	
 	
 <cffunction name="getPeers" returntype="any" access="public" output="false">
