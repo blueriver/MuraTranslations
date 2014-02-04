@@ -49,11 +49,13 @@ function loadLocaleTable(activeTab){
 	jQuery("##localeTableContainer").html('<br/><img src="/admin/assets/images/progress_bar.gif">');
 	
 	//location.href=url + "?" + pars;
+	/*
 	jQuery(".initActiveTab").each(
 		function(index) {			
 			jQuery(this).tabs("select",tab);
 		}
 	);
+	*/
 	
 	jQuery.get(url + "?" + pars, 
 		function(data) {
