@@ -58,6 +58,5 @@
 </ul>
 </div>
 
-<cfinclude template="./inc/blah.cfm">
 </cfoutput>
 </cfif>
