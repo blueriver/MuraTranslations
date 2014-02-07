@@ -17,7 +17,7 @@
 <name>Mura Translations</name>
 <package>MuraTranslations</package>
 <directoryFormat>packageOnly</directoryFormat>
-<version>2.1</version>
+<version>3.0</version>
 <provider>Blue River</provider>
 <providerURL>https://github.com/blueriver/MuraTranslations</providerURL>
 <category>Application</category>
