@@ -208,10 +208,12 @@
 					<cfset sResponse = $.getBean('contentUtility').duplicateExternalContent(contentID,$.event('siteID'),sourceSiteID,false,siteSynced) />
 
 					<cfif sResponse.success>
-						<cfif structKeyExists("feedIDlist",sResponse) and len(sResponse.feedIDList)>
+						<!--- CS [2014-02-11]: Switched parameter order in structKeyExists() function --->
+						<cfif structKeyExists(sResponse, "feedIDlist") and len(sResponse.feedIDList)>
 							<cfset feedIDList = listAppend(feedIDList,sResponse.feedIDList) />
 						</cfif>
-						<cfif structKeyExists("contentIDList",sResponse) and len(sResponse.contentIDList)>
+						<!--- CS [2014-02-11]: Switched parameter order in structKeyExists() function --->
+						<cfif structKeyExists(sResponse, "contentIDList") and len(sResponse.contentIDList)>
 							<cfset contentIDList = listAppend(contentIDList,sResponse.contentIDList) />
 						</cfif>
 					</cfif>

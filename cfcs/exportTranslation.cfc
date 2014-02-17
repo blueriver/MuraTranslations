@@ -121,7 +121,6 @@
 
 		<cfset request.xcount['clean'] = getTickCount() - request.xcount['ts'] />
 		
-		<cfdump var="#request.xcount#"><cfabort>
 		
 		<cfreturn responseMessage />
 	</cffunction>
