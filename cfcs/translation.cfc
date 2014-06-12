@@ -140,6 +140,7 @@
 	<cfset mapping.setLocalID(arguments.localID)>
 	<cfset mapping.setRemoteSiteID(arguments.remoteSiteID)>
 	<cfset mapping.setRemoteID(arguments.remoteID)>
+	<cfset mapping.setFileName(arguments.filename)>
 	<cfset mapping.load()>
 	
 	<cfreturn mapping>
