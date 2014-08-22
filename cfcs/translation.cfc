@@ -133,6 +133,7 @@
 	<cfargument name="localSiteID">
 	<cfargument name="remoteID">
 	<cfargument name="remoteSiteID">
+	<cfargument name="filename">
 	
 	<cfset var mapping =createObject("component","translationMap").init(variables.globalConfig,variables.pluginConfig)>
 	
