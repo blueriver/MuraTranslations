@@ -14,13 +14,18 @@
 			<cfset form.export_action="download" />
 		</cfif>
 	<cfelseif form.doaction eq "doimport">
+		<cfif fileExists( expandPath("/#pluginConfig.getDirectory()#/temp/report.txt") )>
+			<cffile action="read" file="#expandPath("/#pluginConfig.getDirectory()#/temp/report.txt")#" variable="report" >
+		</cfif>
+
 		<cfset importKey = rereplace(createUUID(),"-","","all") />
 		<cfset importDirectory = expandPath("/#pluginConfig.getDirectory()#/temp/#importKey#") />
+		<cfset report = "" />
 
 		<cfif not directoryExists(importDirectory)>
 			<cfset directoryCreate(importDirectory)>
 		</cfif>
-
+		
 		<cffile action="upload" filefield="import_file" destination="#importDirectory#" >
 
 		<cfset responseMessage = exportTranslation.importTranslation($,form.template,file.serverDirectory,file.serverFile,pluginConfig) />
@@ -29,6 +34,10 @@
 			<cfset form.export_action="importfailed" />
 		<cfelse>
 			<cfset form.export_action="importcomplete" />
+		</cfif>
+		
+		<cfif fileExists( expandPath("/#pluginConfig.getDirectory()#/temp/report.txt") )>
+			<cffile action="read" file="#expandPath("/#pluginConfig.getDirectory()#/temp/report.txt")#" variable="report" >
 		</cfif>
 	</cfif>
 </cfif>

@@ -36,6 +36,6 @@
 #contentData.tags#
 </tags></cfif><cfif extendData.recordcount>
 <extended><cfloop query="extendData"><cfif len(extendData.attributevalue)>
-	<#extendData.name#>#extendData.attributevalue#</#extendData.name#></cfif></cfloop>
+	<#extendData.name#><![CDATA[#extendData.attributevalue#]]></#extendData.name#></cfif></cfloop>
 </extended></cfif>
 </page></cfoutput>

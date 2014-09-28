@@ -141,6 +141,7 @@
 		<cfset var useChangeSets = 0 />
 		<cfset var hasChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('hasChangesets') />
 		<cfset var enforceChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('enforceChangesets') />
+		<cfset var success = true />
 				
 		<cfset var x = "" />
 		
@@ -148,6 +149,15 @@
 			<cfset request.xcount = StructNew() />
 			<cfset request.xcount['ts'] = getTickCount() />
 			<cfset request.xcount['xmlloop'] = StructNew() />
+		</cfif>
+
+		<cfif fileExists("#importDirectory#/../report.txt")>
+			<cftry>
+				<cffile action="delete" file="#importDirectory#/../report.txt" >
+			<cfcatch>
+				<cffile action="write" file="#importDirectory#/../report.txt" output="">
+			</cfcatch>
+			</cftry>
 		</cfif>
 
 		<cfset request.xcount['vars'] = getTickCount() - request.xcount['ts'] />
@@ -184,13 +194,25 @@
 		</cfif>
 		
 		<cfset request.xcount['read'] = getTickCount() - request.xcount['ts'] />
-	
+
 		<cfloop query="rsFiles">
+			<cfset success = true />
 			<cfset contentXML = fileRead(rsFiles.directory & "/" & rsFiles.name) />
 
-			<cfset xmlContent = xmlParse(contentXML) />
+			<cftry>
+				<cfset xmlContent = xmlParse(contentXML) />
+				<cfcatch>
+					<cfset success = false />
+					<cfif not fileExists("#importDirectory#/../report.txt")>
+						<cffile action="append" file="#importDirectory#/../report.txt" output="Export report #dateFormat(now(),"dd/mm/yyyy hh:mm:ss")#" addnewline="true">
+					</cfif>
+					
+					<cffile action="append" file="#importDirectory#/../report.txt" output="
+#chr(10)##chr(13)#FAILED [XML PARSE]: #rsFiles.name# (#cfcatch.detail#)" addnewline="true">
+				</cfcatch>
+			</cftry>
 
-			<cfif rsFiles.name neq "categories.xml">
+			<cfif rsFiles.name neq "categories.xml" and success>
 
 				<cftry>
 	
@@ -262,7 +284,11 @@
 					<cfset request.xcount['xmlloop'][rsFiles.name] = getTickCount() - request.xcount['ts'] />
 
 					<cfcatch>
-						<cfoutput>#rsFiles.name#:<cfdump var="#cfcatch#"><hr></cfoutput>
+						<cfif not fileExists("#importDirectory#/report.txt")>
+							<cffile action="append" file="#importDirectory#/../report.txt" output="Export report #dateFormat(now(),"dd/mm/yyyy hh:mm:ss")##chr(10)##chr(13)#" addnewline="true">
+						</cfif>
+						<cffile action="append" file="#importDirectory#/../report.txt" output="
+#chr(10)##chr(13)#FAILED [PROCESSING]: #rsFiles.name# (#cfcatch.detail#)" addnewline="true">
 					</cfcatch>
 				</cftry>
 			</cfif>		
