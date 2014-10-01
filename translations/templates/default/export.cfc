@@ -59,8 +59,8 @@
 				<cfset item = contentIterator.next() />
 				
 				<cfset contentData = item.getContentBean().getAllValues() />
-				
 				<cfset extendData = item.getExtendedData().getAllValues().data />
+
 				<cfset filename = rereplace(item.getValue('filename'),"\/",".","all") />
 				<cfif not len(filename)>
 					<cfset filename = lcase(rereplace(item.getValue('title'),"[^a-zA-Z0-9]","-","all")) & "_" & contentIterator.currentIndex() />
@@ -76,10 +76,12 @@
 			
 			<cfloop condition="#componentIterator.hasNext()#">
 				<cfset item = componentIterator.next() />
+
+				<cfset contentData = item.getContentBean().getAllValues() />
 				<cfset extendData = item.getExtendedData().getAllValues().data />
 	
 				<cfset filename = lcase(rereplace(item.getValue('htmltitle'),"[^a-zA-Z0-9]{1,}","-","all")) />
-				<cfset filename = rereplace(filename,"^[^a-zA-Z]","") & "_" & contentIterator.currentIndex() />
+				<cfset filename = rereplace(filename,"^[^a-zA-Z]","") & "_" & componentIterator.currentIndex() />
 
 				<cfif len(filename) gte 140>
 					<cfset filename = left(filename,40) & "..." & right(createUUID(),16)  & "..." & right(filename,40) />
@@ -87,7 +89,10 @@
 	
 				<cfsavecontent variable="exportContent"><cfinclude template="./component.cfm"></cfsavecontent>
 				<cffile action="write" file="#workingDir#/#filename#.xml" output="#exportContent#" >
-			</cfloop>		
+			</cfloop>
+	
+			
+					
 		</cfif>
 
 		<cfif rsContentCategories.recordCount>
@@ -142,6 +147,8 @@
 		<cfset var hasChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('hasChangesets') />
 		<cfset var enforceChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('enforceChangesets') />
 		<cfset var success = true />
+
+		<cfset var rsFixComponentAssignments = "" />
 				
 		<cfset var x = "" />
 		
@@ -324,7 +331,38 @@
 		<cfset $.getBean('contentUtility').duplicateExternalSortOrder( $.event('siteID'),siteID	 ) />
 
 		<cfset request.xcount['dupextsortorder'] = getTickCount() - request.xcount['ts'] />
-
+		
+		<cftry>	
+			<cfif application.configBean.getDBtype() eq "mssql">
+				<cfquery name="rsFixComponentAssignments">
+					UPDATE tcontentobjects
+					SET
+						tcontentobjects.objectID = tcontent.contentID
+					FROM tcontentobjects,tcontent
+					WHERE
+						tcontent.remoteID = tcontentobjects.objectid
+					AND
+						tcontent.active = 1
+					AND
+						tcontentobjects.siteID = <cfqueryparam value="#$.event('siteID')#" cfsqltype="cf_sql_varchar" maxlength="40"> 
+				</cfquery>
+			<cfelse>
+				<cfquery name="rsFixComponentAssignments">
+					UPDATE tcontentobjects,tcontent
+					SET
+						tcontentobjects.objectID = tcontent.contentID
+					WHERE
+						tcontent.remoteID = tcontentobjects.objectid
+					AND
+						tcontent.active = 1
+					AND
+						tcontentobjects.siteID = <cfqueryparam value="#$.event('siteID')#" cfsqltype="cf_sql_varchar" maxlength="40"> 
+				</cfquery>
+			</cfif>
+		<cfcatch>
+		</cfcatch>
+		</cftry>
+	
 		<cfif fileExists(importdirectory & "/categories.xml")>
 			<cfset contentXML = fileRead(importDirectory & "/categories.xml") />
 			<cfset xmlContent = xmlParse(contentXML) />
