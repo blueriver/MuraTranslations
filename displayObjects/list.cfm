@@ -22,6 +22,7 @@
 <cfsavecontent variable="str">
 <cfoutput>
 <link rel="stylesheet" href="#request.pluginConfig.getSetting('pluginPath')#css/ltm.css" type="text/css" media="all" />
+<cfif pluginConfig.getSetting('showFlags') eq 'Yes'>
 <style>
 <cfloop query="rslocales">
 <cfset javaLocale=lcase(listLast(application.settingsManager.getSite(rsLocales.siteid).getJavaLocale(),"_"))>
@@ -30,6 +31,7 @@
 }
 </cfloop>
 </style>
+</cfif>
 </cfoutput>
 </cfsavecontent>
 <cfhtmlhead text="#str#">
