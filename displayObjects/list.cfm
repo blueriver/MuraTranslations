@@ -55,7 +55,7 @@
 	</cfif>
 	</cfsilent>
 	<li id="#javaLocale#"<cfif len(class)> class="#class#"</cfif>>
-		<a href="#HTMLEditFormat(theURL)#">#HTMLEditFormat(rsLocales.selectorlabel)#</a>
+		<a href="#HTMLEditFormat(theURL)#">#HTMLEditFormat(rsLocales.alias)#</a>
 	</li>
 </cfloop>
 </ul>

@@ -27,7 +27,7 @@
 	<cfsilent>
 	<cfset theURL = application.configBean.getContext() & translationManager.lookUpTranslation(event.getValue('crumbdata'),rsLocales.siteid,event.getContentRenderer())/>
 	</cfsilent>
-	<option value="#HTMLEditFormat(theURL)#">#HTMLEditFormat(rsLocales.selectorlabel)#</option>
+	<option value="#HTMLEditFormat(theURL)#">#HTMLEditFormat(rsLocales.alias)#</option>
 </cfloop>
 </select>
 </cfoutput>
