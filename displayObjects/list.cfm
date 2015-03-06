@@ -20,6 +20,7 @@
 <cfset selectorLabel=translationManager.getTranslationKeys().setSiteID(event.getValue('siteid')).load().getSelectorLabel()>
 	
 <cfsavecontent variable="str">
+<cfinclude template="inc_hreflang.cfm"/>
 <cfoutput>
 <link rel="stylesheet" href="#request.pluginConfig.getSetting('pluginPath')#css/ltm.css" type="text/css" media="all" />
 <cfif pluginConfig.getSetting('showFlags') eq 'Yes'>
