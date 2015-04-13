@@ -103,6 +103,7 @@
 <cfargument name="remoteSiteID">
 <cfargument name="renderer">
 <cfargument name="complete" type="boolean" default="false">
+<cfargument name="exactOnly" type="boolean" default="false">
 
 	<cfset var translation=getTranslation()>
 	<cfset var I=1>
@@ -114,6 +115,9 @@
 	<cfset translation.setLocalSiteID(arguments.crumbData[1].siteID)>
 	
 	<cfloop from="1" to="#arrayLen(arguments.crumbdata)#" index="I">
+        <cfif arguments.exactOnly and I gt 1>
+            <cfbreak />
+        </cfif>
 		<cfset translation.setLocalID(arguments.crumbData[I].contentID)>
 		<cfset mapping=translation.getLocal()>
 		<cfif len(mapping.getRemoteID())>
