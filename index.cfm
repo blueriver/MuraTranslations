@@ -30,16 +30,24 @@
 <cfset rsSites=translationManager.getAssignedSites()/>
 <cfsavecontent variable="body">
 <cfoutput>
+
+<div class="mura-header">	
 <h1>#pluginConfig.getName()#</h1>
-<div class="tabbable">
-	<ul class="mura tabs nav nav-tabs initActiveTab">
-	<li><a href="##tabSettings" onclick="return false;"><span>Settings</span></a></li>
+</div> <!-- /.mura-header -->
+
+<div class="block block-constrain">
+	<ul class="mura-tabs nav-tabs" data-toggle="tabs">
+	<li class="active"><a href="##tabSettings" onclick="return false;"><span>Settings</span></a></li>
 	<li><a href="##tabTemplate" onclick="return false;"><span>Template Code</span></a></li>
 	<li><a href="##tabTranslate" onclick="return false;"><span>External Translations</span></a></li>
 	<li><a href="##tabAbout" onclick="return false;"><span>About This Plugin</span></a></li>
 	</ul>
-	<div class="tab-content">
-	<div id="tabSettings" class="tab-pane fade"> 
+	<div class="block-content tab-content">
+		
+	<div id="tabSettings" class="tab-pane active"> 
+		<div class="block block-bordered"> 
+			<div class="block-content">
+
 		<p>The "Locale Alias" is how each site is referenced within the Mura Translations plugin navigation tools.
 		<cfif len(message)><p class="success">#message#</p></cfif>
 		<form class="fieldset-wrap" action="index.cfm" method="post" onsubmit="return validateForm(this);">
@@ -88,7 +96,8 @@
 					<input class="text" name="selectorlabel#rsSites.currentRow#" type="text" value="#htmlEditFormat(rsSites.selectorlabel)#" required="false" message="The selector label for the '#htmlEditFormat(rsSites.site)#' is required" maxlength="100"/>
 					</div>
 				</div>
-			</div><input type="hidden" name="siteid#rsSites.currentRow#" value="#rsSites.siteid#"/>
+			</div>
+			<input type="hidden" name="siteid#rsSites.currentRow#" value="#rsSites.siteid#"/>
 			</cfloop>
 		</div>
 		<div class="form-actions">
@@ -97,23 +106,36 @@
 			<input type="hidden" name="doaction" value="update"/>
 		</div>
 		</form>
-	</div>
+
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+	</div> <!-- /.tab-pane -->
+
 	<div id="tabTemplate" class="tab-pane">
+		<div class="block block-bordered"> 
+			<div class="block-content">
+
 		<cfset rsObjects=translationManager.getDisplayObjects()>
 		<table class="stripe">
 		<tr>
 		<th>Object</th>
 		<th>Code</th>
 		</tr>
-		<cfloop query="rsObjects">
-		<tr>
-		<td>#htmlEditFormat(rsObjects.name)#</td>
-		<td>##renderer.dspObject('plugin','#rsObjects.objectID#')##</td>
-		</tr>
-		</cfloop>
+			<cfloop query="rsObjects">
+			<tr>
+			<td>#htmlEditFormat(rsObjects.name)#</td>
+			<td>##renderer.dspObject('plugin','#rsObjects.objectID#')##</td>
+			</tr>
+			</cfloop>
 		</table>
-	</div>
+
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+	</div> <!-- /.tab-pane -->
+
 	<div id="tabTranslate" class="tab-pane">
+		<div class="block block-bordered"> 		
+			<div class="block-content">
 		<h4>External Translations (Beta)</h4>
 		<form class="fieldset-wrap" action="translations/index.cfm" method="post" onsubmit="return validateForm(this);">
 		<div class="fieldset">
@@ -133,14 +155,21 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="form-actions">
 			<input type="submit" value="Next" class="btn"/>
 			<input type="hidden" value="#rsSites.recordcount#" name="siteCount"/>
 			<input type="hidden" name="doaction" value="update"/>
 		</div>
 		</form>
-	</div>
+
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+	</div> <!-- /.tab-pane -->
+
 	<div id="tabAbout" class="tab-pane">
+	<div class="block block-bordered"> 	
+		<div class="block-content">
 		<p>The Mura Translations plugin allows you to specify related alternate language versions of content for any specific page within the Mura content editing process.
 		This is a great tool for sites that need to provide single pages of translated content or links between entire sites of translated content.</p>
 		<p>Once the plug-in is installed on all of the sites in your Mura instance and the Mura Translations plugin becomes available on any page.
@@ -162,9 +191,12 @@
 			<iframe width="640" height="360" src="http://www.youtube.com/embed/GnMUuFw2SK0" frameborder="0" allowfullscreen></iframe>
 		</div>
 		<br />
-		</div>
-	</div>
-</div>
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+	</div> <!-- /.tab-pane -->
+
+		</div> <!-- /.block-content.tab-content -->
+	</div> <!-- /.block-constrain -->
 
 </cfoutput>
 </cfsavecontent>
