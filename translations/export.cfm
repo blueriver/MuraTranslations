@@ -15,40 +15,29 @@
 
 <cfoutput>
 	<h2>Export Site(Beta)</h2>
-	<form class="fieldset-wrap" action="./index.cfm" method="post" onsubmit="return validateForm(this);">
+	<form action="./index.cfm" method="post" onsubmit="return validateForm(this);">
 	<input type="hidden" name="export_action" value="export">
-	<div class="fieldset">
-		<div class="control-group">
-			<div class="span6">
-				<label class="control-label">
+		<div class="mura-control-group">
+				<label>
 					From Date
 				</label>
-				<div class="controls">
 				   <input class="datepicker" type="text" name="export_date" value="#showDate#">
-				   (leave blank for all content)
-				</div>
-			</div>
+				   <div class="help-block">(leave blank for all content)</div>
 		</div>
-		<div class="control-group">
-			<div class="span6">
-				<label class="control-label">
+		<div class="mura-control-group">
+				<label>
 					Template
 				</label>
-				<div class="controls">
 				  <select name="template">
 					<cfloop query="rsTemplates">
 						<option>#rsTemplates.name#</option>
 					</cfloop>		
 				</select>
-				</div>
-			</div>
 		</div>
-		<div class="control-group sc-group" id="changeset_existing_section">
-			<div class="span6">
-				<label class="control-label">
+		<div class="mura-control-group sc-group" id="changeset_existing_section">
+				<label>
 					Export
 				</label>
-				<div class="controls">
 				 <select name="changeset_existing">
 					<option value="">Published Content</option>
 					<optgroup label="Change Sets">
@@ -70,10 +59,7 @@
 					</cfloop>
 					</optgroup>
 				</select>
-				</div>
-			</div>
 		</div>
-	</div>
 	<div class="form-actions">
 		<a href="../" class="btn">Cancel</a>
 		<input type="submit" value="Create" class="btn"/>
