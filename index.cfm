@@ -48,63 +48,60 @@
 		<div class="block block-bordered"> 
 			<div class="block-content">
 
-		<p>The "Locale Alias" is how each site is referenced within the Mura Translations plugin navigation tools.
-		<cfif len(message)><p class="success">#message#</p></cfif>
-		<form class="fieldset-wrap" action="index.cfm" method="post" onsubmit="return validateForm(this);">
-		<div class="fieldset">
-			<div class="control-group">
-				<div class="span3">
-					<label class="control-label">
+		<div class="help-block">The "Locale Alias" is how each site is referenced within the Mura Translations plugin navigation tools.</div>
+
+		<cfif len(message) ><div class="alert alert-success">#message#</div></cfif>
+
+		<div class="clearfix"></div>
+
+		<form action="index.cfm" method="post" onsubmit="return validateForm(this);">
+
+				<div class="mura-3 mura-control-group pull-left">
+					<label>
 						Site
 					</label>
 				</div>
-				<div class="span3">
-					<label class="control-label">
+				<div class="mura-3 mura-control-group pull-left">
+					<label>
 						Locale
 					</label>
 				</div>
-				<div class="span3">
-					<label class="control-label">
+				<div class="mura-3 mura-control-group pull-left">
+					<label>
 						Locale Alias
 					</label>
 				</div>
-				<div class="span3">
-					<label class="control-label">
+				<div class="mura-3 mura-control-group pull-left">
+					<label>
 						Selector Label
 					</label>
 				</div>
-			</div>
+
 			<cfloop query="rsSites">
-			<div class="control-group">
-				<div class="span3">
-					<div class="controls">
+				<div class="mura-3 mura-control-group pull-left">
 						#htmlEditFormat(rsSites.site)#
-					</div>
 				</div>
-				<div class="span3">
-					<div class="controls">
+				<div class="mura-3 mura-control-group pull-left">
 						#htmlEditFormat(rsSites.sitelocale)#
-					</div>
 				</div>
-				<div class="span3">
-					<div class="controls">
+				<div class="mura-3 mura-control-group pull-left">
 					<input class="text" name="alias#rsSites.currentRow#" type="text" value="#htmlEditFormat(rsSites.alias)#" required="true" message="The alias for the '#htmlEditFormat(rsSites.site)#' is required" maxlength="100"/>
-					</div>
 				</div>
-				<div class="span3">
-					<div class="controls">
+				<div class="mura-3 mura-control-group pull-left">
 					<input class="text" name="selectorlabel#rsSites.currentRow#" type="text" value="#htmlEditFormat(rsSites.selectorlabel)#" required="false" message="The selector label for the '#htmlEditFormat(rsSites.site)#' is required" maxlength="100"/>
-					</div>
+				<input type="hidden" name="siteid#rsSites.currentRow#" value="#rsSites.siteid#"/>
+				</div>
+			</cfloop>
+
+			<div class="clearfix"></div>
+
+			<div class="mura-actions">
+				<div class="form-actions">
+					<input class="btn" type="submit" value="Update"/>
+					<input type="hidden" value="#rsSites.recordcount#" name="siteCount"/>
+					<input type="hidden" name="doaction" value="update"/>
 				</div>
 			</div>
-			<input type="hidden" name="siteid#rsSites.currentRow#" value="#rsSites.siteid#"/>
-			</cfloop>
-		</div>
-		<div class="form-actions">
-			<input class="btn" type="submit" value="Update"/>
-			<input type="hidden" value="#rsSites.recordcount#" name="siteCount"/>
-			<input type="hidden" name="doaction" value="update"/>
-		</div>
 		</form>
 
 			</div> <!-- /.block-content -->
@@ -116,15 +113,15 @@
 			<div class="block-content">
 
 		<cfset rsObjects=translationManager.getDisplayObjects()>
-		<table class="stripe">
+		<table class="mura-table-grid">
 		<tr>
-		<th>Object</th>
-		<th>Code</th>
+		<th class="var-width">Object</th>
+		<th class="var-width">Code</th>
 		</tr>
 			<cfloop query="rsObjects">
 			<tr>
-			<td>#htmlEditFormat(rsObjects.name)#</td>
-			<td>##renderer.dspObject('plugin','#rsObjects.objectID#')##</td>
+			<td class="var-width">#htmlEditFormat(rsObjects.name)#</td>
+			<td class="var-width">##renderer.dspObject('plugin','#rsObjects.objectID#')##</td>
 			</tr>
 			</cfloop>
 		</table>
@@ -137,22 +134,18 @@
 		<div class="block block-bordered"> 		
 			<div class="block-content">
 		<h4>External Translations (Beta)</h4>
-		<form class="fieldset-wrap" action="translations/index.cfm" method="post" onsubmit="return validateForm(this);">
-		<div class="fieldset">
-			<div class="control-group">
-				<div class="span6">
-					<label class="control-label">Action</label>
-					<div class="controls">
-					  	<label for="isActionExport" class="radio inline">
-					     <input type="radio" name="export_action" value="export" checked="checked" id="isActionExport">
-					     Export
-					    </label>
-					    <label for="isActionImport" class="radio inline"> 
-					     <input type="radio" name="export_action" value="import" checked="checked" id="isActionImport">
-					     Import
-					    </label>
-					</div>
-				</div>
+		<form action="translations/index.cfm" method="post" onsubmit="return validateForm(this);">
+			<div class="mura-control-group mura-6">
+				<div class="mura-control justified">
+					<label>Action</label>
+			  	<label for="isActionExport" class="radio inline">
+			     <input type="radio" name="export_action" value="export" checked="checked" id="isActionExport">
+			     Export
+			    </label>
+			    <label for="isActionImport" class="radio inline"> 
+			     <input type="radio" name="export_action" value="import" checked="checked" id="isActionImport">
+			     Import
+			    </label>
 			</div>
 		</div>
 
@@ -186,11 +179,14 @@
 		The purchase of this plug-in allows you to use it on any number of sites within a single production Mura CMS instance 
 		(note that the purchase of this plug-in allows you to use it on unlimited developer or staging instances of Mura CMS).
 		If you wish to use this plug-in on multiple production instances of Mura CMS, please <a href="http://www.getmura.com/index.cfm/contact-us/">contact us</a> us for discounted pricing.</p>
-		<h3>Overview Video</h3>
-		<div class="video">
-			<iframe width="640" height="360" src="http://www.youtube.com/embed/GnMUuFw2SK0" frameborder="0" allowfullscreen></iframe>
-		</div>
-		<br />
+
+			<div class="block-content">
+				<h2>Overview Video</h2>
+				<div class="video">
+					<iframe width="640" height="360" src="http://www.youtube.com/embed/GnMUuFw2SK0" frameborder="0" allowfullscreen></iframe>
+				</div>
+		  </div>
+
 			</div> <!-- /.block-content -->
 		</div> <!-- /.block-bordered -->
 	</div> <!-- /.tab-pane -->
