@@ -169,9 +169,7 @@
 		<cfset structDelete( local.copyStruct, "parentId" ) />
 		
 		<cfif len(local.copyStruct.fileID)>
-
-			<cftry>
-				
+			
 			<cfset local.rsFile=local.localScope.getBean("fileManager").readMeta(local.copyStruct.fileID)>
 			
 			<cfset local.fileDir=application.configBean.getFileDir()>
@@ -211,8 +209,6 @@
 			<cfset local.copyStruct.newFile="http://#cgi.server_name##application.configBean.getServerPort()#/tasks/render/file/?fileID=#local.copyBean.getFileID()#&/#local.copyFilename#">
 			<cfset local.copyStruct.fileID="">
 			--->
-			<cfcatch></cfcatch>
-		</cftry>
 		</cfif>
 	
 		<cfset local.newBean.set(local.copyStruct)>
