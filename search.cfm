@@ -37,99 +37,86 @@ StructAppend(request, form, "no");
 
 <cfsavecontent variable="body">
 <cfoutput>
-<cfif arrayLen(crumbdata) lte 30>
-	<div class="alert alert-warning">
-	<span>You are assigning a #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.remoteSiteID).load().getName()))# translation peer for the #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.localSiteID).load().getName()))# version of:
-	<br>#application.contentRenderer.dspZoom(crumbData)#
-	</span>
-	</div>
-</cfif>
-<div class="mura-header">
-	<h1>#pluginConfig.getName()#</h1>
-		<div class="nav-module-specific btn-group">
-			<a class="btn" <cfif arrayLen(crumbdata) gt 30>href="##" onclick="history.go(-1);"<cfelse>href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000##tabsysMuraTranslations"</cfif>><i class="mi-arrow-circle-left"></i>Return</a></li>		
-		</div>
+
+<cfif arrayLen(crumbdata) gt 30>
+<h2>#pluginConfig.getName()#</h2>
+<h3>Search For Translation</h3>
+<div class="btn-group" id="nav-module-specific">
+<a class="btn" href="##" onclick="history.go(-1);">Return</a></li>
 </div>
 
-<div class="block block-constrain">
-		<div class="block block-bordered">
-		  <div class="block-content">
+<p class="error">We're sorry, an error has occurred.</p>
 
-			<cfif arrayLen(crumbdata) gt 30>
-				<h2>Search For Translation</h2>
-				<p class="error">We're sorry, an error has occurred.</p>
-			<cfelse>
-				<h2>Search For Translation</h2>
-				<div class="help-block-inline">Please search for the content that you would like to assign as a translation peer.	<br><em>If the content does not yet exist, you can create it now - just search for the section of the site where your new content will go.</em></div>
+<cfelse>
+<h2>#pluginConfig.getName()#</h2>
+<h3>Search For Translation</h3>
+<div class="btn-group" id="nav-module-specific">
+<a class="btn" href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000">Return</a>
+</div>
+<div class="alert">
+<p>You are assigning a #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.remoteSiteID).load().getName()))# translation peer for the #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.localSiteID).load().getName()))# version of:</p>
 
-					<form class="search divide" method="post" name="parentSearchFrm" action="search.cfm" onsubmit="return validate(this);">
-						<div class="mura-control-group justify">
-							
-							<div class="mura-input-set">
-								<input name="keywords" required="true" value="<cfif not len(request.keywords)>Search by Keyword<cfelse>#HTMLEditFormat(request.keywords)#</cfif>" onclick="this.value='';" onblur="if(this.value==''){this.value='Search by Keyword';}" message="Please enter a search keyword." value="#htmlEditFormat(request.keywords)#" type="text" class="text med" />	
-								<input type="submit" class="btn" value="Search">
-							</div>
+#application.contentRenderer.dspZoom(crumbData)#
+</div>
 
-							<input type="hidden" value="#HTMLEditFormat(request.localSiteID)#" name="localSiteID" />
-							<input type="hidden" value="#HTMLEditFormat(request.localID)#" name="localID" />
-							<input type="hidden" value="#HTMLEditFormat(request.remoteSiteID)#" name="remoteSiteID" />
-							<input type="hidden" value="#HTMLEditFormat(request.type)#" name="type" />
-							<input type="hidden" value="#HTMLEditFormat(request.contentHistID)#" name="contentHistID" />
-							<input type="hidden" value="#HTMLEditFormat(request.parentID)#" name="parentID" />
-						</div>
-					</form>
-					<cfif len(request.keywords)>
-						<cfset rsList=application.contentManager.getPrivateSearch(request.remoteSiteId,request.keywords)/>
-						<form  name="selectFrm" action="add.cfm" method="post">
-						<div class="mura-control-group justify">
-						<table class="table table-striped table-condensed table-bordered mura-table-grid">
-					    <cfif rslist.recordcount>
-					     <cfloop query="rslist" endrow="100">
-							<cfif rslist.type neq 'File' and rslist.type neq 'Link'>
-							<cfset crumbdata=application.contentManager.getCrumbList(rslist.contentid, request.remoteSiteId)/>
-					        <cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-							<cfif verdict neq 'none' and rslist.type neq 'Link' and rslist.type neq 'File'>
-							<cfset counter=counter+1/>
-							<tbody>
-							<tr <cfif not(counter mod 2)>class="alt"</cfif>>  
-					          <td class="var-width">#application.contentRenderer.dspZoom(crumbData)#</td>
-							  <td class="administration"><input type="radio" name="remoteID" value="#rslist.contentID#"<cfif rslist.currentRow eq 1> checked</cfif>/></td>
-							</tr>
-							</tbody>
-						 	</cfif></cfif>
-					       </cfloop>
-						 	</cfif>
-						 	<cfif not counter>
-							 <tbody>
-							<tr class="alt">
-							  <td class="noResults" colspan="2">Your search returned no results.</td>
-							</tr>
-							</tbody>
-							</cfif>
-					  </table>
-					</td></tr></table>
-					<cfif rslist.recordcount>
-					<input class="btn" type="submit" name="doAction" value="Assign Translation"/>
-					&nbsp; &nbsp; Or &nbsp;&nbsp;
-					<input class="btn" type="submit" name="doAction" value="Create New Translation Under This Section"/>
-					&nbsp;&nbsp;
-					<input class="btn" type="submit" name="doAction" value="Create New Translation and Copy All Children"/>
-					</cfif>
-				</div>
-				
-					<input type="hidden" value="#HTMLEditFormat(request.localSiteID)#" name="localSiteID" />
-					<input type="hidden" value="#HTMLEditFormat(request.localID)#" name="localID" />
-					<input type="hidden" value="#HTMLEditFormat(request.remoteSiteID)#" name="remoteSiteID" />
-					<input type="hidden" value="#HTMLEditFormat(request.type)#" name="type" />
-					<input type="hidden" value="#HTMLEditFormat(request.contentHistID)#" name="contentHistID" />
-					<input type="hidden" value="#HTMLEditFormat(request.parentID)#" name="parentID" />
-				</form>
-				</cfif>
+<h4>Please search for the content that you would like to assign as a translation peer.</h4>
+<p<cfif len(request.keywords) and not rslist.recordcount> class="error"</cfif>><strong>Note:</strong> If the content does not yet exist, you can create it now - just search for the section of the site where your new content will go.</p>
+
+	<form class="search divide" method="post" name="parentSearchFrm" action="search.cfm" onsubmit="return validate(this);">
+	<input name="keywords" required="true" value="<cfif not len(request.keywords)>Search by Keyword<cfelse>#HTMLEditFormat(request.keywords)#</cfif>" onclick="this.value='';" onblur="if(this.value==''){this.value='Search by Keyword';}" message="Please enter a search keyword." value="#htmlEditFormat(request.keywords)#" type="text" class="text med" />	
+	<input type="submit" value="Search">
+	<input type="hidden" value="#HTMLEditFormat(request.localSiteID)#" name="localSiteID" />
+	<input type="hidden" value="#HTMLEditFormat(request.localID)#" name="localID" />
+	<input type="hidden" value="#HTMLEditFormat(request.remoteSiteID)#" name="remoteSiteID" />
+	<input type="hidden" value="#HTMLEditFormat(request.type)#" name="type" />
+	<input type="hidden" value="#HTMLEditFormat(request.contentHistID)#" name="contentHistID" />
+	<input type="hidden" value="#HTMLEditFormat(request.parentID)#" name="parentID" />
+	</form>
+<cfif len(request.keywords)>
+	<cfset rsList=application.contentManager.getPrivateSearch(request.remoteSiteId,request.keywords)/>
+	<form  name="selectFrm" action="add.cfm" method="post">
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
+	    <cfif rslist.recordcount>
+	     <cfloop query="rslist" endrow="100">
+			<cfif rslist.type neq 'File' and rslist.type neq 'Link'>
+			<cfset crumbdata=application.contentManager.getCrumbList(rslist.contentid, request.remoteSiteId)/>
+	        <cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+			<cfif verdict neq 'none' and rslist.type neq 'Link' and rslist.type neq 'File'>
+			<cfset counter=counter+1/>
+			<tbody>
+			<tr <cfif not(counter mod 2)>class="alt"</cfif>>  
+	          <td class="var-width">#application.contentRenderer.dspZoom(crumbData)#</td>
+			  <td class="administration"><input type="radio" name="remoteID" value="#rslist.contentID#"<cfif rslist.currentRow eq 1> checked</cfif>/></td>
+			</tr>
+			</tbody>
+		 	</cfif></cfif>
+	       </cfloop>
+		 	</cfif>
+		 	<cfif not counter>
+			 <tbody>
+			<tr class="alt">
+			  <td class="noResults" colspan="2">Your search returned no results.</td>
+			</tr>
+			</tbody>
 			</cfif>
-			<div class="clearfix"></div>
-		</div> <!-- /.block-content -->
-	</div> <!-- /.block-bordered -->
-</div> <!-- /.block-constrain -->
+	  </table>
+	</td></tr></table>
+	<cfif rslist.recordcount>
+	<input class="btn" type="submit" name="doAction" value="Assign Translation"/>
+	&nbsp; &nbsp; Or &nbsp;&nbsp;
+	<input class="btn" type="submit" name="doAction" value="Create New Translation Under This Section"/>
+	&nbsp;&nbsp;
+	<input class="btn" type="submit" name="doAction" value="Create New Translation and Copy All Children"/>
+	</cfif>
+	<input type="hidden" value="#HTMLEditFormat(request.localSiteID)#" name="localSiteID" />
+	<input type="hidden" value="#HTMLEditFormat(request.localID)#" name="localID" />
+	<input type="hidden" value="#HTMLEditFormat(request.remoteSiteID)#" name="remoteSiteID" />
+	<input type="hidden" value="#HTMLEditFormat(request.type)#" name="type" />
+	<input type="hidden" value="#HTMLEditFormat(request.contentHistID)#" name="contentHistID" />
+	<input type="hidden" value="#HTMLEditFormat(request.parentID)#" name="parentID" />
+</form>
+</cfif>
+</cfif>
 </cfoutput>
 </cfsavecontent>
 <cfoutput>
