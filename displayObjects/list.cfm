@@ -20,8 +20,10 @@
 <cfset selectorLabel=translationManager.getTranslationKeys().setSiteID(event.getValue('siteid')).load().getSelectorLabel()>
 	
 <cfsavecontent variable="str">
+<cfinclude template="inc_hreflang.cfm"/>
 <cfoutput>
 <link rel="stylesheet" href="#request.pluginConfig.getSetting('pluginPath')#css/ltm.css" type="text/css" media="all" />
+<cfif pluginConfig.getSetting('showFlags') eq 'Yes'>
 <style>
 <cfloop query="rslocales">
 <cfset javaLocale=lcase(listLast(application.settingsManager.getSite(rsLocales.siteid).getJavaLocale(),"_"))>
@@ -30,6 +32,7 @@
 }
 </cfloop>
 </style>
+</cfif>
 </cfoutput>
 </cfsavecontent>
 <cfhtmlhead text="#str#">
@@ -52,7 +55,7 @@
 	</cfif>
 	</cfsilent>
 	<li id="#javaLocale#"<cfif len(class)> class="#class#"</cfif>>
-		<a href="#HTMLEditFormat(theURL)#">#HTMLEditFormat(rsLocales.selectorlabel)#</a>
+		<a href="#HTMLEditFormat(theURL)#">#HTMLEditFormat(rsLocales.alias)#</a>
 	</li>
 </cfloop>
 </ul>

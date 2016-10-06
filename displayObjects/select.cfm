@@ -16,6 +16,7 @@
 <cfset rsLocales=translationManager.getAssignedSites(event.getValue('siteid'))>
 <cfif rsLocales.recordcount>
 <cfsavecontent variable="str">
+<cfinclude template="inc_hreflang.cfm"/>
 <cfoutput><link rel="stylesheet" href="#request.pluginConfig.getSetting('pluginPath')#css/ltm.css" type="text/css" media="all" /></cfoutput>
 </cfsavecontent>
 <cfhtmlhead text="#str#">
@@ -26,7 +27,7 @@
 	<cfsilent>
 	<cfset theURL = application.configBean.getContext() & translationManager.lookUpTranslation(event.getValue('crumbdata'),rsLocales.siteid,event.getContentRenderer())/>
 	</cfsilent>
-	<option value="#HTMLEditFormat(theURL)#">#HTMLEditFormat(rsLocales.selectorlabel)#</option>
+	<option value="#HTMLEditFormat(theURL)#">#HTMLEditFormat(rsLocales.alias)#</option>
 </cfloop>
 </select>
 </cfoutput>
