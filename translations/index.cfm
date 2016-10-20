@@ -52,27 +52,39 @@
 
 <cfsavecontent variable="body">
 <cfoutput>
+<div class="mura-header">
 	<h1>#pluginConfig.getName()#</h1>
-	<cfswitch expression="#panel.page#">
-		<cfcase value="export">
-			<cfinclude template="./export.cfm" >
-		</cfcase> 
-		<cfcase value="download">
-			<cfinclude template="./download.cfm" >
-		</cfcase> 
-		<cfcase value="importfailed">
-			<cfinclude template="./failed.cfm" >
-		</cfcase> 
-		<cfcase value="importcomplete">
-			<cfinclude template="./complete.cfm" >
-		</cfcase> 
-		<cfcase value="import">
-			<cfinclude template="./import.cfm" >
-		</cfcase> 
-		<cfdefaultcase>
-			<cfinclude template="./home.cfm" >
-		</cfdefaultcase>
-	</cfswitch>
+	</div> <!-- /.mura-header -->
+
+	<div class="block block-constrain">
+			<div class="block block-bordered">
+				<div class="block-content">
+
+				<cfswitch expression="#panel.page#">
+					<cfcase value="export">
+						<cfinclude template="./export.cfm" >
+					</cfcase> 
+					<cfcase value="download">
+						<cfinclude template="./download.cfm" >
+					</cfcase> 
+					<cfcase value="importfailed">
+						<cfinclude template="./failed.cfm" >
+					</cfcase> 
+					<cfcase value="importcomplete">
+						<cfinclude template="./complete.cfm" >
+					</cfcase> 
+					<cfcase value="import">
+						<cfinclude template="./import.cfm" >
+					</cfcase> 
+					<cfdefaultcase>
+						<cfinclude template="./home.cfm" >
+					</cfdefaultcase>
+				</cfswitch>
+
+		</div> <!-- /.block-content -->
+	</div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->
+				
 </cfoutput></cfsavecontent>
 <cfoutput>
 #application.pluginManager.renderAdminTemplate(body=body,pageTitle=pluginConfig.getName())#
