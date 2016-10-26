@@ -28,11 +28,9 @@ function removeTranslationAssignments(){
 		var url = '#application.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/delete.cfm';
 		var pars = 'contentID=#request.contentBean.getContentID()#&cacheid=' + Math.random();
 		
-		//location.href=url + "?" + pars;
-		
 		jQuery.get(url + "?" + pars, 
 			function() {
-			loadTable();
+			loadLocaleTable();
 			}
 		);
 		
@@ -46,14 +44,21 @@ function loadLocaleTable(activeTab){
 	var pars = 'contentID=#request.contentBean.getContentID()#&contentHistID=#request.contentBean.getContentHistID()#&type=#attributes.type#&parentID=#attributes.parentID#&siteid=#attributes.siteID#&doMap=#yesNoFormat(event.valueExists("doMap"))#&cacheid=' + Math.random();
 	var tab = activeTab;	
 	
-	jQuery("##localeTableContainer").html('<br/><img src="images/progress_bar.gif">');
+	try {
+		jQuery("##localeTableContainer").html('<br/><img src="/admin/assets/images/ajax-loader.gif">');
+	}
+	catch( any ) {
+	}
+	
 	
 	//location.href=url + "?" + pars;
+	/*
 	jQuery(".initActiveTab").each(
 		function(index) {			
 			jQuery(this).tabs("select",tab);
 		}
 	);
+	*/
 	
 	jQuery.get(url + "?" + pars, 
 		function(data) {
@@ -64,7 +69,7 @@ function loadLocaleTable(activeTab){
 }
 
 function saveBeforeTranslation(forwardURL){
-	requestedURL=forwardURL;
+	siteManager.requestedURL=forwardURL;
 	return conditionalExit();
 }
 </script>

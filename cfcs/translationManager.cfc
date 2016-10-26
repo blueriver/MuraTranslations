@@ -24,6 +24,7 @@
 
 <cfset variables.globalConfig=arguments.globalConfig>
 <cfset variables.pluginConfig=arguments.pluginConfig>
+<cfset variables.$ = application.serviceFactory.getBean('MuraScope').init(variables.globalConfig.getSiteID()) />
 <cfset variables.translationmaps="p#variables.pluginConfig.getPluginID()#_translationmaps">
 <cfset variables.translationkeys="p#variables.pluginConfig.getPluginID()#_translationkeys">
 
@@ -106,6 +107,7 @@
 	<cfset var I=1>
 	<cfset var mapping="">
 	<cfset var urlStem=arguments.renderer.getURLStem(remoteSiteID,'')>
+	<cfset var contentNavBean="">
 	
 	<cfset translation.setRemoteSiteID(arguments.remoteSiteID)>
 	<cfset translation.setLocalSiteID(arguments.crumbData[1].siteID)>
@@ -114,7 +116,7 @@
 		<cfset translation.setLocalID(arguments.crumbData[I].contentID)>
 		<cfset mapping=translation.getLocal()>
 		<cfif len(mapping.getRemoteID())>
-			<cfreturn urlStem & "?linkServID=" & mapping.getRemoteID()>
+			<cfreturn variables.$.createHREF( siteid=mapping.getRemoteSiteID(),filename=mapping.getFileName(),contentid=mapping.getRemoteID() )>
 		</cfif>
 	</cfloop>
 	
@@ -167,7 +169,9 @@
 		<cfset structDelete( local.copyStruct, "parentId" ) />
 		
 		<cfif len(local.copyStruct.fileID)>
-			
+
+			<cftry>
+				
 			<cfset local.rsFile=local.localScope.getBean("fileManager").readMeta(local.copyStruct.fileID)>
 			
 			<cfset local.fileDir=application.configBean.getFileDir()>
@@ -207,6 +211,8 @@
 			<cfset local.copyStruct.newFile="http://#cgi.server_name##application.configBean.getServerPort()#/tasks/render/file/?fileID=#local.copyBean.getFileID()#&/#local.copyFilename#">
 			<cfset local.copyStruct.fileID="">
 			--->
+			<cfcatch></cfcatch>
+		</cftry>
 		</cfif>
 	
 		<cfset local.newBean.set(local.copyStruct)>

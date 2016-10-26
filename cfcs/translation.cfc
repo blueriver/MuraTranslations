@@ -70,8 +70,8 @@
 <cfargument name="remoteID">
 <cfargument name="remoteSiteID">
 
-
 <cfset var rsPeers=getPeers(arguments.remoteID,arguments.remoteSiteID)>
+
 
 	<cfloop query="rsPeers">
 		<cfif getMapping(rsPeers.remoteID, rsPeers.remoteSiteID, arguments.localID, arguments.localSiteID).save()>
@@ -82,6 +82,8 @@
 		<cfset getMapping(arguments.localID, arguments.localSiteID, rsPeers.remoteID, rsPeers.remoteSiteID).save()>
 		
 	</cfloop>
+	
+	
 </cffunction>	
 	
 <cffunction name="getPeers" returntype="any" access="public" output="false">
@@ -130,7 +132,8 @@
 	<cfargument name="localID">
 	<cfargument name="localSiteID">
 	<cfargument name="remoteID">
-	<cfargument name="remoteSiteID">
+	<cfargument name="remoteSiteID" >
+	<cfargument name="filename" default="">
 	
 	<cfset var mapping =createObject("component","translationMap").init(variables.globalConfig,variables.pluginConfig)>
 	
@@ -138,6 +141,7 @@
 	<cfset mapping.setLocalID(arguments.localID)>
 	<cfset mapping.setRemoteSiteID(arguments.remoteSiteID)>
 	<cfset mapping.setRemoteID(arguments.remoteID)>
+	<cfset mapping.setFileName(arguments.filename)>
 	<cfset mapping.load()>
 	
 	<cfreturn mapping>

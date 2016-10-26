@@ -19,7 +19,7 @@
 		<cfset pluginConfig=application.pluginManager.getConfig(pluginID)>
 		<cfset isAdminRequest=true>
 	<cfelse>
-		<cfset isAdminRequest=true>
+		<cfset isAdminRequest=false>
 	</cfif>
 
 	<cfif not isDefined("$")>

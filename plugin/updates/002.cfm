@@ -28,7 +28,7 @@ where 0=1
 			   (
 					"EXPORTKEY" VARCHAR2(35),
 				   	"SITEID" VARCHAR2(25), 
-					"EXPORTDATE" DATETIME
+					"EXPORTDATE" DATE
 			   )
 		</cfquery>
 	</cfcase>
@@ -41,6 +41,17 @@ where 0=1
 	  		`exportdate` datetime, 
 	  		PRIMARY KEY  (`exportkey`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8
+		</cfquery>
+	</cfcase>
+
+	<cfcase value="postgresql">
+		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+			CREATE TABLE p#variables.config.getPluginID()#_translationexports (
+	  		exportkey varchar(35),
+	 	 	siteID varchar(25),
+	  		exportdate timestamp,
+	  		CONSTRAINT PK_p#variables.config.getPluginID()#_translationexports PRIMARY KEY (exportkey)
+			)
 		</cfquery>
 	</cfcase>
 	

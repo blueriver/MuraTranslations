@@ -21,14 +21,6 @@
 	<cfinclude template="../mappings.cfm">
 	<cfcatch></cfcatch>
 	</cftry>
-	<cffunction name="onRequestStart" returnType="boolean" output="false">
-		<cfargument name="thePage" type="string" required="true">
-
-
-		<cfinclude template="../../config/settings.cfm">
-
-		<cfreturn true>
-	</cffunction>
 	
 	<!--- <cffunction name="onSessionEnd" returnType="void">
 	   <cfargument name="SessionScope" required=True/>

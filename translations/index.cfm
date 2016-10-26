@@ -14,13 +14,18 @@
 			<cfset form.export_action="download" />
 		</cfif>
 	<cfelseif form.doaction eq "doimport">
+		<cfif fileExists( expandPath("/#pluginConfig.getDirectory()#/temp/report.txt") )>
+			<cffile action="read" file="#expandPath("/#pluginConfig.getDirectory()#/temp/report.txt")#" variable="report" >
+		</cfif>
+
 		<cfset importKey = rereplace(createUUID(),"-","","all") />
 		<cfset importDirectory = expandPath("/#pluginConfig.getDirectory()#/temp/#importKey#") />
+		<cfset report = "" />
 
 		<cfif not directoryExists(importDirectory)>
 			<cfset directoryCreate(importDirectory)>
 		</cfif>
-
+		
 		<cffile action="upload" filefield="import_file" destination="#importDirectory#" >
 
 		<cfset responseMessage = exportTranslation.importTranslation($,form.template,file.serverDirectory,file.serverFile,pluginConfig) />
@@ -29,6 +34,10 @@
 			<cfset form.export_action="importfailed" />
 		<cfelse>
 			<cfset form.export_action="importcomplete" />
+		</cfif>
+		
+		<cfif fileExists( expandPath("/#pluginConfig.getDirectory()#/temp/report.txt") )>
+			<cffile action="read" file="#expandPath("/#pluginConfig.getDirectory()#/temp/report.txt")#" variable="report" >
 		</cfif>
 	</cfif>
 </cfif>
@@ -43,27 +52,39 @@
 
 <cfsavecontent variable="body">
 <cfoutput>
+<div class="mura-header">
 	<h1>#pluginConfig.getName()#</h1>
-	<cfswitch expression="#panel.page#">
-		<cfcase value="export">
-			<cfinclude template="./export.cfm" >
-		</cfcase> 
-		<cfcase value="download">
-			<cfinclude template="./download.cfm" >
-		</cfcase> 
-		<cfcase value="importfailed">
-			<cfinclude template="./failed.cfm" >
-		</cfcase> 
-		<cfcase value="importcomplete">
-			<cfinclude template="./complete.cfm" >
-		</cfcase> 
-		<cfcase value="import">
-			<cfinclude template="./import.cfm" >
-		</cfcase> 
-		<cfdefaultcase>
-			<cfinclude template="./home.cfm" >
-		</cfdefaultcase>
-	</cfswitch>
+	</div> <!-- /.mura-header -->
+
+	<div class="block block-constrain">
+			<div class="block block-bordered">
+				<div class="block-content">
+
+				<cfswitch expression="#panel.page#">
+					<cfcase value="export">
+						<cfinclude template="./export.cfm" >
+					</cfcase> 
+					<cfcase value="download">
+						<cfinclude template="./download.cfm" >
+					</cfcase> 
+					<cfcase value="importfailed">
+						<cfinclude template="./failed.cfm" >
+					</cfcase> 
+					<cfcase value="importcomplete">
+						<cfinclude template="./complete.cfm" >
+					</cfcase> 
+					<cfcase value="import">
+						<cfinclude template="./import.cfm" >
+					</cfcase> 
+					<cfdefaultcase>
+						<cfinclude template="./home.cfm" >
+					</cfdefaultcase>
+				</cfswitch>
+
+		</div> <!-- /.block-content -->
+	</div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->
+				
 </cfoutput></cfsavecontent>
 <cfoutput>
 #application.pluginManager.renderAdminTemplate(body=body,pageTitle=pluginConfig.getName())#

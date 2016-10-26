@@ -49,6 +49,7 @@
 				<cfset setLocalID(arguments.data.LocalID) />
 				<cfset setRemoteSiteID(arguments.data.RemoteSiteID) />
 				<cfset setRemoteID(arguments.data.RemoteID) />
+				<cfset setFileName(arguments.data.FileName) />
 			</cfif>
 			
 		<cfelseif isStruct(arguments.data)>
@@ -96,6 +97,16 @@
 	<cfset variables.instance.LocalSiteID = trim(arguments.LocalSiteID) />
 </cffunction>
 
+<cffunction name="getFileName" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.FileName />
+</cffunction>
+
+<cffunction name="setFileName" access="public" output="false">
+	<cfargument name="FileName" type="String" />
+	
+	<cfset variables.instance.FileName = trim(arguments.FileName) />
+</cffunction>
+
 <cffunction name="getLocalID" returntype="String" access="public" output="false">
 	<cfreturn variables.instance.LocalID />
 </cffunction>
@@ -130,7 +141,9 @@
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.globalConfig.getDatasource()#" username="#variables.globalConfig.getDBUsername()#" password="#variables.globalConfig.getDBPassword()#">
-	select * from #variables.table# where 
+	select trans.*,filename from #variables.table# trans
+	LEFT JOIN tcontent tcon ON (trans.remoteID = tcon.contentID and tcon.active = 1)
+	WHERE
 	LocalSiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocalSiteID()#">
 	and LocalID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocalID()#">
 	and RemoteSiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRemoteSiteID()#">
