@@ -17,9 +17,9 @@
 <name>Mura Translations</name>
 <package>MuraTranslations</package>
 <directoryFormat>packageOnly</directoryFormat>
-<version>1.18</version>
+<version>4.0.0</version>
 <provider>Blue River</provider>
-<providerURL>http://www.getmura.com/marketplace/apps/locale-translation-manager/</providerURL>
+<providerURL>https://github.com/blueriver/MuraTranslations</providerURL>
 <category>Application</category>
 <settings>
 	<setting>
@@ -41,8 +41,4 @@
 	<eventHandler event="onContentSave" component="cfcs.eventHandler"/>
 	<eventHandler event="onContentDelete" component="cfcs.eventHandler"/>
 </eventHandlers>
-<displayobjects location="global">
-	<displayobject name="Navigation Tool (List)" displayobjectfile="displayObjects/list.cfm"/>
-	<displayobject name="Navigation Tool (SelectBox)" displayobjectfile="displayObjects/select.cfm"/>
-</displayobjects>
 </plugin>
