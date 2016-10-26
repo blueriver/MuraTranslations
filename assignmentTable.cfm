@@ -66,16 +66,16 @@ Associated Locales<cfif translationManager.hasTranslation(url.contentID,url.site
 	<cfif len(mapping.getRemoteID())>
 		<cfif application.permUtility.getModulePerm('00000000000000000000000000000000000',mapCrumb[1].siteID)
 			and listFindNoCase("Editor,Author",application.permUtility.getnodePerm(mapCrumb))>
-			<li class="edit"><a title="Edit" target="_top" href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&contenthistid=#mapCrumb[1].contentHistID#&contentid=#mapCrumb[1].contentID#&type=#mapCrumb[1].type#&parentid=#mapCrumb[1].parentID#&topid=#mapCrumb[1].contentID#&siteid=#mapCrumb[1].siteID#&moduleid=00000000000000000000000000000000000&startrow=1" onclick=";"><i class="icon-pencil"></i></a></li>
+			<li class="edit"><a title="Edit" target="_top" href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&contenthistid=#mapCrumb[1].contentHistID#&contentid=#mapCrumb[1].contentID#&type=#mapCrumb[1].type#&parentid=#mapCrumb[1].parentID#&topid=#mapCrumb[1].contentID#&siteid=#mapCrumb[1].siteID#&moduleid=00000000000000000000000000000000000&startrow=1" onclick=";"><i class="mi-pencil"></i></a></li>
 		<cfelse>
 			<li class="editOff"><a>Edit</a></li>
 		</cfif>
-		
+
 	<cfelse>
-		<cfif application.permUtility.getModulePerm('00000000000000000000000000000000000',rsLocales.siteid)>	
-		<li class="select"><a title="select" target="_top" href="#application.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/search.cfm?localSiteID=#translation.getLocalSiteID()#&localID=#translation.getLocalID()#&remoteSiteID=#translation.getRemoteSiteID()#&parentID=#url.parentID#&type=#url.type#&contentHistID=#url.contentHistID#" onclick="return saveBeforeTranslation(this.href);"><i class="icon-plus-sign"></i></a></li>	
+		<cfif application.permUtility.getModulePerm('00000000000000000000000000000000000',rsLocales.siteid)>
+		<li class="select"><a title="select" target="_top" href="#application.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/search.cfm?localSiteID=#translation.getLocalSiteID()#&localID=#translation.getLocalID()#&remoteSiteID=#translation.getRemoteSiteID()#&parentID=#url.parentID#&type=#url.type#&contentHistID=#url.contentHistID#" onclick="return saveBeforeTranslation(this.href);"><i class="mi-plus-circle"></i></a></li>
 		<cfelse>
-		<li class="selectOff"><a>Select</a></li>	
+		<li class="selectOff"><a>Select</a></li>
 		</cfif>
 	</cfif>
 	</ul>
