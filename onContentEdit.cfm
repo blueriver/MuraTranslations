@@ -24,48 +24,48 @@
 <script language="JavaScript">
 function removeTranslationAssignments(){
 	if(confirm('Remove Translation Assignments?')){
-	
+
 		var url = '#application.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/delete.cfm';
 		var pars = 'contentID=#request.contentBean.getContentID()#&cacheid=' + Math.random();
-		
-		jQuery.get(url + "?" + pars, 
+
+		jQuery.get(url + "?" + pars,
 			function() {
 			loadLocaleTable();
 			}
 		);
-		
-		
+
+
 		}
 	return false;
-}	
-	
+}
+
 function loadLocaleTable(activeTab){
 	var url = '#application.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/assignmentTable.cfm';
 	var pars = 'contentID=#request.contentBean.getContentID()#&contentHistID=#request.contentBean.getContentHistID()#&type=#attributes.type#&parentID=#attributes.parentID#&siteid=#attributes.siteID#&doMap=#yesNoFormat(event.valueExists("doMap"))#&cacheid=' + Math.random();
-	var tab = activeTab;	
-	
+	var tab = activeTab;
+
 	try {
 		jQuery("##localeTableContainer").html('<br/><img src="/admin/assets/images/ajax-loader.gif">');
 	}
 	catch( any ) {
 	}
-	
-	
+
+
 	//location.href=url + "?" + pars;
 	/*
 	jQuery(".initActiveTab").each(
-		function(index) {			
+		function(index) {
 			jQuery(this).tabs("select",tab);
 		}
 	);
 	*/
-	
-	jQuery.get(url + "?" + pars, 
+
+	jQuery.get(url + "?" + pars,
 		function(data) {
 			jQuery("##localeTableContainer").html(data);
-			stripe("stripe");		
+			stripe("stripe");
 		}
-	);	
+	);
 }
 
 function saveBeforeTranslation(forwardURL){
