@@ -18,7 +18,7 @@
 <cfoutput>
   <cfif rsLocales.recordcount>
     <cfif objectparams.muratranslationstooltype eq 'selectbox'>
-      <select id="svLTM" class="dropdown" onchange="location.href=this.value;">
+      <select id="svLTM" class="form-control" onchange="location.href=this.value;">
         <option value="">
           #esapiEncode('html', translationManager.getTranslationKeys().setSiteID(m.siteConfig('siteid')).load().getSelectorLabel())#
         </option>
@@ -33,7 +33,6 @@
       <!--- List --->
       <cfset selectorLabel=translationManager.getTranslationKeys().setSiteID(m.siteConfig('siteid')).load().getSelectorLabel() />
       <div id="svLTM" class="navSecondary plugIn<cfif YesNoFormat(pluginConfig.getSetting('showFlags'))> showFlags</cfif>">
-        <!--- Uncomment the showFlags class to use flag icons in the list --->
         <cfif len(selectorLabel)>
           <h3>#esapiEncode('html', selectorLabel)#</h3>
         </cfif>
@@ -59,13 +58,6 @@
           </cfloop>
         </ul>
       </div>
-
-      <style>
-        <cfloop query="rslocales">
-          <cfset javaLocale=lcase(listLast(m.getBean('settingsManager').getSite(rsLocales.siteid).getJavaLocale(),"_"))>
-          .showFlags li###javaLocale# a { background-image: url(#pluginpath#/images/#javaLocale#.gif); }
-        </cfloop>
-      </style>
     </cfif>
 
     <script>

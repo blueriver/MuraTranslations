@@ -44,36 +44,36 @@
 	<cfif not structKeyExists(request,"event")>
 		<cfset request.event=arguments.event>
 	</cfif>
-	
+
 	<cfif listFindNoCase("Portal,File,Link,Page,Calendar,Gallery",contentBean.getType())>
-		
+
 		<cfif findNocase("#application.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/search.cfm",request.event.getValue('returnURL'))>
 			<cfset request.event.setValue('returnURL',replaceNoCase(request.event.getValue('returnURL'),'contentHistID=','contentHistID=#contentBean.getContentHistID()#&old='))>
-			<cfset request.event.setValue('returnURL',replaceNoCase(request.event.getValue('returnURL'),'localID=','localID=#contentBean.getContentID()#&old='))>				
+			<cfset request.event.setValue('returnURL',replaceNoCase(request.event.getValue('returnURL'),'localID=','localID=#contentBean.getContentID()#&old='))>
 		<cfelse>
 			<cfset pSession=pluginConfig.getSession()>
-		
+
 				<cfset _local=pSession.getValue('local')>
-				
+
 				<cfif isStruct(_local) and not StructIsEmpty(_local)>
 					<cfset pSession.setValue('showTab',true)>
-					
+
 					<cfif contentBean.getParentID() eq _local.remoteID
 						and contentBean.getSiteID() eq _local.remoteSiteID>
-					
+
 					<cfif not len(event.getValue('returnURL'))>
-						<cfset returnURL="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&contenthistid=#_local.contentHistID#&siteid=#_local.localSiteID#&contentid=#_local.localID#&topid=#_local.localID#&type=#_local.type#&parentid=#_local.parentID#&moduleid=00000000000000000000000000000000000">		
+						<cfset returnURL="#application.configBean.getContext()#/admin/index.cfm?muraaction=cArch.edit&contenthistid=#_local.contentHistID#&siteid=#_local.localSiteID#&contentid=#_local.localID#&topid=#_local.localID#&type=#_local.type#&parentid=#_local.parentID#&moduleid=00000000000000000000000000000000000">		
 						<cfset request.event.setValue('returnURL',returnURL)/>
 					</cfif>
-					
+
 					</cfif>
-				
+
 				</cfif>
-				
+
 		</cfif>
-	
+
 	</cfif>
-	
+
 	<cfset pSession.setValue('local',structNew())>
 </cffunction>
 
