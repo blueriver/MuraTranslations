@@ -41,8 +41,12 @@ StructAppend(request, form, "no");
 <cfif arrayLen(crumbdata) gt 30>
 <h2>#pluginConfig.getName()#</h2>
 <h3>Search For Translation</h3>
-<div class="btn-group" id="nav-module-specific">
-<a class="btn" href="##" onclick="history.go(-1);">Return</a></li>
+
+<div class="form-actions">
+  <a class="btn" onclick="history.go(-1);">
+    <i class="mi-undo"></i>
+    Return
+  </a>
 </div>
 
 <p class="error">We're sorry, an error has occurred.</p>
@@ -50,28 +54,45 @@ StructAppend(request, form, "no");
 <cfelse>
 <h2>#pluginConfig.getName()#</h2>
 <h3>Search For Translation</h3>
-<div class="btn-group" id="nav-module-specific">
-<a class="btn" href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000">Return</a>
-</div>
-<div class="alert">
-<p>You are assigning a #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.remoteSiteID).load().getName()))# translation peer for the #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.localSiteID).load().getName()))# version of:</p>
 
-#application.contentRenderer.dspZoom(crumbData)#
+<div class="form-actions">
+  <a class="btn" href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000">
+    <i class="mi-undo"></i>
+    Return
+  </a>
+</div>
+
+<div class="alert">
+  <p>You are assigning a #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.remoteSiteID).load().getName()))# translation peer for the #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.localSiteID).load().getName()))# version of:</p>
+  #application.contentRenderer.dspZoom(crumbData)#
 </div>
 
 <h4>Please search for the content that you would like to assign as a translation peer.</h4>
 <p<cfif len(request.keywords) and not rslist.recordcount> class="error"</cfif>><strong>Note:</strong> If the content does not yet exist, you can create it now - just search for the section of the site where your new content will go.</p>
 
-	<form class="search divide" method="post" name="parentSearchFrm" action="search.cfm" onsubmit="return validate(this);">
-	<input name="keywords" required="true" value="<cfif not len(request.keywords)>Search by Keyword<cfelse>#HTMLEditFormat(request.keywords)#</cfif>" onclick="this.value='';" onblur="if(this.value==''){this.value='Search by Keyword';}" message="Please enter a search keyword." value="#htmlEditFormat(request.keywords)#" type="text" class="text med" />	
-	<input type="submit" value="Search">
-	<input type="hidden" value="#HTMLEditFormat(request.localSiteID)#" name="localSiteID" />
-	<input type="hidden" value="#HTMLEditFormat(request.localID)#" name="localID" />
-	<input type="hidden" value="#HTMLEditFormat(request.remoteSiteID)#" name="remoteSiteID" />
-	<input type="hidden" value="#HTMLEditFormat(request.type)#" name="type" />
-	<input type="hidden" value="#HTMLEditFormat(request.contentHistID)#" name="contentHistID" />
-	<input type="hidden" value="#HTMLEditFormat(request.parentID)#" name="parentID" />
-	</form>
+<hr>
+<div class="row">
+  <div class="col-md-12">
+  	<form class="form-inline" class="search divide" method="post" name="parentSearchFrm" action="search.cfm" onsubmit="return validate(this);">
+      <div class="form-group">
+        <input class="form-control" name="keywords" required="true" value="<cfif not len(request.keywords)>Search by Keyword<cfelse>#HTMLEditFormat(request.keywords)#</cfif>" onclick="this.value='';" onblur="if(this.value==''){this.value='Search by Keyword';}" message="Please enter a search keyword." value="#htmlEditFormat(request.keywords)#" type="text" class="text med" />
+      </div>
+      <button type="submit" class="btn" value="Search">
+        <i class="mi-search"></i>
+        Search
+      </button>
+
+      <input type="hidden" value="#HTMLEditFormat(request.localSiteID)#" name="localSiteID" />
+      <input type="hidden" value="#HTMLEditFormat(request.localID)#" name="localID" />
+      <input type="hidden" value="#HTMLEditFormat(request.remoteSiteID)#" name="remoteSiteID" />
+      <input type="hidden" value="#HTMLEditFormat(request.type)#" name="type" />
+      <input type="hidden" value="#HTMLEditFormat(request.contentHistID)#" name="contentHistID" />
+      <input type="hidden" value="#HTMLEditFormat(request.parentID)#" name="parentID" />
+  	</form>
+  </div>
+</div>
+<hr>
+
 <cfif len(request.keywords)>
 	<cfset rsList=application.contentManager.getPrivateSearch(request.remoteSiteId,request.keywords)/>
 	<form  name="selectFrm" action="add.cfm" method="post">
@@ -84,7 +105,7 @@ StructAppend(request, form, "no");
 			<cfif verdict neq 'none' and rslist.type neq 'Link' and rslist.type neq 'File'>
 			<cfset counter=counter+1/>
 			<tbody>
-			<tr <cfif not(counter mod 2)>class="alt"</cfif>>  
+			<tr <cfif not(counter mod 2)>class="alt"</cfif>>
 	          <td class="var-width">#application.contentRenderer.dspZoom(crumbData)#</td>
 			  <td class="administration"><input type="radio" name="remoteID" value="#rslist.contentID#"<cfif rslist.currentRow eq 1> checked</cfif>/></td>
 			</tr>
@@ -101,13 +122,24 @@ StructAppend(request, form, "no");
 			</cfif>
 	  </table>
 	</td></tr></table>
-	<cfif rslist.recordcount>
-	<input class="btn" type="submit" name="doAction" value="Assign Translation"/>
-	&nbsp; &nbsp; Or &nbsp;&nbsp;
-	<input class="btn" type="submit" name="doAction" value="Create New Translation Under This Section"/>
-	&nbsp;&nbsp;
-	<input class="btn" type="submit" name="doAction" value="Create New Translation and Copy All Children"/>
-	</cfif>
+  <cfif rslist.recordcount>
+    <div class="form-actions">
+      <button class="btn mura-primary" type="submit" name="doAction" value="Assign Translation">
+        <i class="mi-check"></i>
+        Assign Translation
+      </button>
+      &nbsp;&nbsp; Or &nbsp;&nbsp;
+      <button class="btn" type="submit" name="doAction" value="Create New Translation Under This Section">
+        <i class="mi-file-text"></i>
+        Create New Translation Under This Section
+      </button>
+      &nbsp;&nbsp;
+      <button class="btn" type="submit" name="doAction" value="Create New Translation and Copy All Children">
+        <i class="mi-files-o"></i>
+        Create New Translation and Copy All Children
+      </button>
+    </div>
+  </cfif>
 	<input type="hidden" value="#HTMLEditFormat(request.localSiteID)#" name="localSiteID" />
 	<input type="hidden" value="#HTMLEditFormat(request.localID)#" name="localID" />
 	<input type="hidden" value="#HTMLEditFormat(request.remoteSiteID)#" name="remoteSiteID" />
