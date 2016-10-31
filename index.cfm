@@ -194,7 +194,6 @@
 				<br />
 				</div>
 			</div>
-		</div>
 	</div>
 
 </cfoutput>
