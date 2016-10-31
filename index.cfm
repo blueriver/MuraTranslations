@@ -81,7 +81,7 @@
 			<div class="clearfix"></div>
 			<div class="mura-actions">
 				<div class="form-actions">
-					<input class="btn" type="submit" value="Update"/>
+					<input class="btn mura-primary" type="submit" value="Update"/>
 					<input type="hidden" value="#rsSites.recordcount#" name="siteCount"/>
 					<input type="hidden" name="doaction" value="update"/>
 				</div>
@@ -119,7 +119,7 @@
 
 					<div class="mura-control-group mura-6">
 						<div class="mura-control justified">
-							<label>Action</label>
+							<label class="form-heading">Select Action:</label>
 					  	<label for="isActionExport" class="radio inline">
 					    <input type="radio" name="export_action" value="export" checked="checked" id="isActionExport">
 					     Export
@@ -131,11 +131,13 @@
 					</div>
 				</div>
 
-				<div class="form-actions">
-					<input type="submit" value="Next" class="btn"/>
-					<input type="hidden" value="#rsSites.recordcount#" name="siteCount"/>
-					<input type="hidden" name="doaction" value="update"/>
-				</div>
+					<div class="mura-actions">
+						<div class="form-actions">
+							<input type="submit" value="Next" class="btn mura-primary"/>
+							<input type="hidden" value="#rsSites.recordcount#" name="siteCount"/>
+							<input type="hidden" name="doaction" value="update"/>
+						</div>
+					</div>
 				</form>
 
 			</div> <!-- /.block-content -->

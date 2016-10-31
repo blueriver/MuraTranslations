@@ -19,10 +19,10 @@
 	<input type="hidden" name="export_action" value="export">
 		<div class="mura-control-group">
 				<label>
-					From Date
+					Start Date
 				</label>
 				   <input class="datepicker" type="text" name="export_date" value="#showDate#">
-				   <div class="help-block">(leave blank for all content)</div>
+				   <div class="help-block">Export only content created since a specific date (leave blank for all content)</div>
 		</div>
 		<div class="mura-control-group">
 				<label>
@@ -60,10 +60,12 @@
 					</optgroup>
 				</select>
 		</div>
-	<div class="form-actions">
-		<a href="../" class="btn">Cancel</a>
-		<input type="submit" value="Create" class="btn"/>
-		<input type="hidden" name="doaction" value="export"/>
+	<div class="mura-actions">
+		<div class="form-actions">
+			<button class="btn" onclick="window.location.href='../index.cfm##tabTranslate'; return false;">Cancel</button>
+			<input type="submit" value="Create" class="btn mura-primary"/>
+			<input type="hidden" name="doaction" value="export"/>
+		</div>
 	</div>
 	</form>
 </cfoutput>
