@@ -52,24 +52,16 @@
 				<div class="clearfix"></div>
 				<form action="index.cfm" method="post" onsubmit="return validateForm(this);">
 				<div class="mura-3 mura-control-group pull-left">
-					<label>
-						Site
-					</label>
+					<label class="form-heading">Site</label>
 				</div>
 				<div class="mura-3 mura-control-group pull-left">
-					<label>
-						Locale
-					</label>
+					<label class="form-heading">Locale</label>
 				</div>
 				<div class="mura-3 mura-control-group pull-left">
-					<label>
-						Locale Alias
-					</label>
+					<label class="form-heading">Locale Alias</label>
 				</div>
 				<div class="mura-3 mura-control-group pull-left">
-					<label>
-						Selector Label
-					</label>
+					<label class="form-heading">Selector Label</label>
 				</div>
 			<cfloop query="rsSites">
 				<div class="mura-3 mura-control-group pull-left">

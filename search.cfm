@@ -110,14 +110,16 @@
               </cfif>
             </table>
           </td></tr></table>
-          <cfif rslist.recordcount>
-          <input class="btn" type="submit" name="doAction" value="Assign Translation"/>
-          &nbsp; &nbsp; Or &nbsp;&nbsp;
-          <input class="btn" type="submit" name="doAction" value="Create New Translation Under This Section"/>
-          &nbsp;&nbsp;
-          <input class="btn" type="submit" name="doAction" value="Create New Translation and Copy All Children"/>
-          </cfif>
         </div>
+          <cfif rslist.recordcount>
+            <div class="mura-actions">
+              <div class="form-actions">
+                <input class="btn" type="submit" name="doAction" value="Create New Translation"/>
+                <input class="btn" type="submit" name="doAction" value="Create New Translation and Copy All Children"/>
+                <input class="btn mura-primary" type="submit" name="doAction" value="Assign Translation"/>
+              </div>
+            </div>
+          </cfif>
         
           <input type="hidden" value="#HTMLEditFormat(request.localSiteID)#" name="localSiteID" />
           <input type="hidden" value="#HTMLEditFormat(request.localID)#" name="localID" />
