@@ -30,146 +30,129 @@
 <cfset rsSites=translationManager.getAssignedSites()/>
 <cfsavecontent variable="body">
 <cfoutput>
-	<style>
-		.mura .mt-wrapper p {
-			margin-bottom: 1em !important;
-		}
-		.mura .mt-wrapper .tab-content {
-			margin: 1em;
-		}
-		.mura .mt-wrapper .row.site-info {
-			margin-bottom: 1.5em;
-		}
-		.mura .mt-wrapper label {
-			font-weight: bold;
-			font-size: 1.25em;
-		}
-	</style>
 
+<div class="mura-header">
+	<h1>#HTMLEditFormat(pluginConfig.getName())#</h1>
+</div> <!-- /.mura-header -->
 
-	<div class="mt-wrapper">
-		<h1>#HTMLEditFormat(pluginConfig.getName())#</h1>
+<div class="block block-constrain">
+	<ul class="mura-tabs nav-tabs" data-toggle="tabs">
+	<li class="active"><a href="##tabSettings" onclick="return false;"><span>Settings</span></a></li>
+	<li><a href="##tabTemplate" onclick="return false;"><span>Template Code</span></a></li>
+	<li><a href="##tabTranslate" onclick="return false;"><span>External Translations</span></a></li>
+	<li><a href="##tabAbout" onclick="return false;"><span>About This Plugin</span></a></li>
+	</ul>
+	<div class="block-content tab-content">
 
-		<ul class="mura tabs nav nav-tabs initActiveTab">
-			<li role="presentation" class="active"><a href="##tabSettings" role="tab" data-toggle="tab"><span>Settings</span></a></li>
-			<li role="presentation"><a href="##tabTemplate" role="tab" data-toggle="tab"><span>Template Code</span></a></li>
-			<li role="presentation"><a href="##tabTranslate" role="tab" data-toggle="tab"><span>External Translations</span></a></li>
-			<li role="presentation"><a href="##tabAbout" role="tab" data-toggle="tab"><span>About This Plugin</span></a></li>
-		</ul>
-
-		<div class="tab-content">
-
-			<div role="tabpanel" id="tabSettings" class="tab-pane active fade in">
-				<p>The &quot;Locale Alias&quot; is how each site is referenced within the Mura Translations plugin navigation tools.</p>
-
-				<cfif len(message)>
-					<p class="alert alert-success">#message#</p>
-				</cfif>
-
+	<div id="tabSettings" class="tab-pane active"> 
+		<div class="block block-bordered"> 
+			<div class="block-content">
+				<div class="help-block">The &quot;Locale Alias&quot; is how each site is referenced within the Mura Translations plugin navigation tools.</div>
+				<cfif len(message)><div class="alert alert-success">#message#</div></cfif>
+				<div class="clearfix"></div>
 				<form action="index.cfm" method="post" onsubmit="return validateForm(this);">
-					<div class="form-wrapper">
-						<div class="row">
-							<div class="col-md-3">
-								<label>
-									Site
-								</label>
-							</div>
-							<div class="col-md-3">
-								<label>
-									Locale
-								</label>
-							</div>
-							<div class="col-md-3">
-								<label>
-									Locale Alias
-								</label>
-							</div>
-							<div class="col-md-3">
-								<label>
-									Selector Label
-								</label>
-							</div>
-						</div>
-
-						<cfloop query="rsSites">
-							<div class="row site-info">
-								<div class="col-md-3">
-									<div class="controls">
-										#htmlEditFormat(rsSites.site)#
-									</div>
-								</div>
-								<div class="col-md-3">
-									<div class="controls">
-										#htmlEditFormat(rsSites.sitelocale)#
-									</div>
-								</div>
-								<div class="col-md-3">
-									<div class="controls">
-									<input class="text" name="alias#rsSites.currentRow#" type="text" value="#htmlEditFormat(rsSites.alias)#" required="true" message="The alias for the '#htmlEditFormat(rsSites.site)#' is required" maxlength="100"/>
-									</div>
-								</div>
-								<div class="col-md-3">
-									<div class="controls">
-									<input class="text" name="selectorlabel#rsSites.currentRow#" type="text" value="#htmlEditFormat(rsSites.selectorlabel)#" required="false" message="The selector label for the '#htmlEditFormat(rsSites.site)#' is required" maxlength="100"/>
-									</div>
-								</div>
-							</div><input type="hidden" name="siteid#rsSites.currentRow#" value="#rsSites.siteid#"/>
-						</cfloop>
-					</div>
-
-					<div class="form-actions">
-						<input class="btn" type="submit" value="Update"/>
-						<input type="hidden" value="#rsSites.recordcount#" name="siteCount"/>
-						<input type="hidden" name="doaction" value="update"/>
-					</div>
-				</form>
+				<div class="mura-3 mura-control-group pull-left">
+					<label>
+						Site
+					</label>
+				</div>
+				<div class="mura-3 mura-control-group pull-left">
+					<label>
+						Locale
+					</label>
+				</div>
+				<div class="mura-3 mura-control-group pull-left">
+					<label>
+						Locale Alias
+					</label>
+				</div>
+				<div class="mura-3 mura-control-group pull-left">
+					<label>
+						Selector Label
+					</label>
+				</div>
+			<cfloop query="rsSites">
+				<div class="mura-3 mura-control-group pull-left">
+						#htmlEditFormat(rsSites.site)#
+				</div>
+				<div class="mura-3 mura-control-group pull-left">
+						#htmlEditFormat(rsSites.sitelocale)#
+				</div>
+				<div class="mura-3 mura-control-group pull-left">
+					<input class="text" name="alias#rsSites.currentRow#" type="text" value="#htmlEditFormat(rsSites.alias)#" required="true" message="The alias for the '#htmlEditFormat(rsSites.site)#' is required" maxlength="100"/>
+				</div>
+				<div class="mura-3 mura-control-group pull-left">
+					<input class="text" name="selectorlabel#rsSites.currentRow#" type="text" value="#htmlEditFormat(rsSites.selectorlabel)#" required="false" message="The selector label for the '#htmlEditFormat(rsSites.site)#' is required" maxlength="100"/>
+				<input type="hidden" name="siteid#rsSites.currentRow#" value="#rsSites.siteid#"/>
+				</div>
+			</cfloop>
+			<div class="clearfix"></div>
+			<div class="mura-actions">
+				<div class="form-actions">
+					<input class="btn" type="submit" value="Update"/>
+					<input type="hidden" value="#rsSites.recordcount#" name="siteCount"/>
+					<input type="hidden" name="doaction" value="update"/>
+				</div>
 			</div>
+		</form>
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+	</div> <!-- /.tab-pane -->
 
-			<div role="tabpanel" id="tabTemplate" class="tab-pane fade">
-				<cfset rsObjects=translationManager.getDisplayObjects()>
-				<table class="table stripe">
-					<tr>
-						<th>Object</th>
-						<th>Code</th>
-					</tr>
-					<cfloop query="rsObjects">
-						<tr>
-							<td>#htmlEditFormat(rsObjects.name)#</td>
-							<td>##renderer.dspObject('plugin','#rsObjects.objectID#')##</td>
-						</tr>
-					</cfloop>
-				</table>
-			</div>
+	<div id="tabTemplate" class="tab-pane">
+		<div class="block block-bordered"> 
+			<div class="block-content">
+			<cfset rsObjects=translationManager.getDisplayObjects()>
+			<table class="mura-table-grid">
+				<tr>
+					<th class="var-width">Object</th>
+					<th class="var-width">Code</th>
+				</tr>
+				<cfloop query="rsObjects">
+				<tr>
+					<td class="var-width">#htmlEditFormat(rsObjects.name)#</td>
+					<td class="var-width">##renderer.dspObject('plugin','#rsObjects.objectID#')##</td>
+				</tr>
+				</cfloop>
+			</table>
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+	</div> <!-- /.tab-pane -->
 
-			<div role="tabpanel" id="tabTranslate" class="tab-pane fade">
+	<div id="tabTranslate" class="tab-pane">
+		<div class="block block-bordered"> 		
+			<div class="block-content">
 				<h4>External Translations (Beta)</h4>
-				<form class="fieldset-wrap" action="translations/index.cfm" method="post" onsubmit="return validateForm(this);">
-				<div class="fieldset">
-					<div class="form-group">
-						<div class="span6">
+				<form action="translations/index.cfm" method="post" onsubmit="return validateForm(this);">
+
+					<div class="mura-control-group mura-6">
+						<div class="mura-control justified">
 							<label>Action</label>
-							<div class="controls">
-							  	<label for="isActionExport" class="radio-inline">
-							    	<input type="radio" name="export_action" value="export" checked="checked" id="isActionExport">
-							    	Export
-							    </label>
-							    <label for="isActionImport" class="radio-inline">
-							    	<input type="radio" name="export_action" value="import" checked="checked" id="isActionImport">
-							     	Import
-							    </label>
-							</div>
-						</div>
+					  	<label for="isActionExport" class="radio inline">
+					    <input type="radio" name="export_action" value="export" checked="checked" id="isActionExport">
+					     Export
+					    </label>
+					    <label for="isActionImport" class="radio inline"> 
+					    <input type="radio" name="export_action" value="import" checked="checked" id="isActionImport">
+					     Import
+					    </label>
 					</div>
 				</div>
+
 				<div class="form-actions">
 					<input type="submit" value="Next" class="btn"/>
 					<input type="hidden" value="#rsSites.recordcount#" name="siteCount"/>
 					<input type="hidden" name="doaction" value="update"/>
 				</div>
 				</form>
-			</div>
 
-			<div role="tabpanel" id="tabAbout" class="tab-pane fade">
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+	</div> <!-- /.tab-pane -->
+
+	<div id="tabAbout" class="tab-pane">
+	<div class="block block-bordered"> 	
+		<div class="block-content">
 				<p>The Mura Translations plugin allows you to specify related alternate language versions of content for any specific page within the Mura content editing process.
 				This is a great tool for sites that need to provide single pages of translated content or links between entire sites of translated content.</p>
 				<p>Once the plug-in is installed on all of the sites in your Mura instance and the Mura Translations plugin becomes available on any page.
@@ -187,14 +170,19 @@
 				(note that the purchase of this plug-in allows you to use it on unlimited developer or staging instances of Mura CMS).
 				If you wish to use this plug-in on multiple production instances of Mura CMS, please <a href="http://www.getmura.com/contact-us/">contact us</a> us for discounted pricing.</p>
 
-				<h3>Overview Video</h3>
-				<div class="video">
-					<iframe width="640" height="360" src="http://www.youtube.com/embed/GnMUuFw2SK0" frameborder="0" allowfullscreen></iframe>
-				</div>
-				<br />
-				</div>
-			</div>
-	</div>
+				<div class="block-content">
+					<h2>Overview Video</h2>
+					<div class="video">
+						<iframe width="640" height="360" src="http://www.youtube.com/embed/GnMUuFw2SK0" frameborder="0" allowfullscreen></iframe>
+					</div>
+			  </div>
+
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+	</div> <!-- /.tab-pane -->
+
+		</div> <!-- /.block-content.tab-content -->
+	</div> <!-- /.block-constrain -->
 
 </cfoutput>
 </cfsavecontent>
