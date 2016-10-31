@@ -35,7 +35,7 @@ StructAppend(request, form, "no");
 	<cflocation url="#application.configBean.getContext()#/admin/?muraAction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000"  addtoken="false">
 
 <cfelse>
-	<cfif request.doAction eq "Create New Translation Under This Section">
+	<cfif request.doAction eq "Create New Translation">
 		<cfset deepCopy=false>
 	<cfelse>
 		<cfset deepCopy=true>

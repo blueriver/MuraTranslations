@@ -37,8 +37,6 @@
 	background-repeat: no-repeat;
 }
 
-
-
 .showFlags li#ad a { background-image: url(../images/ad.gif); }
 .showFlags li#ae a { background-image: url(../images/ae.gif); }
 .showFlags li#af a { background-image: url(../images/af.gif); }
