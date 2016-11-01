@@ -61,9 +61,9 @@
     </cfif>
 
     <script>
-      Mura(function(m) { 
-        m.loader() 
-          .loadcss('#pluginPath#/css/ltm.css', {media:'all'}) ;
+      Mura(function(m) {
+        m.loader()
+          .loadcss('#pluginPath#/css/ltm.css', {media:'all'});
       });
     </script>
   </cfif>
