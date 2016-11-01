@@ -59,7 +59,7 @@
 
       <cfif arrayLen(crumbdata) gt 30>
         <h2>Search For Translation</h2>
-        <p class="error">We're sorry, an error has occurred.</p>
+        <div class="alert alert-danger"><span>We&apos';re sorry, an error has occurred.</span></div>
       <cfelse>
         <h2>Search For Translation</h2>
         <div class="help-block-inline">Please search for the content that you would like to assign as a translation peer. <br><em>If the content does not yet exist, you can create it now - just search for the section of the site where your new content will go.</em></div>
@@ -68,7 +68,7 @@
             <div class="mura-control-group justify">
               
               <div class="mura-input-set">
-                <input name="keywords" required="true" value="<cfif not len(request.keywords)>Search by Keyword<cfelse>#HTMLEditFormat(request.keywords)#</cfif>" onclick="this.value='';" onblur="if(this.value==''){this.value='Search by Keyword';}" message="Please enter a search keyword." value="#htmlEditFormat(request.keywords)#" type="text" class="text med" /> 
+                <input name="keywords" required="true" value="<cfif len(request.keywords)>#HTMLEditFormat(request.keywords)#</cfif>" onclick="this.value='';" placeholder="Keyword Search" value="#htmlEditFormat(request.keywords)#" type="text" class="text med" /> 
                 <input type="submit" class="btn" value="Search">
               </div>
 
