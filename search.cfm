@@ -49,7 +49,7 @@
 <div class="mura-header">
   <h1>#pluginConfig.getName()#</h1>
     <div class="nav-module-specific btn-group">
-      <a class="btn" <cfif arrayLen(crumbdata) gt 30>href="##" onclick="history.go(-1);"<cfelse>href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000##tabsysMuraTranslations"</cfif>><i class="mi-arrow-circle-left"></i>Return</a></li>   
+      <a class="btn" <cfif arrayLen(crumbdata) gt 30>href="##" onclick="history.go(-1);"<cfelse>href="#application.configBean.getContext()#/admin/index.cfm?muraaction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000##tabsysMuraTranslations"</cfif>><i class="mi-arrow-circle-left"></i>Return</a></li>   
     </div>
 </div>
 
