@@ -14,7 +14,7 @@
 </cfif>
 
 <cfoutput>
-	<h2>Export Site(Beta)</h2>
+	<h2>Export Translations (Beta)</h2>
 	<form action="./index.cfm" method="post" onsubmit="return validateForm(this);">
 	<input type="hidden" name="export_action" value="export">
 		<div class="mura-control-group">
