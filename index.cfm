@@ -48,7 +48,7 @@
 		<div class="block block-bordered"> 
 			<div class="block-content">
 				<div class="help-block">The &quot;Locale Alias&quot; is how each site is referenced within the Mura Translations plugin navigation tools.</div>
-				<cfif len(message)><div class="alert alert-success">#message#</div></cfif>
+				<cfif len(message)><div class="help-block help-block-success">#message#</div></cfif>
 				<div class="clearfix"></div>
 				<form action="index.cfm" method="post" onsubmit="return validateForm(this);">
 				<div class="mura-3 mura-control-group pull-left">
@@ -81,7 +81,7 @@
 			<div class="clearfix"></div>
 			<div class="mura-actions">
 				<div class="form-actions">
-					<input class="btn mura-primary" type="submit" value="Update"/>
+					<button class="btn mura-primary" type="submit"><i class="mi-check"></i> Update</button>
 					<input type="hidden" value="#rsSites.recordcount#" name="siteCount"/>
 					<input type="hidden" name="doaction" value="update"/>
 				</div>
@@ -133,7 +133,7 @@
 
 					<div class="mura-actions">
 						<div class="form-actions">
-							<input type="submit" value="Next" class="btn mura-primary"/>
+							<button type="submit" class="btn mura-primary"><i class="mi-arrow-right"></i> Next</button>
 							<input type="hidden" value="#rsSites.recordcount#" name="siteCount"/>
 							<input type="hidden" name="doaction" value="update"/>
 						</div>

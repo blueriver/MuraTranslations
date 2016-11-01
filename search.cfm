@@ -41,7 +41,7 @@
 <cfoutput>
 <cfif arrayLen(crumbdata) lte 30>
   <div class="alert alert-warning">
-  <span>You are assigning a #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.remoteSiteID).load().getName()))# translation peer for the #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.localSiteID).load().getName()))# version of:
+  <span>You are assigning the #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.remoteSiteID).load().getName()))# translation peer for the #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.localSiteID).load().getName()))# version of this content:
   <br>#application.contentRenderer.dspZoom(crumbData)#
   </span>
   </div>
@@ -49,17 +49,20 @@
 <div class="mura-header">
   <h1>#pluginConfig.getName()#</h1>
     <div class="nav-module-specific btn-group">
-      <a class="btn" <cfif arrayLen(crumbdata) gt 30>href="##" onclick="history.go(-1);"<cfelse>href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000##tabsysMuraTranslations"</cfif>><i class="mi-arrow-circle-left"></i>Return</a></li>   
+      <a class="btn" <cfif arrayLen(crumbdata) gt 30>href="##" onclick="history.go(-1);"<cfelse>href="#application.configBean.getContext()#/admin/index.cfm?muraaction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000##tabsysMuraTranslations"</cfif>><i class="mi-arrow-circle-left"></i>Return</a></li>   
     </div>
 </div>
 
 <div class="block block-constrain">
     <div class="block block-bordered">
       <div class="block-content">
-
+  
       <cfif arrayLen(crumbdata) gt 30>
         <h2>Search For Translation</h2>
-        <p class="error">We're sorry, an error has occurred.</p>
+        <div class="help-block-inline help-block-error">Error: unable to complete search. Please try a different search term.</div>
+        <div class="mura-control-group">
+          <a class="btn" href="##" onclick="history.go(-1);"><i class="mi-arrow-left"></i>Return to Search</a>
+        </div>
       <cfelse>
         <h2>Search For Translation</h2>
         <div class="help-block-inline">Please search for the content that you would like to assign as a translation peer. <br><em>If the content does not yet exist, you can create it now - just search for the section of the site where your new content will go.</em></div>
@@ -68,7 +71,7 @@
             <div class="mura-control-group justify">
               
               <div class="mura-input-set">
-                <input name="keywords" required="true" value="<cfif not len(request.keywords)>Search by Keyword<cfelse>#HTMLEditFormat(request.keywords)#</cfif>" onclick="this.value='';" onblur="if(this.value==''){this.value='Search by Keyword';}" message="Please enter a search keyword." value="#htmlEditFormat(request.keywords)#" type="text" class="text med" /> 
+                <input name="keywords" required="true" value="<cfif len(request.keywords)>#HTMLEditFormat(request.keywords)#</cfif>" onclick="this.value='';" placeholder="Keyword Search" value="#htmlEditFormat(request.keywords)#" type="text" class="text med" /> 
                 <input type="submit" class="btn" value="Search">
               </div>
 

@@ -14,7 +14,7 @@
 </cfif>
 
 <cfoutput>
-	<h2>Export Site(Beta)</h2>
+	<h2>Export Translations (Beta)</h2>
 	<form action="./index.cfm" method="post" onsubmit="return validateForm(this);">
 	<input type="hidden" name="export_action" value="export">
 		<div class="mura-control-group">
@@ -62,8 +62,8 @@
 		</div>
 	<div class="mura-actions">
 		<div class="form-actions">
-			<button class="btn" onclick="window.location.href='../index.cfm##tabTranslate'; return false;">Cancel</button>
-			<input type="submit" value="Create" class="btn mura-primary"/>
+			<button class="btn" onclick="window.location.href='../index.cfm##tabTranslate'; return false;"><i class="mi-ban"></i> Cancel</button>
+			<button type="submit" class="btn mura-primary"><i class="mi-sign-out"></i> Export</button>
 			<input type="hidden" name="doaction" value="export"/>
 		</div>
 	</div>

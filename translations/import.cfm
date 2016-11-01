@@ -10,7 +10,7 @@
 <cfoutput>
 	
 	<h2>Import Site (Beta)</h2>
-	<form class="fieldset-wrap" action="./index.cfm" method="post" onsubmit="return validateForm(this);" enctype="multipart/form-data">
+	<form action="./index.cfm" method="post" onsubmit="return validateForm(this);" enctype="multipart/form-data">
 	<input type="hidden" name="export_action" value="import">
 
 		<div class="mura-control-group">
@@ -133,8 +133,8 @@
 
 	<div class="mura-actions">
 		<div class="form-actions">
-			<button class="btn" onclick="window.location.href='../index.cfm##tabTranslate'; return false;">Cancel</button>
-			<input type="submit" value="Import" class="btn mura-primary"/>
+			<button class="btn" onclick="window.location.href='../index.cfm##tabTranslate'; return false;"><i class="mi-ban"></i> Cancel</button>
+			<button type="submit" class="btn mura-primary"><i class="mi-sign-in"></i> Import</button>
 			<input type="hidden" name="doaction" value="doimport"/>
 		</div>
 	</div>

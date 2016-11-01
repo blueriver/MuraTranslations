@@ -9,4 +9,4 @@
 *
 */
 </cfscript>
-<mura name="Mura Translations Nav" contenttypes="*" iconclass="mi-commenting"></mura>
+<mura name="Translations Nav" contenttypes="*" iconclass="mi-commenting"></mura>
