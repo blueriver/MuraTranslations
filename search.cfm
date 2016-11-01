@@ -56,10 +56,13 @@
 <div class="block block-constrain">
     <div class="block block-bordered">
       <div class="block-content">
-
+  
       <cfif arrayLen(crumbdata) gt 30>
         <h2>Search For Translation</h2>
-        <div class="alert alert-danger"><span>We&apos';re sorry, an error has occurred.</span></div>
+        <div class="help-block-inline help-block-error">Error: unable to complete search. Please try a different search term.</div>
+        <div class="mura-control-group">
+          <a class="btn" href="##" onclick="history.go(-1);"><i class="mi-arrow-left"></i>Return to Search</a>
+        </div>
       <cfelse>
         <h2>Search For Translation</h2>
         <div class="help-block-inline">Please search for the content that you would like to assign as a translation peer. <br><em>If the content does not yet exist, you can create it now - just search for the section of the site where your new content will go.</em></div>
