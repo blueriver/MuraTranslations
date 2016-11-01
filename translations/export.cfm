@@ -62,8 +62,8 @@
 		</div>
 	<div class="mura-actions">
 		<div class="form-actions">
-			<button class="btn" onclick="window.location.href='../index.cfm##tabTranslate'; return false;">Cancel</button>
-			<input type="submit" value="Create" class="btn mura-primary"/>
+			<button class="btn" onclick="window.location.href='../index.cfm##tabTranslate'; return false;"><i class="mi-ban"></i> Cancel</button>
+			<button type="submit" class="btn mura-primary"><i class="mi-sign-out"></i> Export</button>
 			<input type="hidden" name="doaction" value="export"/>
 		</div>
 	</div>

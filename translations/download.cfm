@@ -3,10 +3,12 @@
 	<h3>Download</h3>
 	<table>
 	<tr>
-	<td>Export File</td>
-	<td><a href="../exports/#exportKey#-export/translations.zip">#exportKey#</a></td>
+		<td>Export File</td>
+		<td>
+			<a href="../exports/#exportKey#-export/translations.zip">#exportKey#</a>
+		</td>
 	</tr>
 	<tr>
 	</table>
-	<a href="../">Back</a>
+	<a class="btn" href="../"><i class="mi-arrow-left"></i> Back</a>
 </cfoutput>
