@@ -10,7 +10,7 @@
 <cfoutput>
 	
 	<h2>Import Site (Beta)</h2>
-	<form class="fieldset-wrap" action="./index.cfm" method="post" onsubmit="return validateForm(this);" enctype="multipart/form-data">
+	<form action="./index.cfm" method="post" onsubmit="return validateForm(this);" enctype="multipart/form-data">
 	<input type="hidden" name="export_action" value="import">
 
 		<div class="mura-control-group">
