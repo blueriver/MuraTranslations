@@ -22,7 +22,6 @@
 </cfif>
 </cfsilent>
 <cfoutput>
-<div class='fieldset'>
 <dl class="oneColumn">
 <dt class="first">
 <div class="control-group">
@@ -92,7 +91,6 @@ Associated Locales<cfif translationManager.hasTranslation(url.contentID,url.site
 </tr>
 </cfif>
 </table>
-
 </dl>
-</div>
+
 </cfoutput>
