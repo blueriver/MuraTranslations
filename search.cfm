@@ -41,7 +41,7 @@
 <cfoutput>
 <cfif arrayLen(crumbdata) lte 30>
   <div class="alert alert-warning">
-  <span>You are assigning a #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.remoteSiteID).load().getName()))# translation peer for the #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.localSiteID).load().getName()))# version of:
+  <span>You are assigning the #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.remoteSiteID).load().getName()))# translation peer for the #HTMLEditFormat(ucase(translationManager.getTranslationKeys().setSiteID(request.localSiteID).load().getName()))# version of this content:
   <br>#application.contentRenderer.dspZoom(crumbData)#
   </span>
   </div>
