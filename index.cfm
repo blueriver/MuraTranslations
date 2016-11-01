@@ -48,7 +48,7 @@
 		<div class="block block-bordered"> 
 			<div class="block-content">
 				<div class="help-block">The &quot;Locale Alias&quot; is how each site is referenced within the Mura Translations plugin navigation tools.</div>
-				<cfif len(message)><div class="alert alert-success">#message#</div></cfif>
+				<cfif len(message)><div class="help-block help-block-success">#message#</div></cfif>
 				<div class="clearfix"></div>
 				<form action="index.cfm" method="post" onsubmit="return validateForm(this);">
 				<div class="mura-3 mura-control-group pull-left">
