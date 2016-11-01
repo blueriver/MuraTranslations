@@ -18,7 +18,7 @@
 <cfoutput>
   <cfif rsLocales.recordcount>
     <cfif objectparams.muratranslationstooltype eq 'selectbox'>
-      <select id="svLTM" class="form-control" onchange="location.href=this.value;">
+      <select class="form-control translations-nav" onchange="location.href=this.value;">
         <option value="">
           #esapiEncode('html', translationManager.getTranslationKeys().setSiteID(m.siteConfig('siteid')).load().getSelectorLabel())#
         </option>
@@ -32,7 +32,7 @@
     <cfelse>
       <!--- List --->
       <cfset selectorLabel=translationManager.getTranslationKeys().setSiteID(m.siteConfig('siteid')).load().getSelectorLabel() />
-      <div id="svLTM" class="navSecondary plugIn<cfif YesNoFormat(pluginConfig.getSetting('showFlags'))> showFlags</cfif>">
+      <div class="translations-nav navSecondary plugIn<cfif YesNoFormat(pluginConfig.getSetting('showFlags'))> showFlags</cfif>">
         <cfif len(selectorLabel)>
           <h3>#esapiEncode('html', selectorLabel)#</h3>
         </cfif>
@@ -50,7 +50,7 @@
                 <cfset class=listAppend(class,"last"," ")>
               </cfif>
             </cfsilent>
-            <li id="#javaLocale#"<cfif len(class)> class="#class#"</cfif>>
+            <li class="#javaLocale#<cfif len(class)> #class#</cfif>">
               <a href="#esapiEncode('html_attr', theURL)#">
                 #esapiEncode('html', rsLocales.alias)#
               </a>
