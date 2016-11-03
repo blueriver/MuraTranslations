@@ -116,7 +116,7 @@
 		<cfset translation.setLocalID(arguments.crumbData[I].contentID)>
 		<cfset mapping=translation.getLocal()>
 		<cfif len(mapping.getRemoteID())>
-			<cfreturn variables.$.createHREF( siteid=mapping.getRemoteSiteID(),filename=mapping.getFileName(),contentid=mapping.getRemoteID() )>
+			<cfreturn variables.$.createHREF( siteid=mapping.getRemoteSiteID(),filename=mapping.getFileName(),contentid=mapping.getRemoteID(), complete=true)>
 		</cfif>
 	</cfloop>
 	
