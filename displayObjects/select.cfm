@@ -24,7 +24,7 @@
 <option value="">#HTMLEditFormat(translationManager.getTranslationKeys().setSiteID(event.getValue('siteid')).load().getSelectorLabel())#</option>
 <cfloop query="rslocales">
 	<cfsilent>
-	<cfset theURL = application.configBean.getContext() & translationManager.lookUpTranslation(event.getValue('crumbdata'),rsLocales.siteid,event.getContentRenderer())/>
+	<cfset theURL = application.configBean.getContext() & translationManager.lookUpTranslation(event.getValue('crumbdata'),rsLocales.siteid,event.getContentRenderer(),true)/>
 	</cfsilent>
 	<option value="#HTMLEditFormat(theURL)#">#HTMLEditFormat(rsLocales.selectorlabel)#</option>
 </cfloop>

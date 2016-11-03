@@ -42,7 +42,7 @@
 <cfloop query="rslocales">
 	<cfsilent>
 	<cfset javaLocale=lcase(listLast(application.settingsManager.getSite(rsLocales.siteid).getJavaLocale(),"_"))>
-	<cfset theURL = application.configBean.getContext() & translationManager.lookUpTranslation(event.getValue('crumbdata'),rsLocales.siteid,event.getContentRenderer())/>
+	<cfset theURL = application.configBean.getContext() & translationManager.lookUpTranslation(event.getValue('crumbdata'),rsLocales.siteid,event.getContentRenderer(),true)/>
 	<cfset class="">
 	<cfif rsLocales.currentrow eq 1>
 		<cfset class="first">

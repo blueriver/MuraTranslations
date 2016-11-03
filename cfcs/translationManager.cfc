@@ -102,6 +102,7 @@
 <cfargument name="crumbData" >
 <cfargument name="remoteSiteID">
 <cfargument name="renderer">
+<cfargument name="complete" type="boolean" default="false">
 
 	<cfset var translation=getTranslation()>
 	<cfset var I=1>
@@ -116,7 +117,7 @@
 		<cfset translation.setLocalID(arguments.crumbData[I].contentID)>
 		<cfset mapping=translation.getLocal()>
 		<cfif len(mapping.getRemoteID())>
-			<cfreturn variables.$.createHREF( siteid=mapping.getRemoteSiteID(),filename=mapping.getFileName(),contentid=mapping.getRemoteID() )>
+			<cfreturn variables.$.createHREF( siteid=mapping.getRemoteSiteID(),filename=mapping.getFileName(),contentid=mapping.getRemoteID(), complete=arguments.complete)>
 		</cfif>
 	</cfloop>
 	
