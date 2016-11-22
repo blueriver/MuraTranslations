@@ -41,7 +41,7 @@ function removeTranslationAssignments(){
 
 function loadLocaleTable(activeTab){
 	var url = '#application.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/assignmentTable.cfm';
-	var pars = 'contentID=#m.getContentBean().getContentID()#&contentHistID=#request.contentBean.getContentHistID()#&type=#attributes.type#&parentID=#attributes.parentID#&siteid=#attributes.siteID#&doMap=#yesNoFormat(event.valueExists("doMap"))#&cacheid=' + Math.random();
+	var pars = 'contentID=#m.getContentBean().getContentID()#&contentHistID=#m.getContentBean().getContentHistID()#&type=#attributes.type#&parentID=#attributes.parentID#&siteid=#attributes.siteID#&doMap=#yesNoFormat(event.valueExists("doMap"))#&cacheid=' + Math.random();
 	var tab = activeTab;
 
 	try {
