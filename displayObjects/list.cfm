@@ -18,7 +18,7 @@
 <cfif rsLocales.recordcount>
 <cfsilent>
 <cfset selectorLabel=translationManager.getTranslationKeys().setSiteID(event.getValue('siteid')).load().getSelectorLabel()>
-	
+
 <cfsavecontent variable="str">
 <cfoutput>
 <link rel="stylesheet" href="#request.pluginConfig.getSetting('pluginPath')#css/ltm.css" type="text/css" media="all" />
@@ -42,7 +42,7 @@
 <cfloop query="rslocales">
 	<cfsilent>
 	<cfset javaLocale=lcase(listLast(application.settingsManager.getSite(rsLocales.siteid).getJavaLocale(),"_"))>
-	<cfset theURL = application.configBean.getContext() & translationManager.lookUpTranslation(event.getValue('crumbdata'),rsLocales.siteid,event.getContentRenderer(),true)/>
+	<cfset theURL = translationManager.lookUpTranslation(event.getValue('crumbdata'),rsLocales.siteid)/>
 	<cfset class="">
 	<cfif rsLocales.currentrow eq 1>
 		<cfset class="first">
