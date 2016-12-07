@@ -40,9 +40,9 @@
 		<cfargument name="data" type="any" required="true">
 
 		<cfset var prop=""/>
-		
+
 		<cfif isquery(arguments.data)>
-			
+
 			<cfif arguments.data.recordcount>
 				<cfset setMapID(arguments.data.MapID) />
 				<cfset setLocalSiteID(arguments.data.LocalSiteID) />
@@ -51,22 +51,22 @@
 				<cfset setRemoteID(arguments.data.RemoteID) />
 				<cfset setFileName(arguments.data.FileName) />
 			</cfif>
-			
+
 		<cfelseif isStruct(arguments.data)>
-		
+
 			<cfloop collection="#arguments.data#" item="prop">
 				<cfif isdefined("variables.instance.#prop#")>
 					<cfset evaluate("set#prop#(arguments.data[prop])") />
 				</cfif>
 			</cfloop>
-	
-			
+
+
 		</cfif>
-		
+
 		<cfset validate() />
-		
+
 </cffunction>
-  
+
 <cffunction name="validate" access="public" output="false" returntype="void">
 	<cfset variables.instance.errors=structnew() />
 </cffunction>
@@ -93,7 +93,7 @@
 
 <cffunction name="setLocalSiteID" access="public" output="false">
 	<cfargument name="LocalSiteID" type="String" />
-	
+
 	<cfset variables.instance.LocalSiteID = trim(arguments.LocalSiteID) />
 </cffunction>
 
@@ -103,7 +103,7 @@
 
 <cffunction name="setFileName" access="public" output="false">
 	<cfargument name="FileName" type="String" />
-	
+
 	<cfset variables.instance.FileName = trim(arguments.FileName) />
 </cffunction>
 
@@ -148,11 +148,11 @@
 	and LocalID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocalID()#">
 	and RemoteSiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRemoteSiteID()#">
 	</cfquery>
-	
+
 	<cfif rs.recordcount and rs.remoteID neq getRemoteID()>
 		<cfset variables.isDirty=true>
 	</cfif>
-	
+
 	<cfreturn rs/>
 </cffunction>
 
@@ -166,12 +166,12 @@
 <cffunction name="save"  access="public" output="false" returntype="any">
 	<cfset var rs=""/>
 	<cfset var saveKey="mapping" & hash(getLocalSiteID() & getLocalID() & getRemoteSiteID() & getRemoteID())>
-	
+
 	<cfif not structKeyExists(request,saveKey)>
 		<cfset request[saveKey]=true>
 
 		<cfif getQuery().recordcount>
-			
+
 			<cfquery datasource="#variables.globalConfig.getDatasource()#" username="#variables.globalConfig.getDBUsername()#" password="#variables.globalConfig.getDBPassword()#">
 				update #variables.table# set
 					LocalSiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocalSiteID()#">,
@@ -180,11 +180,11 @@
 					RemoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRemoteID()#">
 				where MapID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getMapID()#">
 			</cfquery>
-			
+
 			<cfreturn variables.isDirty>
-			
+
 		<cfelse>
-		
+
 			<cfquery datasource="#variables.globalConfig.getDatasource()#" username="#variables.globalConfig.getDBUsername()#" password="#variables.globalConfig.getDBPassword()#">
 				insert into #variables.table# (MapID,LocalSiteID,LocalID,RemoteSiteID,RemoteID) values (
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#getMapID()#">,
@@ -194,14 +194,14 @@
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRemoteID()#">
 				)
 			</cfquery>
-			
+
 			<cfreturn true>
-			
+
 		</cfif>
 	<cfelse>
 		<cfreturn false>
 	</cfif>
-	
+
 </cffunction>
 
 </cfcomponent>

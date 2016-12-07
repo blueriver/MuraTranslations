@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 --->
-<cfcomponent output="false">
+<cfcomponent extends="mura.cfobject" output="false">
 
 <cfset variables.globalConfig="">
 <cfset variables.pluginConfig="">
@@ -101,14 +101,10 @@
 <cffunction name="lookUpTranslation" returntype="string" output="false">
 <cfargument name="crumbData" >
 <cfargument name="remoteSiteID">
-<cfargument name="renderer">
-<cfargument name="complete" type="boolean" default="false">
 
 	<cfset var translation=getTranslation()>
 	<cfset var I=1>
 	<cfset var mapping="">
-	<cfset var urlStem=arguments.renderer.getURLStem(remoteSiteID,'')>
-	<cfset var contentNavBean="">
 
 	<cfset translation.setRemoteSiteID(arguments.remoteSiteID)>
 	<cfset translation.setLocalSiteID(arguments.crumbData[1].siteID)>
@@ -117,11 +113,11 @@
 		<cfset translation.setLocalID(arguments.crumbData[I].contentID)>
 		<cfset mapping=translation.getLocal()>
 		<cfif len(mapping.getRemoteID())>
-			<cfreturn variables.$.createHREF(siteid=mapping.getRemoteSiteID(),filename=mapping.getFileName(),contentid=mapping.getRemoteID(), complete=arguments.complete)>
+			<cfreturn getBean('settingsManager').getSite(arguments.remoteSiteID).getContentRenderer().createHref(filename=mapping.getFilename(),complete=1)>
 		</cfif>
 	</cfloop>
 
-	<cfreturn urlStem>
+	<cfreturn getBean('settingsManager').getSite(arguments.remoteSiteID).getContentRenderer().createHref(filename='',complete=1)>
 
 </cffunction>
 

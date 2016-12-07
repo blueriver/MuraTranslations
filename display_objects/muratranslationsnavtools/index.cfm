@@ -23,7 +23,7 @@
           #esapiEncode('html', translationManager.getTranslationKeys().setSiteID(m.siteConfig('siteid')).load().getSelectorLabel())#
         </option>
         <cfloop query="rslocales">
-          <cfset theURL = m.globalConfig('context') & translationManager.lookUpTranslation(m.event('crumbdata'), rsLocales.siteid, m.getContentRenderer(),true)/>
+          <cfset theURL =translationManager.lookUpTranslation(m.event('crumbdata'), rsLocales.siteid)/>
           <option value="#esapiEncode('html_attr', theURL)#">
             #esapiEncode('html', rsLocales.alias)#
           </option>
@@ -41,7 +41,7 @@
           <cfloop query="rslocales">
             <cfsilent>
               <cfset javaLocale=lcase(listLast(m.getBean('settingsManager').getSite(rsLocales.siteid).getJavaLocale(),"_"))>
-              <cfset theURL = m.globalConfig('context') & translationManager.lookUpTranslation(m.event('crumbdata'), rsLocales.siteid, m.getContentRenderer(),true)/>
+              <cfset theURL = translationManager.lookUpTranslation(m.event('crumbdata'), rsLocales.siteid)/>
               <cfset class="">
               <cfif rsLocales.currentrow eq 1>
                 <cfset class="first">
