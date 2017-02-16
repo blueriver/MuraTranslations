@@ -113,11 +113,11 @@
 		<cfset translation.setLocalID(arguments.crumbData[I].contentID)>
 		<cfset mapping=translation.getLocal()>
 		<cfif len(mapping.getRemoteID())>
-			<cfreturn getBean('settingsManager').getSite(arguments.remoteSiteID).getContentRenderer().createHref(filename=mapping.getFilename(),complete=1)>
+			<cfreturn application.serviceFactory.getBean('settingsManager').getSite(arguments.remoteSiteID).getContentRenderer().createHref(filename=mapping.getFilename(),complete=1)>
 		</cfif>
 	</cfloop>
 
-	<cfreturn getBean('settingsManager').getSite(arguments.remoteSiteID).getContentRenderer().createHref(filename='',complete=1)>
+	<cfreturn application.serviceFactory.getBean('settingsManager').getSite(arguments.remoteSiteID).getContentRenderer().createHref(filename='',complete=1)>
 
 </cffunction>
 
