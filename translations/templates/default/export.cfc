@@ -291,14 +291,11 @@
 					<cfset request.xcount['xmlloop'][rsFiles.name] = getTickCount() - request.xcount['ts'] />
 
 					<cfcatch>
-						<cfdump var="#cfcatch#">
-						<cfabort>
-						
 						<cfif not fileExists("#importDirectory#/report.txt")>
 							<cffile action="append" file="#importDirectory#/../report.txt" output="Export report #dateFormat(now(),"dd/mm/yyyy hh:mm:ss")##chr(10)##chr(13)#" addnewline="true">
 						</cfif>
 						<cffile action="append" file="#importDirectory#/../report.txt" output="
-#chr(10)##chr(13)#FAILED [PROCESSING BOOYA]: #rsFiles.name# (#cfcatch.detail#)" addnewline="true">
+#chr(10)##chr(13)#FAILED [PROCESSING]: #rsFiles.name# (#cfcatch.detail#)" addnewline="true">
 					</cfcatch>
 				</cftry>
 			</cfif>		
