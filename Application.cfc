@@ -14,8 +14,12 @@
    limitations under the License.
 --->
 <cfcomponent output="false">
-	
-	<cfinclude template="../../config/applicationSettings.cfm">
+
+	<cfif fileexists("../../config/applicationSettings.cfm")>	
+		<cfinclude template="../../config/applicationSettings.cfm">
+	<cfelse>
+		<cfinclude template="../../core/appcfc/applicationSettings.cfm">
+	</cfif>
 	<cftry>
 	<cfinclude template="../../config/mappings.cfm">
 	<cfinclude template="../mappings.cfm">
