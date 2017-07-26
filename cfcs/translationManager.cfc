@@ -42,6 +42,7 @@
 	<cfif len(arguments.siteid)>
 		and tcontent.siteid != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
 	</cfif>
+	and tsettings.enableLockdown = ''
 	order by #variables.translationkeys#.name
 	</cfquery>
 	<cfreturn rs>
