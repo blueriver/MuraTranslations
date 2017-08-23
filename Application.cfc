@@ -14,8 +14,8 @@
    limitations under the License.
 --->
 <cfcomponent output="false">
-
-	<cfif fileexists("../../config/applicationSettings.cfm")>	
+	
+	<cfif fileexists(expandPath("../../config/applicationSettings.cfm"))>
 		<cfinclude template="../../config/applicationSettings.cfm">
 	<cfelse>
 		<cfinclude template="../../core/appcfc/applicationSettings.cfm">
@@ -25,7 +25,7 @@
 	<cfinclude template="../mappings.cfm">
 	<cfcatch></cfcatch>
 	</cftry>
-	
+
 	<!--- <cffunction name="onSessionEnd" returnType="void">
 	   <cfargument name="SessionScope" required=True/>
 	   <cfargument name="ApplicationScope" required=False/>
