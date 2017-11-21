@@ -1,5 +1,5 @@
-<!---
-   Copyright 2011 Blue River Interactive
+/*
+   Copyright 2011-2017 Blue River Interactive
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -12,24 +12,21 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
---->
-<cfcomponent output="false">
-	
-	<cfif fileexists(expandPath("../../config/applicationSettings.cfm"))>
-		<cfinclude template="../../config/applicationSettings.cfm">
-	<cfelse>
-		<cfinclude template="../../core/appcfc/applicationSettings.cfm">
-	</cfif>
-	<cftry>
-	<cfinclude template="../../config/mappings.cfm">
-	<cfinclude template="../mappings.cfm">
-	<cfcatch></cfcatch>
-	</cftry>
+*/
+component {
+	this.pluginPath=getDirectoryFromPath(getCurrentTemplatePath());
+	this.depth = ListFind(this.pluginPath, 'plugins', '\/');
+	this.webRoot = RepeatString('../', this.depth);
+	this.appSettingsFile = this.webRoot & 'config/applicationSettings.cfm';
 
-	<!--- <cffunction name="onSessionEnd" returnType="void">
-	   <cfargument name="SessionScope" required=True/>
-	   <cfargument name="ApplicationScope" required=False/>
-	  		<cfabort>
-	</cffunction> --->
+	try {
+		include this.appSettingsFile;
+	} catch(MissingInclude e) {
+		include this.webRoot & 'core/appcfc/applicationSettings.cfm';
+	}
 
-</cfcomponent>
+	try {
+		include this.webRoot & 'config/mappings.cfm';
+		include this.webRoot & 'plugins/mappings.cfm';
+	} catch(any e) {}
+}
