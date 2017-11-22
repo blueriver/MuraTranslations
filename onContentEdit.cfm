@@ -26,7 +26,7 @@ function removeTranslationAssignments(){
 	if(confirm('Remove Translation Assignments?')){
 
 		var url = '#application.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/delete.cfm';
-		var pars = 'contentID=#request.contentBean.getContentID()#&cacheid=' + Math.random();
+		var pars = 'contentID=#$.getContentBean().getContentID()#&cacheid=' + Math.random();
 
 		jQuery.get(url + "?" + pars,
 			function() {
@@ -41,7 +41,7 @@ function removeTranslationAssignments(){
 
 function loadLocaleTable(activeTab){
 	var url = '#application.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/assignmentTable.cfm';
-	var pars = 'contentID=#request.contentBean.getContentID()#&contentHistID=#request.contentBean.getContentHistID()#&type=#attributes.type#&parentID=#attributes.parentID#&siteid=#attributes.siteID#&doMap=#yesNoFormat(event.valueExists("doMap"))#&cacheid=' + Math.random();
+	var pars = 'contentID=#$.getContentBean().getContentID()#&contentHistID=#$.getContentBean().getContentHistID()#&type=#attributes.type#&parentID=#attributes.parentID#&siteid=#attributes.siteID#&doMap=#yesNoFormat(event.valueExists("doMap"))#&cacheid=' + Math.random();
 	var tab = activeTab;
 
 	try {
