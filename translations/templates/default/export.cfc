@@ -214,8 +214,7 @@
 						<cffile action="append" file="#importDirectory#/../report.txt" output="Export report #dateFormat(now(),"dd/mm/yyyy hh:mm:ss")#" addnewline="true">
 					</cfif>
 					
-					<cffile action="append" file="#importDirectory#/../report.txt" output="
-#chr(10)##chr(13)#FAILED [XML PARSE]: #rsFiles.name# (#cfcatch.detail#)" addnewline="true">
+					<cffile action="append" file="#importDirectory#/../report.txt" output="#chr(10)##chr(13)#FAILED [XML PARSE]: #rsFiles.name# (#cfcatch.detail#)" addnewline="true">
 				</cfcatch>
 			</cftry>
 
@@ -294,8 +293,7 @@
 						<cfif not fileExists("#importDirectory#/report.txt")>
 							<cffile action="append" file="#importDirectory#/../report.txt" output="Export report #dateFormat(now(),"dd/mm/yyyy hh:mm:ss")##chr(10)##chr(13)#" addnewline="true">
 						</cfif>
-						<cffile action="append" file="#importDirectory#/../report.txt" output="
-#chr(10)##chr(13)#FAILED [PROCESSING]: #rsFiles.name# (#cfcatch.detail#)" addnewline="true">
+						<cffile action="append" file="#importDirectory#/../report.txt" output="#chr(10)##chr(13)#FAILED [PROCESSING]: #rsFiles.name# (#cfcatch.detail#)" addnewline="true">
 					</cfcatch>
 				</cftry>
 			</cfif>		
@@ -365,25 +363,30 @@
 	
 		<cfif fileExists(importdirectory & "/categories.xml")>
 			<cfset contentXML = fileRead(importDirectory & "/categories.xml") />
-			<cfset xmlContent = xmlParse(contentXML) />
+
+			<cftry>
+				<cfset xmlContent = xmlParse(contentXML) />
+				<cfcatch type="any">
+					<cfdump var="#contentXML#">
+					<cfabort showerror="true">
+				</cfcatch>
+			</cftry>
+
 			<cfset siteID = xmlContent.xmlRoot.xmlAttributes.siteID />
-		
-			<cfloop index="x" from="1" to="#ArrayLen(xmlContent.categories.XmlChildren)#">
-								
+			<cfloop index="x" from="1" to="#ArrayLen(xmlContent.categories.XmlChildren)#">					
 				<cfset xmlItem = xmlContent.categories.XmlChildren[ x ] />
-				
 				<cfset categoryID = xmlItem.xmlAttributes.ID />
 				<cfset categoryBean = $.getBean('categoryBean').loadBy(remoteID=categoryID,siteID=$.event('siteID')) />
 				<!--- make sure we are not creating new categories that have been since deleted --->
 				<cfif not categoryBean.getIsNew()>
 					<cfset categoryBean.setName(xmlItem.xmlText)>
-					<cfset categoryBean.save() />
+					<cfset categoryBean.setRemoteID(categoryID)>
+					<cfset categoryBean.save()>
 				</cfif>
 			</cfloop>
 		</cfif>
 
 		<cfset request.xcount['cat'] = getTickCount() - request.xcount['ts'] />
-
 		<cfreturn true />
 	</cffunction>
 
