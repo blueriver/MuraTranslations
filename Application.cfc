@@ -14,19 +14,25 @@
    limitations under the License.
 */
 component {
-	this.pluginPath=getDirectoryFromPath(getCurrentTemplatePath());
-	this.depth = ListFind(this.pluginPath, 'plugins', '\/');
-	this.webRoot = RepeatString('../', this.depth);
-	this.appSettingsFile = this.webRoot & 'config/applicationSettings.cfm';
 
-	try {
-		include this.appSettingsFile;
-	} catch(MissingInclude e) {
-		include this.webRoot & 'core/appcfc/applicationSettings.cfm';
+	this.pluginPath = GetDirectoryFromPath(GetCurrentTemplatePath());
+	this.muraroot = Left(this.pluginPath, Find('plugins', this.pluginPath) - 1);
+	this.depth = ListLen(RemoveChars(this.pluginPath,1, Len(this.muraroot)), '\/');  
+	this.includeroot = RepeatString('../', this.depth);
+
+	if ( DirectoryExists(this.muraroot & 'core') ) {
+		// Using 7.1
+		this.muraAppConfigPath = this.includeroot & 'core/';
+		include this.muraAppConfigPath & 'appcfc/applicationSettings.cfm';
+	} else {
+		// Pre 7.1
+		this.muraAppConfigPath = this.includeroot & 'config';
+		include this.includeroot & 'config/applicationSettings.cfm';
+
+		try {
+			include this.includeroot & 'config/mappings.cfm';
+			include this.includeroot & 'plugins/mappings.cfm';
+		} catch(any e) {}
 	}
 
-	try {
-		include this.webRoot & 'config/mappings.cfm';
-		include this.webRoot & 'plugins/mappings.cfm';
-	} catch(any e) {}
 }
