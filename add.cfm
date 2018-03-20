@@ -32,7 +32,7 @@ StructAppend(request, form, "no");
 	<cfset translation.setRemoteID(request.remoteID)>
 	<cfset translation.save()>
 	<cfset pSession.setValue('showTab',true)>
-	<cflocation url="#application.configBean.getContext()#/admin/?muraAction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000"  addtoken="false">
+	<cflocation url="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000"  addtoken="false">
 
 <cfelse>
 	<cfif request.doAction eq "Create New Translation">
@@ -46,5 +46,5 @@ StructAppend(request, form, "no");
 	<cfset pSession.setValue('local',structCopy(request))>
 	<cfset pSession.setValue('showTab',false)>
 	<!--- go to newly create translation peer --->
-	<cflocation url="#application.configBean.getContext()#/admin/?muraAction=cArch.edit&contenthistid=#newBean.getContentHistID()#&siteid=#request.remoteSiteID#&contentid=#newBean.getContentID()#&&topid=#request.remoteID#&type=#request.type#&parentid=#request.remoteID#&moduleid=00000000000000000000000000000000000&doMap=true&suppressDraftNotice=true"  addtoken="false">
+	<cflocation url="#application.configBean.getContext()##application.configBean.getAdminDir()#/?muraAction=cArch.edit&contenthistid=#newBean.getContentHistID()#&siteid=#request.remoteSiteID#&contentid=#newBean.getContentID()#&&topid=#request.remoteID#&type=#request.type#&parentid=#request.remoteID#&moduleid=00000000000000000000000000000000000&doMap=true&suppressDraftNotice=true"  addtoken="false">
 </cfif>

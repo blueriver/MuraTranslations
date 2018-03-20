@@ -45,7 +45,7 @@ function loadLocaleTable(activeTab){
 	var tab = activeTab;
 
 	try {
-		jQuery("##localeTableContainer").html('<br/><img src="/admin/assets/images/ajax-loader.gif">');
+		jQuery("##localeTableContainer").html('<br/><img src="#application.configBean.getAdminDir()#/assets/images/ajax-loader.gif">');
 	}
 	catch( any ) {
 	}

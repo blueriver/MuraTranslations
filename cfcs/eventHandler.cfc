@@ -62,7 +62,7 @@
 						and contentBean.getSiteID() eq _local.remoteSiteID>
 
 					<cfif not len(event.getValue('returnURL'))>
-						<cfset returnURL="#application.configBean.getContext()#/admin/index.cfm?muraaction=cArch.edit&contenthistid=#_local.contentHistID#&siteid=#_local.localSiteID#&contentid=#_local.localID#&topid=#_local.localID#&type=#_local.type#&parentid=#_local.parentID#&moduleid=00000000000000000000000000000000000">		
+						<cfset returnURL="#application.configBean.getContext()##application.configBean.getAdminDir()#/index.cfm?muraaction=cArch.edit&contenthistid=#_local.contentHistID#&siteid=#_local.localSiteID#&contentid=#_local.localID#&topid=#_local.localID#&type=#_local.type#&parentid=#_local.parentID#&moduleid=00000000000000000000000000000000000">
 						<cfset request.event.setValue('returnURL',returnURL)/>
 					</cfif>
 

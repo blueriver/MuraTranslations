@@ -58,7 +58,7 @@ Associated Locales<cfif translationManager.hasTranslation(url.contentID,url.site
 		<cfif len(mapping.getRemoteID())>
 			<cfif application.permUtility.getModulePerm('00000000000000000000000000000000000',mapCrumb[1].siteID)
 				and listFindNoCase("Editor,Author",application.permUtility.getnodePerm(mapCrumb))>
-				<li class="edit"><a target="_top" href="#application.configBean.getContext()#/admin/index.cfm?muraaction=cArch.edit&contenthistid=#mapCrumb[1].contentHistID#&contentid=#mapCrumb[1].contentID#&type=#mapCrumb[1].type#&parentid=#mapCrumb[1].parentID#&topid=#mapCrumb[1].contentID#&siteid=#mapCrumb[1].siteID#&moduleid=00000000000000000000000000000000000&startrow=1" onclick=";"><i class="mi-pencil"></i>Edit</a></li>
+				<li class="edit"><a target="_top" href="#application.configBean.getContext()##application.configBean.getAdminDir()#/index.cfm?muraaction=cArch.edit&contenthistid=#mapCrumb[1].contentHistID#&contentid=#mapCrumb[1].contentID#&type=#mapCrumb[1].type#&parentid=#mapCrumb[1].parentID#&topid=#mapCrumb[1].contentID#&siteid=#mapCrumb[1].siteID#&moduleid=00000000000000000000000000000000000&startrow=1" onclick=";"><i class="mi-pencil"></i>Edit</a></li>
 			<cfelse>
 				<li class="edit editOff"><a>Edit</a></li>
 			</cfif>

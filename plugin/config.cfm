@@ -30,7 +30,7 @@
 	
 	<cfif ( not (isdefined("secure") and not secure) or not $.currentUser().isLoggedIn() ) and isAdminRequest and not isUserInRole('S2')>
 		<cfif not structKeyExists(session,"siteID") or not application.permUtility.getModulePerm(pluginConfig.getValue('moduleID'), session.siteid)>
-			<cflocation url="#application.configBean.getContext()#/admin/" addtoken="false">
+			<cflocation url="#application.configBean.getContext()##application.configBean.getAdminDir()#/" addtoken="false">
 		</cfif>
 	</cfif>
 
