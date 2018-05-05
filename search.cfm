@@ -49,14 +49,14 @@
 <div class="mura-header">
   <h1>#pluginConfig.getName()#</h1>
     <div class="nav-module-specific btn-group">
-      <a class="btn" <cfif arrayLen(crumbdata) gt 30>href="##" onclick="history.go(-1);"<cfelse>href="#application.configBean.getContext()#/admin/index.cfm?muraaction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000##tabsysMuraTranslations"</cfif>><i class="mi-arrow-circle-left"></i>Return</a></li>   
+      <a class="btn" <cfif arrayLen(crumbdata) gt 30>href="##" onclick="history.go(-1);"<cfelse>href="#application.configBean.getContext()#/admin/index.cfm?muraaction=cArch.edit&contenthistid=#request.contentHistID#&siteid=#request.localSiteID#&contentid=#request.localID#&topid=#request.localID#&type=#request.type#&parentid=#request.parentID#&moduleid=00000000000000000000000000000000000##tabsysMuraTranslations"</cfif>><i class="mi-arrow-circle-left"></i>Return</a></li>
     </div>
 </div>
 
 <div class="block block-constrain">
     <div class="block block-bordered">
       <div class="block-content">
-  
+
       <cfif arrayLen(crumbdata) gt 30>
         <h2>Search For Translation</h2>
         <div class="help-block-inline help-block-error">Error: unable to complete search. Please try a different search term.</div>
@@ -69,9 +69,9 @@
 
           <form class="search divide" method="post" name="parentSearchFrm" action="search.cfm" onsubmit="return validate(this);">
             <div class="mura-control-group justify">
-              
+
               <div class="mura-input-set">
-                <input name="keywords" required="true" value="<cfif len(request.keywords)>#HTMLEditFormat(request.keywords)#</cfif>" onclick="this.value='';" placeholder="Keyword Search" value="#htmlEditFormat(request.keywords)#" type="text" class="text med" /> 
+                <input name="keywords" required="true" value="<cfif len(request.keywords)>#HTMLEditFormat(request.keywords)#</cfif>" onclick="this.value='';" placeholder="Keyword Search" value="#htmlEditFormat(request.keywords)#" type="text" class="text med" />
                 <input type="submit" class="btn" value="Search">
               </div>
 
@@ -96,7 +96,7 @@
               <cfif verdict neq 'none' and rslist.type neq 'Link' and rslist.type neq 'File'>
               <cfset counter=counter+1/>
               <tbody>
-              <tr <cfif not(counter mod 2)>class="alt"</cfif>>  
+              <tr <cfif not(counter mod 2)>class="alt"</cfif>>
                     <td class="var-width">#application.contentRenderer.dspZoom(crumbData)#</td>
                 <td class="administration"><input type="radio" name="remoteID" value="#rslist.contentID#"<cfif rslist.currentRow eq 1> checked</cfif>/></td>
               </tr>
@@ -123,7 +123,7 @@
               </div>
             </div>
           </cfif>
-        
+
           <input type="hidden" value="#HTMLEditFormat(request.localSiteID)#" name="localSiteID" />
           <input type="hidden" value="#HTMLEditFormat(request.localID)#" name="localID" />
           <input type="hidden" value="#HTMLEditFormat(request.remoteSiteID)#" name="remoteSiteID" />

@@ -44,8 +44,8 @@
 	</ul>
 	<div class="block-content tab-content">
 
-	<div id="tabSettings" class="tab-pane active"> 
-		<div class="block block-bordered"> 
+	<div id="tabSettings" class="tab-pane active">
+		<div class="block block-bordered">
 			<div class="block-content">
 				<div class="help-block">The &quot;Locale Alias&quot; is how each site is referenced within the Mura Translations plugin navigation tools.</div>
 				<cfif len(message)><div class="help-block help-block-success">#message#</div></cfif>
@@ -92,27 +92,25 @@
 	</div> <!-- /.tab-pane -->
 
 	<div id="tabTemplate" class="tab-pane">
-		<div class="block block-bordered"> 
+		<div class="block block-bordered">
 			<div class="block-content">
-			<cfset rsObjects=translationManager.getDisplayObjects()>
+
 			<table class="mura-table-grid">
 				<tr>
 					<th class="var-width">Object</th>
 					<th class="var-width">Code</th>
 				</tr>
-				<cfloop query="rsObjects">
 				<tr>
-					<td class="var-width">#htmlEditFormat(rsObjects.name)#</td>
-					<td class="var-width">##renderer.dspObject('plugin','#rsObjects.objectID#')##</td>
+					<td class="var-width">Nav Tools</td>
+					<td class="var-width">##m.dspObject(object='muratranslationstools')##</td>
 				</tr>
-				</cfloop>
 			</table>
 			</div> <!-- /.block-content -->
 		</div> <!-- /.block-bordered -->
 	</div> <!-- /.tab-pane -->
 
 	<div id="tabTranslate" class="tab-pane">
-		<div class="block block-bordered"> 		
+		<div class="block block-bordered">
 			<div class="block-content">
 				<h4>External Translations (Beta)</h4>
 				<form action="translations/index.cfm" method="post" onsubmit="return validateForm(this);">
@@ -124,7 +122,7 @@
 					    <input type="radio" name="export_action" value="export" checked="checked" id="isActionExport">
 					     Export
 					    </label>
-					    <label for="isActionImport" class="radio inline"> 
+					    <label for="isActionImport" class="radio inline">
 					    <input type="radio" name="export_action" value="import" checked="checked" id="isActionImport">
 					     Import
 					    </label>
@@ -145,7 +143,7 @@
 	</div> <!-- /.tab-pane -->
 
 	<div id="tabAbout" class="tab-pane">
-	<div class="block block-bordered"> 	
+	<div class="block block-bordered">
 		<div class="block-content">
 				<p>The Mura Translations plugin allows you to specify related alternate language versions of content for any specific page within the Mura content editing process.
 				This is a great tool for sites that need to provide single pages of translated content or links between entire sites of translated content.</p>
