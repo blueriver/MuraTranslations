@@ -275,7 +275,7 @@
 							<cfset contentBean.setIsActive(1) />
 						<cfelse>
 							<cfset contentBean.setIsActive(0) />
-							<cfset contentBean.setIsApproved(0) />
+							<cfset contentBean.setApproved(0) />
 						</cfif>
 
 						<cfset contentBean.save() />
