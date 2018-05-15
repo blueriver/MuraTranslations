@@ -7,7 +7,7 @@
 		<cfargument name="componentIterator" type="any" required="true">
 		<cfargument name="rsContentCategories" type="any" required="true">
 		<cfargument name="pluginConfig" type="any" required="true">
-				
+
 		<cfset var exportContent = "" />
 		<cfset var item = "" />
 		<cfset var exportKey = rereplace(createUUID(),"-","","all") />
@@ -29,9 +29,9 @@
 			<cfset changeSetBean = $.getBean('changeSetManager').read( changesetID = form.changeset_existing ) />
 			<cfset changeSetIterator = $.getBean('changesetManager').getAssignmentsIterator( form.changeset_existing ) />
  		</cfif>
-		
+
 		<!---<cfdump var="#changeSetIterator.getQuery()#"><cfabort>--->
-		
+
 		<!--- change set --->
 		<cfif not changeSetBean.getIsNew()>
 			<cfloop condition="#changeSetIterator.hasNext()#">
@@ -45,11 +45,11 @@
 				<cfif not len(filename)>
 					<cfset filename = lcase(rereplace(item.getValue('title'),"[^a-zA-Z0-9]","-","all")) & "_" & contentIterator.currentIndex() />
 				</cfif>
-				
+
 				<cfif len(filename) gte 140>
 					<cfset filename = left(filename,40) & "..." & right(createUUID(),16)  & "..." & right(filename,40) />
 				</cfif>
-				
+
 				<cfsavecontent variable="exportContent"><cfinclude template="./page.cfm"></cfsavecontent>
 				<cffile action="write" file="#workingDir#/#filename#.xml" output="#exportContent#" >
 			</cfloop>
@@ -57,7 +57,7 @@
 		<cfelse>
 			<cfloop condition="#contentIterator.hasNext()#">
 				<cfset item = contentIterator.next() />
-				
+
 				<cfset contentData = item.getContentBean().getAllValues() />
 				<cfset extendData = item.getExtendedData().getAllValues().data />
 
@@ -69,51 +69,51 @@
 				<cfif len(filename) gte 140>
 					<cfset filename = left(filename,40) & "..." & right(createUUID(),16)  & "..." & right(filename,40) />
 				</cfif>
-				
+
 				<cfsavecontent variable="exportContent"><cfinclude template="./page.cfm"></cfsavecontent>
 				<cffile action="write" file="#workingDir#/#filename#.xml" output="#exportContent#" >
 			</cfloop>
-			
+
 			<cfloop condition="#componentIterator.hasNext()#">
 				<cfset item = componentIterator.next() />
 
 				<cfset contentData = item.getContentBean().getAllValues() />
 				<cfset extendData = item.getExtendedData().getAllValues().data />
-	
+
 				<cfset filename = lcase(rereplace(item.getValue('htmltitle'),"[^a-zA-Z0-9]{1,}","-","all")) />
 				<cfset filename = rereplace(filename,"^[^a-zA-Z]","") & "_" & componentIterator.currentIndex() />
 
 				<cfif len(filename) gte 140>
 					<cfset filename = left(filename,40) & "..." & right(createUUID(),16)  & "..." & right(filename,40) />
 				</cfif>
-	
+
 				<cfsavecontent variable="exportContent"><cfinclude template="./component.cfm"></cfsavecontent>
 				<cffile action="write" file="#workingDir#/#filename#.xml" output="#exportContent#" >
 			</cfloop>
-	
-			
-					
+
+
+
 		</cfif>
 
 		<cfif rsContentCategories.recordCount>
 		<cfsavecontent variable="exportContent"><cfinclude template="./categories.cfm"></cfsavecontent>
 		<cffile action="write" file="#workingDir#/categories.xml" output="#exportContent#" >
 		</cfif>
-		
+
 		<cfset directoryCreate(workingDir & "-export") />
-		
+
 		<cfset zipTool.AddFiles(zipFilePath="#workingDir#-export/translations.zip",directory=workingDir,recurse="true",filter="*.xml")>
-		
+
 		<cftry>
 			<cfset directoryDelete(workingDir,true) />
 		<cfcatch>
 			<cfdump var="#cfcatch#">
 		</cfcatch>
 		</cftry>
-		
+
 		<cfreturn exportKey />
 	</cffunction>
-	
+
 	<cffunction name="import" returntype="any">
 		<cfargument name="$" type="any" required="true">
 		<cfargument name="importDirectory" type="string" required="true">
@@ -126,15 +126,15 @@
 		<cfset var sourceSiteID = "" />
 		<cfset var contentID = "" />
 		<cfset var contentBean = "" />
-		
+
 		<cfset var xmlFile = "" />
 		<cfset var xmlContent = "" />
 		<cfset var rsFiles = "" />
 		<cfset var siteSynced = false />
 		<cfset var translation = "" />
-		
+
 		<cfset var translationManager = createObject('component','#arguments.pluginConfig.getDirectory()#.cfcs.translationManager').init($.globalConfig(),arguments.pluginConfig) />
-		
+
 		<cfset var feedIDList = "" />
 		<cfset var contentIDList = "" />
 		<cfset var sProcessed = StructNew() />
@@ -149,9 +149,9 @@
 		<cfset var success = true />
 
 		<cfset var rsFixComponentAssignments = "" />
-				
+
 		<cfset var x = "" />
-		
+
 		<cfif not structKeyExists(request,"xcount")>
 			<cfset request.xcount = StructNew() />
 			<cfset request.xcount['ts'] = getTickCount() />
@@ -168,14 +168,14 @@
 		</cfif>
 
 		<cfset request.xcount['vars'] = getTickCount() - request.xcount['ts'] />
-					
+
 		<cfparam name="form.staging_type" default="">
-		
+
 		<cfset zipTool.Extract(zipFilePath="#importDirectory#/#importFile#",extractPath="#importDirectory#",overwriteFiles=true)>
 
 		<!--- duplicate and create mappings --->
 		<cfset rsFiles = directoryList("#importDirectory#",true,"query","*.xml")>
-				
+
 		<cfif form['staging_type'] eq "existing">
 			<cfset publishChangeSetBean = $.getBean('changeSetManager').read( changesetID = form.changeset_existing ) />
 			<cfset var useChangeSets = 1 />
@@ -191,7 +191,7 @@
 				<cfset publishChangeSetBean.setValue('siteID',$.event('siteID')) />
 				<cfset publishChangeSetBean.save() />
 			</cfif>
-			
+
 			<cfset var useChangeSets = 1 />
 		<cfelseif form['staging_type'] eq "new">
 			<cfset publishChangeSetBean = $.getBean('changeSetManager').read( siteID = $.event('siteID') ) />
@@ -199,7 +199,7 @@
 			<cfset publishChangeSetBean.save() />
 			<cfset var useChangeSets = 1 />
 		</cfif>
-		
+
 		<cfset request.xcount['read'] = getTickCount() - request.xcount['ts'] />
 
 		<cfloop query="rsFiles">
@@ -213,7 +213,7 @@
 					<cfif not fileExists("#importDirectory#/../report.txt")>
 						<cffile action="append" file="#importDirectory#/../report.txt" output="Export report #dateFormat(now(),"dd/mm/yyyy hh:mm:ss")#" addnewline="true">
 					</cfif>
-					
+
 					<cffile action="append" file="#importDirectory#/../report.txt" output="#chr(10)##chr(13)#FAILED [XML PARSE]: #rsFiles.name# (#cfcatch.detail#)" addnewline="true">
 				</cfcatch>
 			</cftry>
@@ -221,7 +221,7 @@
 			<cfif rsFiles.name neq "categories.xml" and success>
 
 				<cftry>
-	
+
 					<cfif not len(siteID)>
 						<cfset siteID = xmlContent.xmlRoot.xmlAttributes.siteID />
 					</cfif>
@@ -230,7 +230,7 @@
 					<cfif siteID eq $.event('siteID')>
 						<cfreturn "The current SiteID (#siteID#) cannot import its own source as a translation. You must create a new site within this Mura CMS instance and import the translation there." />
 					</cfif>
-					
+
 					<cfset contentID = xmlContent.xmlRoot.xmlAttributes.ID />
 					<cfset sourceSiteID = xmlContent.xmlRoot.xmlAttributes.siteID />
 					<cfset sResponse = $.getBean('contentUtility').duplicateExternalContent(contentID,$.event('siteID'),sourceSiteID,false,siteSynced) />
@@ -258,7 +258,7 @@
 						<cfset contentBean.setMenuTitle("") />
 						<cfset contentBean.setURLTitle("") />
 						<cfset contentBean.setHTMLTitle("") />
-						
+
 						<cfif structKeyExists(xmlContent.xmlRoot,"summary")>
 							<cfset contentBean.setSummary( xmlContent.xmlRoot["summary"].xmlText ) />
 						</cfif>
@@ -275,18 +275,19 @@
 							<cfset contentBean.setIsActive(1) />
 						<cfelse>
 							<cfset contentBean.setIsActive(0) />
+							<cfset contentBean.setIsApproved(0) />
 						</cfif>
 
 						<cfset contentBean.save() />
-						
+
 						<cfset translation=translationManager.getTranslation()>
 						<cfset translation.setLocalSiteID($.event('siteID'))>
 						<cfset translation.setLocalID(contentBean.getContentID())>
 						<cfset translation.setRemoteSiteID(sourceSiteID)>
 						<cfset translation.setRemoteID(contentID)>
-						<cfset translation.save()>				
+						<cfset translation.save()>
 					</cfif>
-						
+
 					<cfset request.xcount['xmlloop'][rsFiles.name] = getTickCount() - request.xcount['ts'] />
 
 					<cfcatch>
@@ -296,9 +297,9 @@
 						<cffile action="append" file="#importDirectory#/../report.txt" output="#chr(10)##chr(13)#FAILED [PROCESSING]: #rsFiles.name# (#cfcatch.detail#)" addnewline="true">
 					</cfcatch>
 				</cftry>
-			</cfif>		
+			</cfif>
 		</cfloop>
-		
+
 		<cfset request.xcount['xml'] = getTickCount() - request.xcount['ts'] />
 
 		<!--- duplicate feeds --->
@@ -325,12 +326,12 @@
 		</cfif>
 
 		<cfset request.xcount['related'] = getTickCount() - request.xcount['ts'] />
-	
+
 		<cfset $.getBean('contentUtility').duplicateExternalSortOrder( $.event('siteID'),siteID	 ) />
 
 		<cfset request.xcount['dupextsortorder'] = getTickCount() - request.xcount['ts'] />
-		
-		<cftry>	
+
+		<cftry>
 			<cfif application.configBean.getDBtype() eq "mssql">
 				<cfquery name="rsFixComponentAssignments">
 					UPDATE tcontentobjects
@@ -342,7 +343,7 @@
 					AND
 						tcontent.active = 1
 					AND
-						tcontentobjects.siteID = <cfqueryparam value="#$.event('siteID')#" cfsqltype="cf_sql_varchar" maxlength="40"> 
+						tcontentobjects.siteID = <cfqueryparam value="#$.event('siteID')#" cfsqltype="cf_sql_varchar" maxlength="40">
 				</cfquery>
 			<cfelse>
 				<cfquery name="rsFixComponentAssignments">
@@ -354,13 +355,13 @@
 					AND
 						tcontent.active = 1
 					AND
-						tcontentobjects.siteID = <cfqueryparam value="#$.event('siteID')#" cfsqltype="cf_sql_varchar" maxlength="40"> 
+						tcontentobjects.siteID = <cfqueryparam value="#$.event('siteID')#" cfsqltype="cf_sql_varchar" maxlength="40">
 				</cfquery>
 			</cfif>
 		<cfcatch>
 		</cfcatch>
 		</cftry>
-	
+
 		<cfif fileExists(importdirectory & "/categories.xml")>
 			<cfset contentXML = fileRead(importDirectory & "/categories.xml") />
 
@@ -373,7 +374,7 @@
 			</cftry>
 
 			<cfset siteID = xmlContent.xmlRoot.xmlAttributes.siteID />
-			<cfloop index="x" from="1" to="#ArrayLen(xmlContent.categories.XmlChildren)#">					
+			<cfloop index="x" from="1" to="#ArrayLen(xmlContent.categories.XmlChildren)#">
 				<cfset xmlItem = xmlContent.categories.XmlChildren[ x ] />
 				<cfset categoryID = xmlItem.xmlAttributes.ID />
 				<cfset categoryBean = $.getBean('categoryBean').loadBy(remoteID=categoryID,siteID=$.event('siteID')) />
