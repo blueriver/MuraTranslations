@@ -233,7 +233,7 @@
 
 					<cfset contentID = xmlContent.xmlRoot.xmlAttributes.ID />
 					<cfset sourceSiteID = xmlContent.xmlRoot.xmlAttributes.siteID />
-					<cfset sResponse = $.getBean('contentUtility').duplicateExternalContent(contentID,$.event('siteID'),sourceSiteID,false,siteSynced, '', '', 0) />
+					<cfset sResponse = $.getBean('contentUtility').duplicateExternalContent(contentID,$.event('siteID'),sourceSiteID,false,siteSynced) />
 
 					<cfif sResponse.success>
 						<cfif structKeyExists(sResponse, "feedIDlist") and len(sResponse.feedIDList)>
@@ -272,10 +272,9 @@
 						<cfif useChangeSets>
 							<cfset contentBean.setChangesetID( publishChangeSetBean.getChangesetID() ) />
 						<cfelseif form['staging_type'] eq "publish">
-							<cfset contentBean.setActive(1) />
+							<cfset contentBean.setIsActive(1) />
 						<cfelse>
-							<cfset contentBean.setActive(0) />
-							<cfset contentBean.setApproved(0) />
+							<cfset contentBean.setIsActive(0) />
 						</cfif>
 
 						<cfset contentBean.save() />
