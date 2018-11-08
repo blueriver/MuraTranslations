@@ -233,7 +233,12 @@
 
 					<cfset contentID = xmlContent.xmlRoot.xmlAttributes.ID />
 					<cfset sourceSiteID = xmlContent.xmlRoot.xmlAttributes.siteID />
-					<cfset sResponse = $.getBean('contentUtility').duplicateExternalContent(contentID,$.event('siteID'),sourceSiteID,false,siteSynced) />
+
+					<cfelseif form['staging_type'] eq "publish">
+						<cfset sResponse = $.getBean('contentUtility').duplicateExternalContent(contentID,$.event('siteID'),sourceSiteID,false,siteSynced,'','',1) />
+					<cfelse>
+						<cfset sResponse = $.getBean('contentUtility').duplicateExternalContent(contentID,$.event('siteID'),sourceSiteID,false,siteSynced,'','',0) />
+					</cfif>
 
 					<cfif sResponse.success>
 						<cfif structKeyExists(sResponse, "feedIDlist") and len(sResponse.feedIDList)>
