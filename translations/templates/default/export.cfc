@@ -272,9 +272,10 @@
 						<cfif useChangeSets>
 							<cfset contentBean.setChangesetID( publishChangeSetBean.getChangesetID() ) />
 						<cfelseif form['staging_type'] eq "publish">
-							<cfset contentBean.setIsActive(1) />
+							<cfset contentBean.setActive(1) />
 						<cfelse>
-							<cfset contentBean.setIsActive(0) />
+							<cfset contentBean.setActive(0) />
+							<cfset contentBean.setApproved(0) />
 						</cfif>
 
 						<cfset contentBean.save() />
