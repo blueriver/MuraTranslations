@@ -234,7 +234,7 @@
 					<cfset contentID = xmlContent.xmlRoot.xmlAttributes.ID />
 					<cfset sourceSiteID = xmlContent.xmlRoot.xmlAttributes.siteID />
 
-					<cfelseif form['staging_type'] eq "publish">
+					<cfif form['staging_type'] eq "publish">
 						<cfset sResponse = $.getBean('contentUtility').duplicateExternalContent(contentID,$.event('siteID'),sourceSiteID,false,siteSynced,'','',1) />
 					<cfelse>
 						<cfset sResponse = $.getBean('contentUtility').duplicateExternalContent(contentID,$.event('siteID'),sourceSiteID,false,siteSynced,'','',0) />
